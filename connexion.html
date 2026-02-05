@@ -6,24 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="img/logoICO.ico">
     <link rel="stylesheet" href="style.css">
-    <title>MaPastille-Connexion</title>
+    <title>MaPastille - Connexion</title>
 </head>
 
 <body>
-    <div id="login">
-        <div id="div-connexion-label">
-            <div id="connexion-img"><img src="img/logoSVG.svg" alt="" srcset=""></div>
-            <h1>Connexion</h1>
+    <main class="login-container">
+        <div class="login-header">
+            <div class="login-logo">
+                <img src="img/logoSVG.svg" alt="Logo MaPastille">
+            </div>
+            <h1 id="form-title">Connexion</h1>
         </div>
-        <div id="div-connexion-info">
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Mot de passe" required>
+
+        <div class="login-form">
+            <!-- Champs toujours visibles -->
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Mot de passe" required autocomplete="current-password">
+            </div>
+
+            <!-- Champs pour inscription (cachés par défaut) -->
+            <div class="form-group signup-field">
+                <input type="text" id="prenom" name="prenom" placeholder="Prénom" autocomplete="given-name">
+            </div>
+
+            <div class="form-group signup-field">
+                <input type="text" id="nom" name="nom" placeholder="Nom" autocomplete="family-name">
+            </div>
+
+            <div class="form-group signup-field">
+                <input type="text" id="classe" name="classe" placeholder="Classe">
+            </div>
+
+            <div class="login-actions">
+                <button type="button" id="toggle-mode" class="btn-secondary">Créer un compte</button>
+                <button type="button" id="submit-btn" class="btn-primary">Connexion</button>
+            </div>
         </div>
-        <div id="div-connexion-btn">
-            <input type="button" value="Créer un compte">
-            <input type="button" value="Connexion" id="btn-connexion">
-        </div>
-    </div>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
