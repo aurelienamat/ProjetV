@@ -18,7 +18,7 @@ connection.connect((err) => {
   console.log('Connecté à la base de données MySQL.');
 });
 
-
+app.use(express.static('html'));
 app.use(express.json()); //Sert a utiliser json
 
 
