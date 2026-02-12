@@ -29,13 +29,14 @@ body {
 }
 
 /* ===== LOGIN CONTAINER ===== */
-.login-container {
+.loginContainer {
     background: white;
     padding: 3rem 2.5rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     width: 100%;
     max-width: 420px;
+    display : none;
 }
 
 /* ===== HEADER SECTION ===== */
@@ -164,4 +165,28 @@ body {
     .login-logo img {
         width: 60px;
     }
+}
+
+.btn-login {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fermer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
