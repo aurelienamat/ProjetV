@@ -118,15 +118,32 @@ app.post('/modifierStatus', (req, res) => {
   console.log(req.body);
   connection.query(
     "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ?;",
-    [req.body.status,req.body.idTps,req.body.idUsers,req.body.idTps,req.body.idUsers], (err, results) => {
+    [req.body.status, req.body.idTps, req.body.idUsers], (err, results) => {
       if (err) {
         console.log("Erreur " + err);
         return;
       }
       if (results) {
         console.log("Changement effectué ");
-        res.json({ message: 'Ticket crée' });
         //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
+        connection.query(
+          "SELECT status FROM status WHERE idTps = ? AND idUsers = ?;",
+          [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {
+            if (err) {
+              console.log("Erreur select" + err);
+              res.json({message : "Erreur"});
+              return;
+            }
+            if (resultsSelect.length == null) {
+              console.log("Not found");
+              res.json({message : "Pas trouvé"});
+              return;
+            } else {
+              console.log(resultsSelect[0]);
+              res.json(resultsSelect[0]);
+            }
+          }
+        )
       } else {
         console.log('Erreur changement' + results);
         res.json({ message: 'Erreur changement' });
