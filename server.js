@@ -8,7 +8,8 @@ const connection = mysql.createConnection({
   host: '172.29.18.133',
   user: 'Ticket',
   password: 'passwordticket',
-  database: 'TICKETS'
+  database: 'TICKETS',
+  multipleStatements: true //Pour faire plusieurs commande sql en 1fois
 });
 connection.connect((err) => {
   if (err) {
@@ -75,15 +76,15 @@ app.post('/connexion', (req, res) => {
       //res.json({ message: 'Email trouvé' });
       let resultat = results[0];
       bcrypt.compare(req.body.password, resultat.password, (err, results) => {
-        if(err){
+        if (err) {
           console.log('Erreur compare' + err);
           return;
         }
-        if(results){
+        if (results) {
           console.log('Connexion réussi');
-          res.json({id : resultat.id});
-        }else{
-          res.json({message : 'connexion echoué'});
+          res.json({ id: resultat.id });
+        } else {
+          res.json({ message: 'connexion echoué' });
           return;
         }
       })
@@ -113,21 +114,22 @@ app.post('/connexion', (req, res) => {
 // })
 
 //Modifier TP
-app.post('/modifierStatus', (req,res) => {
+app.post('/modifierStatus', (req, res) => {
   console.log(req.body);
   connection.query(
-    "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ? ",
-    [req.body.status,req.body.idTps,req.body.idUsers], (err,results) => {
-      if(err){
+    "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ?;",
+    [req.body.status,req.body.idTps,req.body.idUsers,req.body.idTps,req.body.idUsers], (err, results) => {
+      if (err) {
         console.log("Erreur " + err);
         return;
       }
-      if(results){
-        console.log("Changement effectué " + results);
-        res.json({message : 'Ticket crée'});
-      }else{
+      if (results) {
+        console.log("Changement effectué ");
+        res.json({ message: 'Ticket crée' });
+        //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
+      } else {
         console.log('Erreur changement' + results);
-        res.json({message : 'Erreur changement'});
+        res.json({ message: 'Erreur changement' });
       }
     }
   )

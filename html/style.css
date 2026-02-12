@@ -36,6 +36,7 @@ body {
     box-shadow: var(--shadow);
     width: 100%;
     max-width: 420px;
+    display: block;
 }
 
 /* ===== HEADER SECTION ===== */
