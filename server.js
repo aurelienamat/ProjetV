@@ -131,12 +131,12 @@ app.post('/modifierStatus', (req, res) => {
           [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {
             if (err) {
               console.log("Erreur select" + err);
-              res.json({message : "Erreur"});
+              res.json({ message: "Erreur" });
               return;
             }
             if (resultsSelect.length == null) {
               console.log("Not found");
-              res.json({message : "Pas trouvé"});
+              res.json({ message: "Pas trouvé" });
               return;
             } else {
               console.log(resultsSelect[0]);
@@ -147,6 +147,27 @@ app.post('/modifierStatus', (req, res) => {
       } else {
         console.log('Erreur changement' + results);
         res.json({ message: 'Erreur changement' });
+      }
+    }
+  )
+})
+
+//AFFICHAGE
+app.post('/affichage', (req, res) => {
+  connection.query(
+    "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ? AND users.id = ?",
+    [req.body.status, req.body.id], (err, results) => {
+      if (err) {
+        console.log('Erreur ' + err);
+        res.json({ message: 'Erreur affichage' });
+        return;
+      }
+      if (results.length == 0) {
+        console.log("Pas trouvé afficahge" + results[0]);
+        return;
+      } else {
+        console.log('résultat ' + results[0]);
+        res.json(results[0]);
       }
     }
   )
