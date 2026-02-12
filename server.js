@@ -90,3 +90,45 @@ app.post('/connexion', (req, res) => {
     }
   )
 })
+
+//Création ticket
+// app.post('/ticket', (req,res) => {
+//   console.log(req.body);
+//   connection.query(
+//     "UPDATE status SET status = 'encoursdevalidation' WHERE idTps = ? AND idUsers = ? ",
+//     [req.body.idTps,req.body.idUsers], (err,results) => {
+//       if(err){
+//         console.log("Erreur " + err);
+//         return;
+//       }
+//       if(results){
+//         console.log("Changement effectué " + results);
+//         res.json({message : 'Ticket crée'});
+//       }else{
+//         console.log('Erreur changement' + results);
+//         res.json({message : 'Erreur changement'});
+//       }
+//     }
+//   )
+// })
+
+//Modifier TP
+app.post('/modifierStatus', (req,res) => {
+  console.log(req.body);
+  connection.query(
+    "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ? ",
+    [req.body.status,req.body.idTps,req.body.idUsers], (err,results) => {
+      if(err){
+        console.log("Erreur " + err);
+        return;
+      }
+      if(results){
+        console.log("Changement effectué " + results);
+        res.json({message : 'Ticket crée'});
+      }else{
+        console.log('Erreur changement' + results);
+        res.json({message : 'Erreur changement'});
+      }
+    }
+  )
+})
