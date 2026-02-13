@@ -1,8 +1,6 @@
 const btnConnexion = document.getElementById('btnConnexion');
 const loginContainer = document.querySelector('.loginContainer');
 const btnFemer = document.querySelector('.fermer');
-const btnInscription = document.getElementById('btnInscription');
-const signupFields = document.querySelector('.signupField');
 
 const connexion = document.getElementById('submit-btn');
 
@@ -18,3 +16,35 @@ btnFermer.addEventListener('click', function () {
     loginContainer.style.display = 'none';
     btnConnexion.style.display = 'block';
 })
+
+
+connexion.addEventListener('click', () => {
+    fetch('/affichage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: password.value, id: email.value })
+    }).then(response => response.json())
+        .then(data => {
+            if (data.message == null) {
+                localStorage.setItem("data", JSON.stringify(data));
+                let dataLocal = localStorage.getItem('data');
+                dataLocal = JSON.parse(dataLocal);
+                if (dataLocal[0].nom == null) {
+                    dataLocal.forEach(tp => {
+                        if (tp.status == 'valide') {
+                            console.log(" ", tp.tp + " " + tp.matiere);
+                        }
+                    })
+                }
+                console.log(dataLocal);
+            } else {
+                console.log(data.message);
+            }
+        });
+})
+
+window.onload = () => {
+    console.log('Samlut');
+}
