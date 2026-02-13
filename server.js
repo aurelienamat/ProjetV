@@ -127,7 +127,7 @@ app.post('/modifierStatus', (req, res) => {
         console.log("Changement effectué ");
         //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
         connection.query(
-          "SELECT status FROM status WHERE idTps = ? AND idUsers = ?;",
+          "SELECT status,idTps FROM status WHERE idTps = ? AND idUsers = ?;",
           [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {
             if (err) {
               console.log("Erreur select" + err);
@@ -188,20 +188,20 @@ app.post('/affichage', (req, res) => {
           )
         } else { //Si ce n'est pas l'enseignant alors on affiche que l'eleve
           connection.query(
-            "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ? AND users.id = ?",
-            [req.body.status, req.body.id], (err, results) => {
+            "SELECT tps.nom as tp,matiere,status FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+            [req.body.id], (err, results) => {
               if (err) {
                 console.log('Erreur ' + err);
                 res.json({ message: 'Erreur affichage' });
                 return;
               }
               if (results.length == 0) {
-                console.log("Pas trouvé affichage " + results[0]);
+                console.log("Pas trouvé affichage " + results);
                 res.json({ message: 'Pas trouvé' });
                 return;
               } else {
-                console.log('résultat eleve ' + JSON.stringify(results[0]));
-                res.json(results[0]);
+                console.log('résultat eleve ' ); //+ JSON.stringify(results)
+                res.json(results);
               }
             }
           )
