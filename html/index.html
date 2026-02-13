@@ -13,9 +13,9 @@
     <h1>EN CONSTRUCTION</h1>
 
 
-            <div class="btnLogin">      <!--bouton de connexion pour rendre visible le menu de connexion-->
-            <button id="btnConnexion" class="btnConnexion">Se connecter</button>
-            </div>
+    <div class="btnLogin"> <!--bouton de connexion pour rendre visible le menu de connexion-->
+        <button id="btnConnexion" class="btnConnexion">Se connecter</button>
+    </div>
 
 
     <main class="loginContainer">
@@ -32,27 +32,24 @@
             <div class="form-group">
                 <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
             </div>
-            
+
             <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Mot de passe" required autocomplete="current-password">
+                <input type="password" id="password" name="password" placeholder="Mot de passe" required
+                    autocomplete="current-password">
             </div>
 
             <!-- Champs pour inscription (cachés par défaut) -->
-            <div class="form-group signup-field">
+            <div class="form-group signupField">
                 <input type="text" id="prenom" name="prenom" placeholder="Prénom" autocomplete="given-name">
-            </div>
-
-            <div class="form-group signup-field">
                 <input type="text" id="nom" name="nom" placeholder="Nom" autocomplete="family-name">
-            </div>
-
-            <div class="form-group signup-field">
                 <input type="text" id="classe" name="classe" placeholder="Classe">
             </div>
 
             <div class="login-actions">
-                <button type="button" id="toggle-mode" class="btn-secondary">Créer un compte</button>
-                <button type="button" id="submit-btn" class="btn-primary">Connexion</button>
+                <div class="btnInscription">
+                    <button id="btnInscription" class="btnInscription">inscription</button>
+                </div>
+                <button type="button" id="submit-btn" class="btnPrimary">Connexion</button>
             </div>
         </div>
         <button id="btnFermer" class="fermer">fermer</button>
