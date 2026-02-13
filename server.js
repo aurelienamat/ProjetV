@@ -154,20 +154,58 @@ app.post('/modifierStatus', (req, res) => {
 
 //AFFICHAGE
 app.post('/affichage', (req, res) => {
+  //Voir si enseignant qui demande
+  //Récupere la classe de l'id qui demande
   connection.query(
-    "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ? AND users.id = ?",
-    [req.body.status, req.body.id], (err, results) => {
+    "SELECT classe from status, users WHERE users.id = status.idUsers AND users.id = ?",
+    [req.body.id], (err, resultat) => {
       if (err) {
-        console.log('Erreur ' + err);
-        res.json({ message: 'Erreur affichage' });
-        return;
+        console.log('Erreur récupération classe ' + err);
+        res.json(err);
       }
-      if (results.length == 0) {
-        console.log("Pas trouvé afficahge" + results[0]);
-        return;
+      if (resultat.length == 0) {
+        console.log("Existe pas ");
+        res.json({ message: "Existe pas" });
       } else {
-        console.log('résultat ' + results[0]);
-        res.json(results[0]);
+        if (resultat[0].classe == 'enseignant') {  //Si c'est l'enseigna tqui demande on affiche tout
+          connection.query(
+            "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
+            [req.body.status], (err, results) => {
+              if (err) {
+                console.log('Erreur ' + err);
+                res.json({ message: 'Erreur affichage' });
+                return;
+              }
+              if (results.length == 0) {
+                console.log("Pas trouvé affichage " + results);
+                res.json({ message: 'Pas trouvé' });
+                return;
+              } else {
+                console.log('resultat enseingnant' + JSON.stringify(results));
+                res.json(results);
+              }
+            }
+          )
+        } else { //Si ce n'est pas l'enseignant alors on affiche que l'eleve
+          connection.query(
+            "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ? AND users.id = ?",
+            [req.body.status, req.body.id], (err, results) => {
+              if (err) {
+                console.log('Erreur ' + err);
+                res.json({ message: 'Erreur affichage' });
+                return;
+              }
+              if (results.length == 0) {
+                console.log("Pas trouvé affichage " + results[0]);
+                res.json({ message: 'Pas trouvé' });
+                return;
+              } else {
+                console.log('résultat eleve ' + JSON.stringify(results[0]));
+                res.json(results[0]);
+              }
+            }
+          )
+        }
       }
     }
   )
