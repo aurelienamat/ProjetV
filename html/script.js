@@ -410,6 +410,13 @@ function avancement() {
 
 window.onload = () => {
     console.log('Samlut');
+    console.log(JSON.parse(localStorage.getItem('data')));
+    const datadata = JSON.parse(localStorage.getItem('data'));
+    datadata.forEach(item => {
+        if (item.matiere == 'C' && item.status == 'valide') {
+            console.log(item.tp);
+        }
+    })
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
