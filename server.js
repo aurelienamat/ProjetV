@@ -113,13 +113,13 @@ app.post('/connexion', (req, res) => {
           isEnseignant(resultat.id, function (classe) {
             if (classe == 'enseignant') {
               console.log('enseignant')
-              res.json({classe : 'enseignant'});
+              res.json({ classe: 'enseignant' });
             } else if (classe == 'ciel1' || classe == 'ciel2') {
               console.log('Eleve');
-              res.json({classe : 'Eleve'});
+              res.json({ classe: 'Eleve' });
             } else {
               console.log('err');
-              res.json({classe : 'Aucune classe'});
+              res.json({ classe: 'Aucune classe' });
             }
           })
 
@@ -182,41 +182,41 @@ app.post('/affichage', (req, res) => {
     if (classe == 'enseignant') { //ENSEINGNANT
       console.log('enseignant');
       connection.query(
-            "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
-            [req.body.status], (err, results) => {
-              if (err) {
-                console.log('Erreur ' + err);
-                res.json({ message: 'Erreur affichage' });
-                return;
-              }
-              if (results.length == 0) {
-                console.log("Pas trouvé affichage " + results);
-                res.json({ message: 'Pas trouvé' });
-                return;
-              } else {
-                console.log('resultat enseingnant');
-                res.json(results);
-              }
-            }
-          )
+        "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
+        [req.body.status], (err, results) => {
+          if (err) {
+            console.log('Erreur ' + err);
+            res.json({ message: 'Erreur affichage' });
+            return;
+          }
+          if (results.length == 0) {
+            console.log("Pas trouvé affichage " + results);
+            res.json({ message: 'Pas trouvé' });
+            return;
+          } else {
+            console.log('resultat enseingnant');
+            res.json(results);
+          }
+        }
+      )
     } else if (classe == 'ciel1' || classe == 'ciel2') { //ELEVE
       connection.query(
-            "SELECT tps.nom as tp,matiere,status,avancement FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
-            [req.body.id], (err, results) => {
-              if (err) {
-                console.log('Erreur ' + err);
-                res.json({ message: 'Erreur affichage' });
-                return;
-              }
-              if (results.length == 0) {
-                console.log("Pas trouvé affichage " + results);
-                res.json({ message: 'Pas trouvé' });
-                return;
-              } else {
-                console.log('résultat eleve '); //+ JSON.stringify(results)
-                res.json(results);
-              }
-            }
+        "SELECT tps.nom as tp,matiere,status,avancement FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+        [req.body.id], (err, results) => {
+          if (err) {
+            console.log('Erreur ' + err);
+            res.json({ message: 'Erreur affichage' });
+            return;
+          }
+          if (results.length == 0) {
+            console.log("Pas trouvé affichage " + results);
+            res.json({ message: 'Pas trouvé' });
+            return;
+          } else {
+            console.log('résultat eleve '); //+ JSON.stringify(results)
+            res.json(results);
+          }
+        }
       )
     }
   })
