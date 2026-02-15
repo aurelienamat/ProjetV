@@ -146,6 +146,7 @@ app.post('/modifierStatus', (req, res) => {
       if (results) {
         console.log("Changement effectué ");
         //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
+        //Juste pour vérifier si le changement a bien été effectué
         connection.query(
           "SELECT status,idTps FROM status WHERE idTps = ? AND idUsers = ?;",
           [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {

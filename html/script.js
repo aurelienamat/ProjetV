@@ -296,7 +296,7 @@ function avancement() {
 
                                     const index = item.dataIndex; //Quelle barre (0, 1, 2...)0 = Linux, 1 = Windows, etc.
                                     const indexName = item.label; //Récupère le nom de la barre ex : Linux, Windows...ect
-                                    const nbValide = data[index].nbValide;//Nombre de valide pour cette barre
+                                    const nbValide = data[index].nbValide;//Nombre de valide qui sont a faire pour cette barre
                                     const nbTp = data[index].nbTp;//Nombre de tp pour cette barre
                                     const total = pourcentages[index];// % de valide pour cette barre
                                     //Récup data du local storage
@@ -309,16 +309,12 @@ function avancement() {
                                     const tpBonus = [];
 
                                     dataLocal.forEach(data => {
-                                        if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'afaire') {
-                                            tpValide.push(data.tp);
-                                        }
-                                    })
-                                    dataLocal.forEach(data => {
                                         if (data.matiere == indexName && data.status == 'nonvalide' && data.avancement == 'afaire') {
                                             tpNonvalide.push(data.tp);
                                         }
-                                    })
-                                    dataLocal.forEach(data => {
+                                        if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'afaire') {
+                                            tpValide.push(data.tp);
+                                        }
                                         if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'pasafaire') {
                                             tpBonus.push(data.tp);
                                         }
@@ -331,7 +327,14 @@ function avancement() {
                                     //Quel dataset (0, 1, 2...)0 = Validés, 1 = Restants, 2 = Bonus
                                     if (item.datasetIndex === 0) {
                                         //gestion si un tp est valide mais en dehors des tp a validé
-                                        if (nbValide > tpValide.length) {
+                                        //nb de tp valide au total !! même les non a faire
+                                        const nbValidePasaFaire = [];
+                                        dataLocal.forEach(item => {
+                                            if(item.status == 'valide' && item.matiere == indexName){
+                                                nbValidePasaFaire.push(item.tp);
+                                            }
+                                        })
+                                        if (nbValidePasaFaire.length > tpValide.length) {
                                             let tpValideHorsAvancement = [];
                                             dataLocal.forEach(data => {
                                                 if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'pasafaire') {
