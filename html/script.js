@@ -32,7 +32,7 @@ const signupField = document.querySelector('.signupField');
 
 btnInscription.addEventListener('click', () => {
 
-    // Si les champs d'inscription sont cachés, on les affiche d'abord
+    // Si les champs d'inscription sont cachés on les affiche d'abord
     if (signupField.style.display !== 'block') {
         signupField.style.display = 'block';
         return; // On arrête ici pour que l'utilisateur remplisse les champs
