@@ -178,65 +178,10 @@ app.post('/affichage', (req, res) => {
   //Voir si enseignant qui demande
   //Récupere la classe de l'id qui demande
 
-  // isEnseignant(req, function (classe) {
-  //   if (classe == 'enseignant') { //ENSEINGNANT
-  //     console.log('enseignant');
-  //     connection.query(
-  //       "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
-  //       [req.body.status], (err, results) => {
-  //         if (err) {
-  //           console.log('Erreur ' + err);
-  //           res.json({ message: 'Erreur affichage' });
-  //           return;
-  //         }
-  //         if (results.length == 0) {
-  //           console.log("Pas trouvé affichage " + results);
-  //           res.json({ message: 'Pas trouvé' });
-  //           return;
-  //         } else {
-  //           console.log('resultat enseingnant' + JSON.stringify(results));
-  //           res.json(results);
-  //         }
-  //       }
-  //     )
-  //   } else if (classe == 'ciel1' || classe == 'ciel2') { //ELEVE
-  //     connection.query(
-  //       "SELECT tps.nom as tp,matiere,status FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
-  //       [req.body.id], (err, results) => {
-  //         if (err) {
-  //           console.log('Erreur ' + err);
-  //           res.json({ message: 'Erreur affichage' });
-  //           return;
-  //         }
-  //         if (results.length == 0) {
-  //           console.log("Pas trouvé affichage " + results);
-  //           res.json({ message: 'Pas trouvé' });
-  //           return;
-  //         } else {
-  //           console.log('résultat eleve '); //+ JSON.stringify(results)
-  //           res.json(results);
-  //         }
-  //       }
-  //     )
-  //   } else {
-  //     console.log('err');
-  //     res.json(err);
-  //   }
-  // })
-
-  connection.query(
-    "SELECT classe from status, users WHERE users.id = status.idUsers AND users.id = ?",
-    [req.body.id], (err, resultat) => {
-      if (err) {
-        console.log('Erreur récupération classe ' + err);
-        res.json(err);
-      }
-      if (resultat.length == 0) {
-        console.log("Existe pas ");
-        res.json({ message: "Existe pas" });
-      } else {
-        if (resultat[0].classe == 'enseignant') {  //Si c'est l'enseignant qui demande on affiche tout
-          connection.query(
+  isEnseignant(req.body.id, function (classe) {
+    if (classe == 'enseignant') { //ENSEINGNANT
+      console.log('enseignant');
+      connection.query(
             "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
             [req.body.status], (err, results) => {
               if (err) {
@@ -249,13 +194,13 @@ app.post('/affichage', (req, res) => {
                 res.json({ message: 'Pas trouvé' });
                 return;
               } else {
-                console.log('resultat enseingnant' + JSON.stringify(results));
+                console.log('resultat enseingnant');
                 res.json(results);
               }
             }
           )
-        } else { //Si ce n'est pas l'enseignant alors on affiche que l'eleve
-          connection.query(
+    } else if (classe == 'ciel1' || classe == 'ciel2') { //ELEVE
+      connection.query(
             "SELECT tps.nom as tp,matiere,status,avancement FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
             [req.body.id], (err, results) => {
               if (err) {
@@ -272,11 +217,63 @@ app.post('/affichage', (req, res) => {
                 res.json(results);
               }
             }
-          )
-        }
-      }
+      )
     }
-  )
+  })
+
+  // connection.query(
+  //   "SELECT classe from status, users WHERE users.id = status.idUsers AND users.id = ?",
+  //   [req.body.id], (err, resultat) => {
+  //     if (err) {
+  //       console.log('Erreur récupération classe ' + err);
+  //       res.json(err);
+  //     }
+  //     if (resultat.length == 0) {
+  //       console.log("Existe pas ");
+  //       res.json({ message: "Existe pas" });
+  //     } else {
+  //       if (resultat[0].classe == 'enseignant') {  //Si c'est l'enseignant qui demande on affiche tout
+  //         connection.query(
+  //           "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
+  //           [req.body.status], (err, results) => {
+  //             if (err) {
+  //               console.log('Erreur ' + err);
+  //               res.json({ message: 'Erreur affichage' });
+  //               return;
+  //             }
+  //             if (results.length == 0) {
+  //               console.log("Pas trouvé affichage " + results);
+  //               res.json({ message: 'Pas trouvé' });
+  //               return;
+  //             } else {
+  //               console.log('resultat enseingnant' + JSON.stringify(results));
+  //               res.json(results);
+  //             }
+  //           }
+  //         )
+  //       } else { //Si ce n'est pas l'enseignant alors on affiche que l'eleve
+  //         connection.query(
+  //           "SELECT tps.nom as tp,matiere,status,avancement FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+  //           [req.body.id], (err, results) => {
+  //             if (err) {
+  //               console.log('Erreur ' + err);
+  //               res.json({ message: 'Erreur affichage' });
+  //               return;
+  //             }
+  //             if (results.length == 0) {
+  //               console.log("Pas trouvé affichage " + results);
+  //               res.json({ message: 'Pas trouvé' });
+  //               return;
+  //             } else {
+  //               console.log('résultat eleve '); //+ JSON.stringify(results)
+  //               res.json(results);
+  //             }
+  //           }
+  //         )
+  //       }
+  //     }
+  //   }
+  // )
 
 
 })
