@@ -1,5 +1,8 @@
+// Container 
 const loginContainer = document.querySelector('.loginContainer');
 const ticketContainer = document.getElementById('container-Ticket');
+const tpcontainer = document.getElementById('container-tp');
+
 const connexion = document.getElementById('submit-btn');
 
 const email = document.getElementById('email');
@@ -34,8 +37,9 @@ connexion.addEventListener('click', () => {
 
 window.onload = () => {
     console.log('Samlut');
-    loginContainer.style.display = 'block';
+    loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
+    tpcontainer.style.display = 'flex';
 }
 
 //Afficahge de la page de connexion
@@ -47,11 +51,14 @@ btnConnexionInscription.addEventListener('click', () => {
     } else {
 
         ticketContainer.style.display = 'none';
-        btnConnexionInscription.classList.remove('herder-select');
+        btnTicket.classList.remove('herder-select');
 
         loginContainer.style.display = 'block';
         btnConnexionInscription.classList.add('herder-select');
-        
+
+        tpcontainer.style.display = 'none';
+        btnTp.classList.remove('herder-select');
+
     }
 })
 
@@ -60,14 +67,34 @@ const btnTicket = document.getElementById('btn-Ticket');
 btnTicket.addEventListener('click', () => {
     if (ticketContainer.style.display == 'flex') {
         ticketContainer.style.display = 'none';
-        btnConnexionInscription.classList.remove('herder-select');
+        btnTicket.classList.remove('herder-select');
     } else {
 
         loginContainer.style.display = 'none';
         btnConnexionInscription.classList.remove('herder-select');
 
         ticketContainer.style.display = 'flex';
-        btnConnexionInscription.classList.add('herder-select');
+        btnTicket.classList.add('herder-select');
 
+        tpcontainer.style.display = 'none';
+        btnTp.classList.remove('herder-select');
+    }
+})
+
+//Affichage de la page TP
+const btnTp = document.getElementById('btn-Tp');
+btnTp.addEventListener('click', () => {
+    if (tpcontainer.style.display == 'flex') {
+        tpcontainer.style.display = 'none';
+        btnTp.classList.remove('herder-select');
+    } else {
+        tpcontainer.style.display = 'flex';
+        btnTp.classList.add('herder-select');
+
+        loginContainer.style.display = 'none';
+        btnConnexionInscription.classList.remove('herder-select');
+
+        ticketContainer.style.display = 'none';
+        btnTicket.classList.remove('herder-select');
     }
 })
