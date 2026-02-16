@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<!-- 
+    <!-- 
 HEADER 
 -->
     <header>
@@ -19,7 +19,7 @@ HEADER
                 <li>Logo</li>
                 <li>
                     <ul id="navigation">
-                        <li>Ticket</li>
+                        <li id="btn-Ticket">Ticket</li>
                         <li>Leaderboard</li>
                         <li>TP</li>
                     </ul>
@@ -29,7 +29,7 @@ HEADER
         </nav>
     </header>
 
-<!-- 
+    <!-- 
 PAGE CONNEXION INSCRIPTION 
 -->
     <main class="loginContainer">
@@ -66,7 +66,48 @@ PAGE CONNEXION INSCRIPTION
         </div>
     </main>
 
-<!-- 
+    <!-- 
+PAGE Ticket 
+-->
+
+    <div id="container-Ticket">
+        <div id="container-create-ticket">
+            <h1>CREATION DES TICKETS</h1>
+            <ul id="container-create">
+                <li>
+                    <label for="matiere">Matiere</label>
+                    <select name="matiere" id="choix-matiere">
+                        <option value="">Choisir une matiere</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="tp">TP</label>
+                    <select name="tp" id="choix-tp">
+                        <option value="">Choisir un TP</option>
+                    </select>
+                </li>
+                <li>
+                    <input type="button" value="Create" id="submit-btn-create-ticket">
+                </li>
+            </ul>
+        </div>
+        <div id="container-view-ticket">
+            <ul id="container-list">
+                <li>
+                    <ul id="Ticket-titre" class="list-Ticket">
+                        <li>TP</li>
+                        <li>Matiere</li>
+                        <li>Enseignant</li>
+                        <li>Modifier</li>
+                        <li>Status</li>
+                    </ul>
+                </li>
+                <li>Affichage des tps... ajout li a container-list</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 
 SOURCE JS 
 -->
     <script src="script.js"></script>
