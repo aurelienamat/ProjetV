@@ -10,7 +10,9 @@
 </head>
 
 <body>
-
+<!-- 
+HEADER 
+-->
     <header>
         <nav>
             <ul>
@@ -22,17 +24,14 @@
                         <li>TP</li>
                     </ul>
                 </li>
-                <li>Connexion/Inscription</li>
+                <li id="connexion-inscription">Connexion/Inscription</li>
             </ul>
         </nav>
     </header>
 
-
-    <div class="btnLogin"> <!--bouton de connexion pour rendre visible le menu de connexion-->
-        <button id="btnConnexion" class="btnConnexion">Se connecter</button>
-    </div>
-
-
+<!-- 
+PAGE CONNEXION INSCRIPTION 
+-->
     <main class="loginContainer">
         <div class="login-header">
             <div class="login-logo">
@@ -40,8 +39,6 @@
             </div>
             <h1 id="form-title">Connexion</h1>
         </div>
-
-
         <div class="login-form">
             <!-- Champs toujours visibles -->
             <div class="form-group">
@@ -67,8 +64,11 @@
                 <button type="button" id="submit-btn" class="btnPrimary">Connexion</button>
             </div>
         </div>
-        <button id="btnFermer" class="fermer">fermer</button>
     </main>
+
+<!-- 
+SOURCE JS 
+-->
     <script src="script.js"></script>
 </body>
 

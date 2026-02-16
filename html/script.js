@@ -1,24 +1,9 @@
-const btnConnexion = document.getElementById('btnConnexion');
 const loginContainer = document.querySelector('.loginContainer');
-const btnFemer = document.querySelector('.fermer');
 
 const connexion = document.getElementById('submit-btn');
 
 const email = document.getElementById('email');
 const password = document.getElementById('password');
-
-btnConnexion.addEventListener('click', function () {
-    loginContainer.style.display = 'block';
-    btnConnexion.style.display = 'none';
-    btnFemer.style.display = 'block';
-});
-
-btnFermer.addEventListener('click', function () {
-    loginContainer.style.display = 'none';
-    btnConnexion.style.display = 'block';
-    btnFemer.style.display = 'none';
-})
-
 
 connexion.addEventListener('click', () => {
     fetch('/affichage', {
@@ -49,4 +34,17 @@ connexion.addEventListener('click', () => {
 
 window.onload = () => {
     console.log('Samlut');
+    loginContainer.style.display = 'block';
 }
+
+//Afficahge de la page de connexion
+const btnConnexionInscription = document.getElementById('connexion-inscription');
+btnConnexionInscription.addEventListener('click', () => {
+    if (loginContainer.style.display == 'block') {
+        loginContainer.style.display = 'none';
+        btnConnexionInscription.classList.remove('herder-select');
+    } else {
+        loginContainer.style.display = 'block';
+        btnConnexionInscription.classList.add('herder-select');
+    }
+})

@@ -64,18 +64,25 @@ header>nav>ul>li{
     align-items: center;
     list-style: none;
 }
+#connexion-inscription{
+    cursor: pointer;
+}
 
-
+.herder-select{
+    color: var(--evergreen);
+}
 
 
 /* ===== LOGIN CONTAINER ===== */
 .loginContainer {
+    margin: auto;
     background: white;
     padding: 3rem 2.5rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     width: 100%;
     max-width: 420px;
+    user-select: none;
 }
 
 /* ===== HEADER SECTION ===== */
