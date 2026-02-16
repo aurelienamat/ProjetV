@@ -10,11 +10,13 @@ const password = document.getElementById('password');
 btnConnexion.addEventListener('click', function () {
     loginContainer.style.display = 'block';
     btnConnexion.style.display = 'none';
+    btnFemer.style.display = 'block';
 });
 
 btnFermer.addEventListener('click', function () {
     loginContainer.style.display = 'none';
     btnConnexion.style.display = 'block';
+    btnFemer.style.display = 'none';
 })
 
 
