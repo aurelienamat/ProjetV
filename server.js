@@ -2,13 +2,14 @@ const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt'); //POUR HASH
 const mysql = require('mysql2'); //Mysql
+require('dotenv').config();
 
 //Connexion a la base de donner
 const connection = mysql.createConnection({
-  host: '192.168.1.114',
-  user: 'Ticket',
-  password: 'passwordticket',
-  database: 'TICKETS',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   multipleStatements: true //Pour faire plusieurs commande sql en 1fois
 });
 connection.connect((err) => {
