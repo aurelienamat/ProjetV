@@ -20,7 +20,7 @@ HEADER
                 <li>
                     <ul id="navigation">
                         <li id="btn-Ticket">Ticket</li>
-                        <li>Leaderboard</li>
+                        <li id="btn-Avancement">Avancement</li>
                         <li id="btn-Tp">TP</li>
                     </ul>
                 </li>
@@ -77,14 +77,14 @@ PAGE Ticket
             <h1>CREATION DES TICKETS</h1>
             <ul id="container-create">
                 <li>
-                    <label for="matiere">Matiere</label>
-                    <select name="matiere" id="choix-matiere">
+                    <label for="choix-matiere">Matiere</label>
+                    <select name="choix-matiere" id="choix-matiere">
                         <option value="">Choisir une matiere</option>
                     </select>
                 </li>
                 <li>
-                    <label for="tp">TP</label>
-                    <select name="tp" id="choix-tp">
+                    <label for="choix-tp">TP</label>
+                    <select name="choix-tp" id="choix-tp">
                         <option value="">Choisir un TP</option>
                     </select>
                 </li>
@@ -112,23 +112,29 @@ PAGE Ticket
 PAGE TP 
 -->
 
-<div id="container-tp">
-    <div class="div-tp">
-        <h2 class="titre-tp">matiere</h2>
-        <ul>
-            <li>TP1</li>
-            <li>TP2</li>
-            <li>TP3</li>
-            <li>TP4</li>
-            <li>TP5</li>
-        </ul>
+    <div id="container-tp">
+        <div class="div-tp">
+            <h2 class="titre-tp">matiere</h2>
+            <ul>
+                <li>TP1</li>
+                <li>TP2</li>
+                <li>TP3</li>
+                <li>TP4</li>
+                <li>TP5</li>
+            </ul>
+        </div>
     </div>
-</div>
-
+    <!-- 
+PAGE AVANCEMENT 
+-->
+    <div id="containeur-avancement">
+        <canvas id="convasAvancement" role="img"></canvas>
+    </div>
 
     <!-- 
 SOURCE JS 
 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 

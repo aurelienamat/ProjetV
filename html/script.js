@@ -2,6 +2,7 @@
 const loginContainer = document.querySelector('.loginContainer');
 const ticketContainer = document.getElementById('container-Ticket');
 const tpcontainer = document.getElementById('container-tp');
+const avcontaineur = document.getElementById('containeur-avancement');
 
 const connexion = document.getElementById('submit-btn');
 
@@ -35,12 +36,7 @@ connexion.addEventListener('click', () => {
         });
 })
 
-window.onload = () => {
-    console.log('Samlut');
-    loginContainer.style.display = 'none';
-    ticketContainer.style.display = 'none';
-    tpcontainer.style.display = 'flex';
-}
+
 
 //Afficahge de la page de connexion
 const btnConnexionInscription = document.getElementById('connexion-inscription');
@@ -58,6 +54,9 @@ btnConnexionInscription.addEventListener('click', () => {
 
         tpcontainer.style.display = 'none';
         btnTp.classList.remove('herder-select');
+
+        avcontaineur.style.display = 'none';
+        btnAvancement.classList.remove('herder-select');
 
     }
 })
@@ -78,6 +77,9 @@ btnTicket.addEventListener('click', () => {
 
         tpcontainer.style.display = 'none';
         btnTp.classList.remove('herder-select');
+
+        avcontaineur.style.display = 'none';
+        btnAvancement.classList.remove('herder-select');
     }
 })
 
@@ -96,5 +98,84 @@ btnTp.addEventListener('click', () => {
 
         ticketContainer.style.display = 'none';
         btnTicket.classList.remove('herder-select');
+
+        avcontaineur.style.display = 'none';
+        btnAvancement.classList.remove('herder-select');
     }
 })
+
+//Afficahge de l'avancement
+const btnAvancement = document.getElementById('btn-Avancement');
+btnAvancement.addEventListener('click', () => {
+    if (avcontaineur.style.display == 'flex') {
+        avcontaineur.style.display = 'none';
+        btnAvancement.classList.remove('herder-select');
+    } else {
+
+        ticketContainer.style.display = 'none';
+        btnTicket.classList.remove('herder-select');
+
+        loginContainer.style.display = 'none';
+        btnConnexionInscription.classList.remove('herder-select');
+
+        tpcontainer.style.display = 'none';
+        btnTp.classList.remove('herder-select');
+
+        avcontaineur.style.display = 'flex';
+        btnAvancement.classList.add('herder-select');
+
+    }
+})
+
+//TEST CANVAS GRAPHIQUE
+function avancement() {
+
+    //Recupération avancement info
+    console.log('hello');
+    fetch('/avancement', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idUsers: localStorage.getItem('idUsers') })
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const labelsArray = [data.length];
+            const dataArray = [data.length];
+            let i = 0;
+            data.forEach(data => {
+                labelsArray[i] = data.matiere;
+                dataArray[i] = data.nbValide / data.nbTp;
+                i++;
+            })
+            console.log(labelsArray);
+            console.log(dataArray);
+            //CANVAS
+            const barCanvas = document.getElementById('convasAvancement');
+            const barChart = new Chart(barCanvas, {
+                type: "bar",
+                data: {
+                    labels: labelsArray,
+                    datasets: [{
+                        data: dataArray
+                    }]
+                },
+                options : {
+                    
+                }
+            })
+        })
+
+
+}
+
+window.onload = () => {
+    console.log('Samlut');
+    loginContainer.style.display = 'none';
+    ticketContainer.style.display = 'none';
+    tpcontainer.style.display = 'none';
+    avcontaineur.style.display = 'flex';
+    localStorage.setItem('idUsers', 2);
+    avancement();
+}

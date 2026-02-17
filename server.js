@@ -211,3 +211,23 @@ app.post('/affichage', (req, res) => {
     }
   )
 })
+
+//AVANCEMENT
+app.post('/avancement', (req,res)=> {
+  connection.query(
+    "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' THEN 1 END) as nbValide,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ? GROUP BY matiere",
+    [req.body.idUsers], (err,results) =>{
+      if(err){
+        console.log('Erreur avancement');
+        res.json({message : 'Erreur avancement'});
+        return;
+      }
+      if(results.length == 0){
+        console.log('Resultat requette vide');
+        res.json({message : 'Resultat requette vide'});
+        return;
+      }
+      res.json(results);
+    }
+  )
+})

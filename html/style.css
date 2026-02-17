@@ -176,6 +176,15 @@ header>nav>ul>li{
 }
 
 
+/* ===== AVANCEMENT CONTAINER ===== */
+#containeur-avancement{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ===== LOGIN CONTAINER ===== */
 .loginContainer {
     margin: auto;
