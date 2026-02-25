@@ -308,6 +308,12 @@ header>nav>ul>li{
     text-decoration: underline;
 }
 
+/* ===== COMMUN ===== */
+.active-containeur{
+    display: flex;
+}
+
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 480px) {
     .login-container {
