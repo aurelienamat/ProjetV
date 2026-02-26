@@ -158,8 +158,6 @@ btnOpen.addEventListener('click', () => {
 //TEST CANVAS GRAPHIQUE
 const barCanvas = document.getElementById('convasAvancement');
 function avancement() {
-    //Recupération avancement info
-    console.log('hello');
     fetch('/avancement', {
         method: 'POST',
         headers: {
@@ -169,30 +167,158 @@ function avancement() {
     }).then(response => response.json())
         .then(data => {
             console.log(data);
-            const labelsArray = [data.length];
-            const dataArray = [data.length];
-            let i = 0;
-            data.forEach(data => {
-                labelsArray[i] = data.matiere;
-                dataArray[i] = data.nbValide / data.nbTp;
-                i++;
-            })
-            console.log(labelsArray);
-            console.log(dataArray);
-            //CANVAS
+
+            // Préparer les données
+            const labelsArray = data.map(item => item.matiere);
+            const pourcentages = data.map(item => (item.nbValide / item.nbTp) * 100);
+
+            // Séparer en deux datasets : base (0-100%) et surplus (>100%)
+            const dataBase = pourcentages.map(p => Math.min(p, 100));
+            const dataSurplus = pourcentages.map(p => Math.max(0, p - 100));
+
+            // Couleurs dynamiques selon l'avancement (0-100%)
+            const couleursBase = pourcentages.map(p => {
+                if (p >= 100) return '#4f772d';      // Vert foncé (complet)
+                if (p >= 75) return '#90a955';       // Palm leaf (bien)
+                if (p >= 50) return '#ecf39e';       // Lime cream (moyen)
+                return '#e74c3c';                     // Rouge (en retard)
+            });
+
+            // Chart
             const barChart = new Chart(barCanvas, {
                 type: "bar",
                 data: {
                     labels: labelsArray,
-                    datasets: [{
-                        data: dataArray
-                    }]
+                    datasets: [
+                        {
+                            label: 'Progression',
+                            data: dataBase,
+                            backgroundColor: couleursBase,
+                            borderColor: '#31572c',
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        },
+                        {
+                            label: 'Bonus',
+                            data: dataSurplus,
+                            backgroundColor: '#ffd700',      // Doré
+                            borderColor: '#ffed4e',
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        }
+                    ]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
 
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#132a13'
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            max: Math.max(...pourcentages.map(p => Math.ceil(p / 10) * 10), 120),
+                            grid: {
+                                color: 'rgba(144, 169, 85, 0.1)',
+                                lineWidth: 1
+                            },
+                            ticks: {
+                                callback: value => value + '%',
+                                font: {
+                                    size: 12
+                                },
+                                color: '#31572c'
+                            }
+                        }
+                    },
+
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 15,
+                                boxHeight: 15,
+                                borderRadius: 4,
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                },
+                                color: '#132a13',
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(19, 42, 19, 0.9)',
+                            titleColor: '#ecf39e',
+                            bodyColor: '#fff',
+                            borderColor: '#4f772d',
+                            borderWidth: 2,
+                            cornerRadius: 8,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: (item) => {
+                                    const index = item.dataIndex;
+                                    const total = pourcentages[index];
+                                    if (item.datasetIndex === 0) {
+                                        return `Progression: ${Math.round(item.raw)}%`;
+                                    } else {
+                                        return `Bonus: +${Math.round(item.raw)}% (Total: ${Math.round(total)}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        // Ligne horizontale à 100%
+                        annotation: {
+                            annotations: {
+                                line100: {
+                                    type: 'line',
+                                    yMin: 100,
+                                    yMax: 100,
+                                    borderColor: '#132a13',
+                                    borderWidth: 3,
+                                    borderDash: [10, 5],
+                                    label: {
+                                        display: true,
+                                        content: 'Objectif 100%',
+                                        position: 'end',
+                                        backgroundColor: '#132a13',
+                                        color: '#ecf39e',
+                                        font: {
+                                            size: 11,
+                                            weight: 'bold'
+                                        },
+                                        padding: 4,
+                                        borderRadius: 4
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
                 }
-            })
-        })
+            });
+        });
 }
 
 

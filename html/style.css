@@ -204,14 +204,6 @@ header>#nav-computer>ul>li {
 }
 
 
-/* ===== AVANCEMENT CONTAINER ===== */
-#containeur-avancement {
-    width: 80%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 /* ===== LOGIN CONTAINER ===== */
 .loginContainer {
@@ -335,6 +327,21 @@ header>#nav-computer>ul>li {
     color: var(--fern);
     text-decoration: underline;
 }
+
+/* ===== AVANCEMENT CONTAINER ===== */
+#containeur-avancement {
+    width: 80%;
+    height: 80vh;
+}
+
+#barCanvas {
+    max-height: 400px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(19, 42, 19, 0.1);
+}
+
 
 /* ===== COMMUN ===== */
 .active-containeur {
