@@ -172,17 +172,20 @@ function avancement() {
             const labelsArray = data.map(item => item.matiere);
             const pourcentages = data.map(item => (item.nbValide / item.nbTp) * 100);
 
-            // Séparer en deux datasets : base (0-100%) et surplus (>100%)
-            const dataBase = pourcentages.map(p => Math.min(p, 100));
+            // 3 datasets : Validé / Restant / Bonus
+            const dataValide = pourcentages.map(p => Math.min(p, 100));
+            const dataRestant = pourcentages.map(p => p < 100 ? 100 - p : 0);
             const dataSurplus = pourcentages.map(p => Math.max(0, p - 100));
 
-            // Couleurs dynamiques selon l'avancement (0-100%)
-            const couleursBase = pourcentages.map(p => {
+            // Couleurs dynamiques pour la partie validée
+            const couleursValide = pourcentages.map(p => {
                 if (p >= 100) return '#4f772d';      // Vert foncé (complet)
                 if (p >= 75) return '#90a955';       // Palm leaf (bien)
                 if (p >= 50) return '#ecf39e';       // Lime cream (moyen)
                 return '#e74c3c';                     // Rouge (en retard)
             });
+
+            const barCanvas = document.getElementById('convasAvancement');
 
             // Chart
             const barChart = new Chart(barCanvas, {
@@ -191,10 +194,19 @@ function avancement() {
                     labels: labelsArray,
                     datasets: [
                         {
-                            label: 'Progression',
-                            data: dataBase,
-                            backgroundColor: couleursBase,
+                            label: 'Validés',
+                            data: dataValide,
+                            backgroundColor: couleursValide,
                             borderColor: '#31572c',
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        },
+                        {
+                            label: 'Restants',
+                            data: dataRestant,
+                            backgroundColor: '#d1d5db',     // Gris clair
+                            borderColor: '#9ca3af',
                             borderWidth: 2,
                             borderRadius: 8,
                             borderSkipped: false
@@ -275,16 +287,24 @@ function avancement() {
                             callbacks: {
                                 label: (item) => {
                                     const index = item.dataIndex;
+                                    const nbValide = data[index].nbValide;
+                                    const nbTp = data[index].nbTp;
                                     const total = pourcentages[index];
+
                                     if (item.datasetIndex === 0) {
-                                        return `Progression: ${Math.round(item.raw)}%`;
+                                        // Partie VALIDÉE
+                                        return `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`;
+                                    } else if (item.datasetIndex === 1) {
+                                        // Partie RESTANTE
+                                        const restants = nbTp - nbValide;
+                                        return `⏳ Restants: ${restants}/${nbTp} TPs (${Math.round(item.raw)}%)`;
                                     } else {
-                                        return `Bonus: +${Math.round(item.raw)}% (Total: ${Math.round(total)}%)`;
+                                        // BONUS
+                                        return `🌟 Bonus: +${Math.round(item.raw)}% (Total: ${Math.round(total)}%)`;
                                     }
                                 }
                             }
                         },
-                        // Ligne horizontale à 100%
                         annotation: {
                             annotations: {
                                 line100: {
