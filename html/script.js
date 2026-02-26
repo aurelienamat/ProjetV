@@ -42,8 +42,7 @@ connexion.addEventListener('click', () => {
 const btnConnexionInscription = document.getElementById('connexion-inscription');
 btnConnexionInscription.addEventListener('click', () => {
     if (loginContainer.style.display == 'block') {
-        loginContainer.style.display = 'none';
-        btnConnexionInscription.classList.remove('herder-select');
+        location.reload();
     } else {
 
         ticketContainer.style.display = 'none';
@@ -69,8 +68,7 @@ btnConnexionInscription.addEventListener('click', () => {
 const btnTicket = document.getElementById('btn-Ticket');
 btnTicket.addEventListener('click', () => {
     if (ticketContainer.style.display == 'flex') {
-        ticketContainer.style.display = 'none';
-        btnTicket.classList.remove('herder-select');
+        location.reload();
     } else {
 
         loginContainer.style.display = 'none';
@@ -95,8 +93,7 @@ btnTicket.addEventListener('click', () => {
 const btnTp = document.getElementById('btn-Tp');
 btnTp.addEventListener('click', () => {
     if (tpcontainer.style.display == 'flex') {
-        tpcontainer.style.display = 'none';
-        btnTp.classList.remove('herder-select');
+        location.reload();
     } else {
         tpcontainer.style.display = 'flex';
         btnTp.classList.add('herder-select');
@@ -120,8 +117,7 @@ btnTp.addEventListener('click', () => {
 const btnAvancement = document.getElementById('btn-Avancement');
 btnAvancement.addEventListener('click', () => {
     if (avcontaineur.style.display == 'flex') {
-        avcontaineur.style.display = 'none';
-        btnAvancement.classList.remove('herder-select');
+        location.reload();
     } else {
 
         ticketContainer.style.display = 'none';
@@ -207,3 +203,11 @@ window.onload = () => {
     localStorage.setItem('idUsers', 2);
     avancement();
 }
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth < 900) {
+        navComputer.style.display = 'none';
+    }else{
+        navComputer.style.display = 'flex';
+    }
+})
