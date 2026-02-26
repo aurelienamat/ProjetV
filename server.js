@@ -33,7 +33,31 @@ app.listen(3000, () => {
 //Gestion Inscription Utilisateur
 app.post('/inscription', (req, res) => {
   console.log(req.body);
-  //Conditions insertion
+  //Verification insertion
+  if (req.body.password.length < 8) {
+    res.json({ message: 'Mot de passe invalide' , error : "length"});
+    return;
+  }
+  if (!/[A-Z]/.test(req.body.password)) {
+    res.json({ message: 'Mot de passe invalide' , error : "Majuscule"});
+    return;
+  }
+  if (!/[a-z]/.test(req.body.password)) {
+    res.json({ message: 'Mot de passe invalide' , error : "Minuscule" });
+    return;
+  }
+  if (!/[0-9]/.test(req.body.password)) {
+    res.json({ message: 'Mot de passe invalide'  , error : "Chiffre"});
+    return;
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(req.body.password)) {
+    res.json({ message: 'Mot de passe invalide' , error : "Carractère spécial" });
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.email)) {
+    res.json({ message: 'Email invalide' });
+    return;
+  }
 
   //Hachage mot de passe 
   bcrypt.hash(req.body.password, 10)
@@ -201,7 +225,7 @@ app.post('/affichage', (req, res) => {
                 res.json({ message: 'Pas trouvé' });
                 return;
               } else {
-                console.log('résultat eleve ' ); //+ JSON.stringify(results)
+                console.log('résultat eleve '); //+ JSON.stringify(results)
                 res.json(results);
               }
             }
@@ -213,18 +237,18 @@ app.post('/affichage', (req, res) => {
 })
 
 //AVANCEMENT
-app.post('/avancement', (req,res)=> {
+app.post('/avancement', (req, res) => {
   connection.query(
     "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' THEN 1 END) as nbValide,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ? GROUP BY matiere",
-    [req.body.idUsers], (err,results) =>{
-      if(err){
+    [req.body.idUsers], (err, results) => {
+      if (err) {
         console.log('Erreur avancement');
-        res.json({message : 'Erreur avancement'});
+        res.json({ message: 'Erreur avancement' });
         return;
       }
-      if(results.length == 0){
+      if (results.length == 0) {
         console.log('Resultat requette vide');
-        res.json({message : 'Resultat requette vide'});
+        res.json({ message: 'Resultat requette vide' });
         return;
       }
       res.json(results);

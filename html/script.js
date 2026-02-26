@@ -41,6 +41,7 @@ connexion.addEventListener('click', () => {
 //Afficahge de la page de connexion
 const btnConnexionInscription = document.getElementById('connexion-inscription');
 btnConnexionInscription.addEventListener('click', () => {
+    localStorage.setItem('page', 'login');
     if (loginContainer.style.display == 'block') {
         location.reload();
     } else {
@@ -67,6 +68,7 @@ btnConnexionInscription.addEventListener('click', () => {
 //Affichage de la page Ticket
 const btnTicket = document.getElementById('btn-Ticket');
 btnTicket.addEventListener('click', () => {
+    localStorage.setItem('page', 'ticket');
     if (ticketContainer.style.display == 'flex') {
         location.reload();
     } else {
@@ -92,6 +94,7 @@ btnTicket.addEventListener('click', () => {
 //Affichage de la page TP
 const btnTp = document.getElementById('btn-Tp');
 btnTp.addEventListener('click', () => {
+    localStorage.setItem('page', 'tp');
     if (tpcontainer.style.display == 'flex') {
         location.reload();
     } else {
@@ -116,6 +119,7 @@ btnTp.addEventListener('click', () => {
 //Afficahge de l'avancement
 const btnAvancement = document.getElementById('btn-Avancement');
 btnAvancement.addEventListener('click', () => {
+    localStorage.setItem('page', 'avancement');
     if (avcontaineur.style.display == 'flex') {
         location.reload();
     } else {
@@ -152,8 +156,8 @@ btnOpen.addEventListener('click', () => {
 })
 
 //TEST CANVAS GRAPHIQUE
+const barCanvas = document.getElementById('convasAvancement');
 function avancement() {
-
     //Recupération avancement info
     console.log('hello');
     fetch('/avancement', {
@@ -176,7 +180,6 @@ function avancement() {
             console.log(labelsArray);
             console.log(dataArray);
             //CANVAS
-            const barCanvas = document.getElementById('convasAvancement');
             const barChart = new Chart(barCanvas, {
                 type: "bar",
                 data: {
@@ -199,15 +202,29 @@ window.onload = () => {
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
-    avcontaineur.style.display = 'flex';
+    avcontaineur.style.display = 'none';
     localStorage.setItem('idUsers', 2);
     avancement();
+    switch (localStorage.getItem('page')) {
+        case "avancement":
+            avcontaineur.style.display = 'flex';
+            break;
+        case "tp":
+            tpcontainer.style.display = 'flex';
+            break;
+        case "ticket":
+            ticketContainer.style.display = 'flex';
+            break;
+        case "login":
+            loginContainer.style.display = 'block';
+            break;
+    }
 }
 
 window.addEventListener('resize', () => {
     if (window.innerWidth < 900) {
         navComputer.style.display = 'none';
-    }else{
+    } else {
         navComputer.style.display = 'flex';
     }
 })
