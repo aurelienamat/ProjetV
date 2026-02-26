@@ -58,6 +58,10 @@ btnConnexionInscription.addEventListener('click', () => {
         avcontaineur.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
 
+        if (window.innerWidth < 900) {
+            navComputer.style.display = 'none';
+        }
+
     }
 })
 
@@ -80,6 +84,10 @@ btnTicket.addEventListener('click', () => {
 
         avcontaineur.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
+
+        if (window.innerWidth < 900) {
+            navComputer.style.display = 'none';
+        }
     }
 })
 
@@ -101,6 +109,10 @@ btnTp.addEventListener('click', () => {
 
         avcontaineur.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
+
+        if (window.innerWidth < 900) {
+            navComputer.style.display = 'none';
+        }
     }
 })
 
@@ -124,7 +136,23 @@ btnAvancement.addEventListener('click', () => {
         avcontaineur.style.display = 'flex';
         btnAvancement.classList.add('herder-select');
 
+        if (window.innerWidth < 900) {
+            navComputer.style.display = 'none';
+        }
+
     }
+})
+
+//Afficahge de phone
+const btnClose = document.getElementById('close-phone');
+const btnOpen = document.getElementById('open-phone');
+const navComputer = document.getElementById('nav-computer');
+
+btnClose.addEventListener('click', () => {
+    navComputer.style.display = 'none';
+})
+btnOpen.addEventListener('click', () => {
+    navComputer.style.display = 'flex';
 })
 
 //TEST CANVAS GRAPHIQUE
@@ -161,14 +189,14 @@ function avancement() {
                         data: dataArray
                     }]
                 },
-                options : {
-                    
+                options: {
+
                 }
             })
         })
-
-
 }
+
+
 
 window.onload = () => {
     console.log('Samlut');
