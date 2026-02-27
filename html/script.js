@@ -170,19 +170,25 @@ function avancement() {
 
             // Préparer les données
             const labelsArray = data.map(item => item.matiere);
+            //console.log(labelsArray);
             const pourcentages = data.map(item => (item.nbValide / item.nbTp) * 100);
+            //console.log(pourcentages);
 
             // 3 datasets : Validé / Restant / Bonus
-            const dataValide = pourcentages.map(p => Math.min(p, 100));
+            //Si p est plus grand que 100 alors il est = a 100 sinon il est égale a p
+            //Necessaire car l'avancement peut être de 125%
+            const dataValide = pourcentages.map(p => p>100 ? 100 : p);
+            //console.log(dataValide);
+            //Le reste est de 0 si l'avancement est plus grand que 100
             const dataRestant = pourcentages.map(p => p < 100 ? 100 - p : 0);
-            const dataSurplus = pourcentages.map(p => Math.max(0, p - 100));
+            const dataSurplus = pourcentages.map(p => p>100 ? p-100 : 0);
 
             // Couleurs dynamiques pour la partie validée
             const couleursValide = pourcentages.map(p => {
-                if (p >= 100) return '#4f772d';      // Vert foncé (complet)
-                if (p >= 75) return '#90a955';       // Palm leaf (bien)
-                if (p >= 50) return '#ecf39e';       // Lime cream (moyen)
-                return '#e74c3c';                     // Rouge (en retard)
+                if (p >= 100) return '#44a049';      // Vert foncé (complet)
+                if (p >= 75) return '#42a3f3';       // Palm leaf (bien)
+                if (p >= 50) return '#fad636';       // Lime cream (moyen)
+                return '#e53936';                     // Rouge (en retard)
             });
 
             const barCanvas = document.getElementById('convasAvancement');
@@ -199,7 +205,7 @@ function avancement() {
                             backgroundColor: couleursValide,
                             borderColor: '#31572c',
                             borderWidth: 2,
-                            borderRadius: 8,
+                            //borderRadius: 8,
                             borderSkipped: false
                         },
                         {
@@ -208,7 +214,7 @@ function avancement() {
                             backgroundColor: '#d1d5db',     // Gris clair
                             borderColor: '#9ca3af',
                             borderWidth: 2,
-                            borderRadius: 8,
+                            //borderRadius: 8,
                             borderSkipped: false
                         },
                         {
@@ -217,7 +223,7 @@ function avancement() {
                             backgroundColor: '#ffd700',      // Doré
                             borderColor: '#ffed4e',
                             borderWidth: 2,
-                            borderRadius: 8,
+                            //borderRadius: 8,
                             borderSkipped: false
                         }
                     ]
