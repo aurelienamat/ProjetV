@@ -330,11 +330,21 @@ function avancement() {
                                     //Renvoie de données du survole
                                     //Quel dataset (0, 1, 2...)0 = Validés, 1 = Restants, 2 = Bonus
                                     if (item.datasetIndex === 0) {
+                                        //gestion si un tp est valide mais en dehors des tp a validé
+                                        if (nbValide > tpValide.length) {
+                                            return [
+                                                `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`,
+                                                tpValide,
+                                                'Un ou plusieurs tp ont été validé alors qu il n etaient pas à faire'
+                                            ]
+                                        } else {
+                                            return [
+                                                `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`,
+                                                tpValide
+                                            ]
+                                        }
                                         // Partie VALIDÉE
-                                        return [
-                                            `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`,
-                                            tpValide
-                                        ]
+
 
                                     } else if (item.datasetIndex === 1) {
                                         // Partie RESTANTE
