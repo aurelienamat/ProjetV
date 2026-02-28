@@ -177,11 +177,11 @@ function avancement() {
             // 3 datasets : Validé / Restant / Bonus
             //Si p est plus grand que 100 alors il est = a 100 sinon il est égale a p
             //Necessaire car l'avancement peut être de 125%
-            const dataValide = pourcentages.map(p => p>100 ? 100 : p);
+            const dataValide = pourcentages.map(p => p > 100 ? 100 : p);
             //console.log(dataValide);
             //Le reste est de 0 si l'avancement est plus grand que 100
             const dataRestant = pourcentages.map(p => p < 100 ? 100 - p : 0);
-            const dataSurplus = pourcentages.map(p => p>100 ? p-100 : 0);
+            const dataSurplus = pourcentages.map(p => p > 100 ? p - 100 : 0);
 
             // Couleurs dynamiques pour la partie validée
             const couleursValide = pourcentages.map(p => {
@@ -281,6 +281,7 @@ function avancement() {
                             }
                         },
                         tooltip: {
+                            //Mise en forme du survole
                             enabled: true,
                             backgroundColor: 'rgba(19, 42, 19, 0.9)',
                             titleColor: '#ecf39e',
@@ -292,21 +293,62 @@ function avancement() {
                             displayColors: true,
                             callbacks: {
                                 label: (item) => {
-                                    const index = item.dataIndex;
-                                    const nbValide = data[index].nbValide;
-                                    const nbTp = data[index].nbTp;
-                                    const total = pourcentages[index];
 
+                                    const index = item.dataIndex; //Quelle barre (0, 1, 2...)0 = Linux, 1 = Windows, etc.
+                                    const indexName = item.label; //Récupère le nom de la barre ex : Linux, Windows...ect
+                                    const nbValide = data[index].nbValide;//Nombre de valide pour cette barre
+                                    const nbTp = data[index].nbTp;//Nombre de tp pour cette barre
+                                    const total = pourcentages[index];// % de valide pour cette barre
+                                    //Récup data du local storage
+                                    let dataLocal = localStorage.getItem('data');
+                                    dataLocal = JSON.parse(dataLocal);
+                                    //Tableau avec tp par rapport aux status
+
+                                    const tpValide = [];
+                                    const tpNonvalide = [];
+                                    const tpBonus = [];
+
+                                    dataLocal.forEach(data => {
+                                        if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'afaire') {
+                                            tpValide.push(data.tp);
+                                        }
+                                    })
+                                    dataLocal.forEach(data => {
+                                        if (data.matiere == indexName && data.status == 'nonvalide' && data.avancement == 'afaire') {
+                                            tpNonvalide.push(data.tp);
+                                        }
+                                    })
+                                    dataLocal.forEach(data => {
+                                        if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'pasafaire') {
+                                            tpBonus.push(data.tp);
+                                        }
+                                    })
+
+                                    //console.log(dataLocal);
+                                    //console.log(tpValide);
+
+                                    //Renvoie de données du survole
+                                    //Quel dataset (0, 1, 2...)0 = Validés, 1 = Restants, 2 = Bonus
                                     if (item.datasetIndex === 0) {
                                         // Partie VALIDÉE
-                                        return `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`;
+                                        return [
+                                            `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`,
+                                            tpValide
+                                        ]
+
                                     } else if (item.datasetIndex === 1) {
                                         // Partie RESTANTE
                                         const restants = nbTp - nbValide;
-                                        return `⏳ Restants: ${restants}/${nbTp} TPs (${Math.round(item.raw)}%)`;
+                                        return [
+                                            `⏳ Restants: ${restants}/${nbTp} TPs (${Math.round(item.raw)}%)`,
+                                            tpNonvalide
+                                        ]
                                     } else {
                                         // BONUS
-                                        return `🌟 Bonus: +${Math.round(item.raw)}% (Total: ${Math.round(total)}%)`;
+                                        return [
+                                            `🌟 Bonus: +${Math.round(item.raw)}% (Total: ${Math.round(total)}%)`,
+                                            tpBonus
+                                        ]
                                     }
                                 }
                             }

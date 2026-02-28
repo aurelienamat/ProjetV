@@ -260,7 +260,7 @@ app.post('/affichage', (req, res) => {
             )
           } else { //Si ce n'est pas l'enseignant alors on affiche que l'eleve
             connection.query(
-              "SELECT tps.nom as tp,matiere,status FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+              "SELECT tps.nom as tp,matiere,status,avancement FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
               [req.body.id], (err, results) => {
                 if (err) {
                   console.log('Erreur ' + err);
