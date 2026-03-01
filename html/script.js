@@ -432,3 +432,14 @@ window.addEventListener('resize', () => {
         navComputer.style.display = 'flex';
     }
 })
+
+const navButtons = document.querySelectorAll('#navigation li');
+
+navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Retire la classe active de tous les boutons
+        navButtons.forEach(b => b.classList.remove('active'));
+        // Ajoute la classe active au bouton cliqué
+        btn.classList.add('active');
+    });
+});
