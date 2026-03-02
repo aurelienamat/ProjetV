@@ -412,12 +412,15 @@ window.onload = () => {
     switch (localStorage.getItem('page')) {
         case "avancement":
             avcontaineur.style.display = 'flex';
+            btnAvancement.classList.add('herder-select');
             break;
         case "tp":
             tpcontainer.style.display = 'flex';
+            btnTp.classList.add('herder-select');
             break;
         case "ticket":
             ticketContainer.style.display = 'flex';
+            btnTicket.classList.add('herder-select');
             break;
         case "login":
             loginContainer.style.display = 'block';

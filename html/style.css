@@ -118,7 +118,9 @@ header>#nav-computer>ul>li:hover {
 
 .herder-select {
     color: var(--primary) !important;
-    font-weight: 600;
+    font-weight: 600 !important;
+    background-color: #4CAF50 !important;
+    color: white !important;
 }
 
 /* ===== TP CONTAINER ===== */
