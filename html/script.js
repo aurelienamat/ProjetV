@@ -64,6 +64,18 @@ btnConnexionInscription.addEventListener('click', () => {
 
     }
 })
+//affichage des champs d'inscription
+const btnInscription = document.getElementById('btnInscription');
+const signupField = document.querySelector('.signupField'); //  retourne l'élément directement
+
+btnInscription.addEventListener('click', () => {
+    if (signupField.style.display == 'block') {
+        signupField.style.display = 'none';
+    } else {
+        signupField.style.display = 'block';
+    }
+});
+
 
 //Affichage de la page Ticket
 const btnTicket = document.getElementById('btn-Ticket');
