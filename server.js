@@ -103,6 +103,7 @@ app.post('/connexion', (req, res) => {
       bcrypt.compare(req.body.password, resultat.password, (err, results) => {
         if (err) {
           console.log('Erreur compare' + err);
+          res.json({message: 'err hash'});
           return;
         }
         if (results) {
