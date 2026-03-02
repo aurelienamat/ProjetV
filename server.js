@@ -240,7 +240,7 @@ app.post('/affichage', (req, res) => {
           console.log("Existe pas ");
           res.json({ message: "Existe pas" });
         } else {
-          if (resultat[0].classe == 'enseignant') {  //Si c'est l'enseigna tqui demande on affiche tout
+          if (resultat[0].classe == 'enseignant') {  //Si c'est l'enseignant qui demande on affiche tout
             connection.query(
               "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
               [req.body.status], (err, results) => {

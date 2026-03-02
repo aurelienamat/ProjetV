@@ -332,10 +332,17 @@ function avancement() {
                                     if (item.datasetIndex === 0) {
                                         //gestion si un tp est valide mais en dehors des tp a validé
                                         if (nbValide > tpValide.length) {
+                                            let tpValideHorsAvancement = [];
+                                            dataLocal.forEach(data => {
+                                                if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'pasafaire') {
+                                                    tpValideHorsAvancement.push(data.tp);
+                                                }
+                                            })
                                             return [
                                                 `✅ Validés: ${nbValide}/${nbTp} TPs (${Math.round(item.raw)}%)`,
                                                 tpValide,
-                                                'Un ou plusieurs tp ont été validé alors qu il n etaient pas à faire'
+                                                'Un ou plusieurs tp ont été validé alors qu il n etaient pas à faire',
+                                                tpValideHorsAvancement
                                             ]
                                         } else {
                                             return [
