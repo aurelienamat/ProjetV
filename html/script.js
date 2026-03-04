@@ -134,7 +134,6 @@ btnInscription.addEventListener('click', () => {
     }
 });
 
->>>>>>> dbe30a426c2bdd8b9be1f551bf1d276e0998f4bd
 
 // Page Ticket
 btnTicket.addEventListener('click', () => {
