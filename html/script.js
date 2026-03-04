@@ -204,7 +204,10 @@ btnConnexionInscription.addEventListener('click', () => {
             navComputer.style.display = 'none';
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9955cd34008292784220b271a46ea9e571e59404
 });
 
 // Page Ticket
