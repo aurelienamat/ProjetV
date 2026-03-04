@@ -24,7 +24,7 @@ const btnInscription = document.getElementById('btnInscription');
 const signupField = document.querySelector('.signupField');
 
 
-// routes ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// ROUTES ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ROUTE INSCRIPTION ========================================================
 // envoie du nom/prenom/email/password/classe en POST sur /inscription
@@ -94,6 +94,92 @@ connexion.addEventListener('click', () => {
     });
 });
 
+// ROUTE CRÉATION DE TICKET =============================================================
+// Bouton "Create" dans la page Ticket
+
+const btnCreateTicket = document.getElementById('submit-btn-create-ticket');
+
+btnCreateTicket.addEventListener('click', () => {
+    const matiere = document.getElementById('choix-matiere').value;
+    const tp = document.getElementById('choix-tp').value;
+
+    if (matiere === '' || tp === '') {
+        alert('Veuillez choisir une matière et un TP !');
+        return;
+    }
+
+    fetch('/modifierStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            status: 'nonvalide',
+            idUsers: localStorage.getItem('idUsers'),
+            idTps: tp // L'id du TP sélectionné
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            console.log('Erreur création ticket : ' + data.message);
+        } else {
+            console.log('Ticket créé avec succès : ', data);
+
+            // Mise à jour du localStorage après confirmation du serveur
+            let dataLocal = JSON.parse(localStorage.getItem('data'));
+            dataLocal.forEach(tp => {
+                if (tp.idTps == data.idTps) {
+                    tp.status = data.status;
+                }
+            });
+            localStorage.setItem('data', JSON.stringify(dataLocal));
+        }
+    });
+});
+
+// ROUTE MODIFICATION DE TICKET ==========================================================
+// envoie status, idUsers et idTps en POST sur /modifierStatus
+// Le serveur renvoie le nouveau status et l'idTps pour mettre à jour le localStorage
+
+function modifierTicket(idTps, nouveauStatus) {
+    fetch('/modifierStatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            status: nouveauStatus,
+            idUsers: localStorage.getItem('idUsers'),
+            idTps: idTps
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            console.log('Erreur modification : ' + data.message);
+        } else {
+            console.log('Modification réussie : ', data);
+
+            // On met à jour le localStorage avec le nouveau status
+            // On ne fait la modif que quand le retour du back est reçu (comme demandé)
+            let dataLocal = JSON.parse(localStorage.getItem('data'));
+
+            dataLocal.forEach(tp => {
+                if (tp.idTps == data.idTps) {
+                    tp.status = data.status; // On met à jour le status
+                }
+            });
+
+            localStorage.setItem('data', JSON.stringify(dataLocal));
+            console.log('LocalStorage mis à jour');
+        }
+    });
+}
+
+
+
+
 // pages -------------------------------------------------------------------------------------------
 
 // Page Connexion
@@ -118,23 +204,8 @@ btnConnexionInscription.addEventListener('click', () => {
             navComputer.style.display = 'none';
         }
     }
-<<<<<<< HEAD
+
 });
-=======
-})
-//affichage des champs d'inscription
-const btnInscription = document.getElementById('btnInscription');
-const signupField = document.querySelector('.signupField'); //  retourne l'élément directement
-
-btnInscription.addEventListener('click', () => {
-    if (signupField.style.display == 'block') {
-        signupField.style.display = 'none';
-    } else {
-        signupField.style.display = 'block';
-    }
-});
-
-
 
 // Page Ticket
 btnTicket.addEventListener('click', () => {
