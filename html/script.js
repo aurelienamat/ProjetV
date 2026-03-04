@@ -135,6 +135,7 @@ btnInscription.addEventListener('click', () => {
 });
 
 
+
 // Page Ticket
 btnTicket.addEventListener('click', () => {
     localStorage.setItem('page', 'ticket');
