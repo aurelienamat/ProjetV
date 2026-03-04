@@ -49,7 +49,6 @@ function avancement() {
                             label: 'Validés',
                             data: dataValide,
                             backgroundColor: couleursValide,
-                            legendColor : '#d1d5db',
                             borderColor: couleursValide,
                             borderWidth: 2,
                             //borderRadius: 8,
@@ -116,9 +115,10 @@ function avancement() {
                             display: true,
                             position: 'top',
                             labels: {
-                                boxWidth: 15,
-                                boxHeight: 15,
-                                borderRadius: 4,
+                                boxWidth: 0,
+                                boxHeight: 0,
+                                borderRadius: 0,
+                                usePointStyle : false,
                                 font: {
                                     size: 13,
                                     weight: '600'
