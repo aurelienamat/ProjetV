@@ -23,7 +23,11 @@ function avancement() {
             //console.log(dataValide);
             //Le reste est de 0 si l'avancement est plus grand que 100
             const dataRestant = pourcentages.map(p => p < 100 ? 100 - p : 0);
-            const dataSurplus = pourcentages.map(p => p > 100 ? p - 100 : 0);
+
+            //Prend le nombre de tp valide qui sont pasafaire et divise par le nombre de tp de la matièere pour avoir le surplus
+            const dataSurplus = data.map(item => item.nbValideHorsAvancement > 0 ? ((item.nbValideHorsAvancement / item.nbTp) * 100):0);
+            // console.log(data);
+            //console.log(dataSurplus);
 
             // Couleurs dynamiques pour la partie validée
             const couleursValide = pourcentages.map(p => {
@@ -45,7 +49,7 @@ function avancement() {
                             label: 'Validés',
                             data: dataValide,
                             backgroundColor: couleursValide,
-                            borderColor: '#31572c',
+                            borderColor: couleursValide,
                             borderWidth: 2,
                             //borderRadius: 8,
                             borderSkipped: false
@@ -54,7 +58,7 @@ function avancement() {
                             label: 'Restants',
                             data: dataRestant,
                             backgroundColor: '#d1d5db',     // Gris clair
-                            borderColor: '#9ca3af',
+                            borderColor: '#d1d5db',
                             borderWidth: 2,
                             //borderRadius: 8,
                             borderSkipped: false
@@ -62,10 +66,10 @@ function avancement() {
                         {
                             label: 'Bonus',
                             data: dataSurplus,
-                            backgroundColor: '#ffd700',      // Doré
-                            borderColor: '#ffed4e',
+                            backgroundColor: couleursValide,
+                            borderColor: couleursValide,
                             borderWidth: 2,
-                            //borderRadius: 8,
+                            borderRadius: 8,
                             borderSkipped: false
                         }
                     ]
@@ -152,7 +156,7 @@ function avancement() {
                                     const tpBonus = [];
 
                                     dataLocal.forEach(data => {
-                                        if (data.matiere == indexName && data.status == 'nonvalide' && data.avancement == 'afaire') {
+                                        if (data.matiere == indexName && (data.status == 'nonvalide' || data.status == 'encoursdevalidation') && data.avancement == 'afaire') {
                                             tpNonvalide.push(data.tp);
                                         }
                                         if (data.matiere == indexName && data.status == 'valide' && data.avancement == 'afaire') {
@@ -173,7 +177,7 @@ function avancement() {
                                         //nb de tp valide au total !! même les non a faire
                                         const nbValidePasaFaire = [];
                                         dataLocal.forEach(item => {
-                                            if(item.status == 'valide' && item.matiere == indexName){
+                                            if (item.status == 'valide' && item.matiere == indexName) {
                                                 nbValidePasaFaire.push(item.tp);
                                             }
                                         })
