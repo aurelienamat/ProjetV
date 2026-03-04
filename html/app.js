@@ -10,8 +10,6 @@ function avancement() {
         body: JSON.stringify({ idUsers: localStorage.getItem('idUsers') })
     }).then(response => response.json())
         .then(data => {
-            console.log(data);
-
             // Préparer les données
             const labelsArray = data.map(item => item.matiere);
             //console.log(labelsArray);
@@ -146,6 +144,7 @@ function avancement() {
                                     //Récup data du local storage
                                     let dataLocal = localStorage.getItem('data');
                                     dataLocal = JSON.parse(dataLocal);
+                                    //console.log(dataLocal);
                                     //Tableau avec tp par rapport aux status
 
                                     const tpValide = [];

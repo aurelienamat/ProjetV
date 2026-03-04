@@ -26,6 +26,7 @@ const signupField = document.querySelector('.signupField');
 
 const btnClose = document.getElementById('close-phone');
 const btnOpen = document.getElementById('open-phone');
+const navComputer = document.getElementById('nav-computer');
 
 // ROUTES ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -60,13 +61,13 @@ btnInscription.addEventListener('click', () => {
             classe: classe.value
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message); // Ex: "Mot de passe invalide" ou "Inscription reussie !"
-        }
-        console.log(data);
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Ex: "Mot de passe invalide" ou "Inscription reussie !"
+            }
+            console.log(data);
+        });
 });
 
 // ROUTE CONNEXION ====================================================================
@@ -84,17 +85,17 @@ connexion.addEventListener('click', () => {
             password: password.value
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) { // Connexion échouée
-            alert(data.message);
-            console.log(data.message);
-        } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
-            console.log('Connexion réussie, classe : ' + data.classe);
-            localStorage.setItem('classe', data.classe);   // On appelle ensuite la route affichage pour récupérer les données
-            affichage();
-        }
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) { // Connexion échouée
+                alert(data.message);
+                console.log(data.message);
+            } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
+                console.log('Connexion réussie, classe : ' + data.classe);
+                localStorage.setItem('classe', data.classe);   // On appelle ensuite la route affichage pour récupérer les données
+                affichage();
+            }
+        });
 });
 
 // ROUTE CRÉATION DE TICKET =============================================================
@@ -122,23 +123,23 @@ btnCreateTicket.addEventListener('click', () => {
             idTps: tp // L'id du TP sélectionné
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            console.log('Erreur création ticket : ' + data.message);
-        } else {
-            console.log('Ticket créé avec succès : ', data);
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log('Erreur création ticket : ' + data.message);
+            } else {
+                console.log('Ticket créé avec succès : ', data);
 
-            // Mise à jour du localStorage après confirmation du serveur
-            let dataLocal = JSON.parse(localStorage.getItem('data'));
-            dataLocal.forEach(tp => {
-                if (tp.idTps == data.idTps) {
-                    tp.status = data.status;
-                }
-            });
-            localStorage.setItem('data', JSON.stringify(dataLocal));
-        }
-    });
+                // Mise à jour du localStorage après confirmation du serveur
+                let dataLocal = JSON.parse(localStorage.getItem('data'));
+                dataLocal.forEach(tp => {
+                    if (tp.idTps == data.idTps) {
+                        tp.status = data.status;
+                    }
+                });
+                localStorage.setItem('data', JSON.stringify(dataLocal));
+            }
+        });
 });
 
 // ROUTE MODIFICATION DE TICKET ==========================================================
@@ -157,27 +158,27 @@ function modifierTicket(idTps, nouveauStatus) {
             idTps: idTps
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            console.log('Erreur modification : ' + data.message);
-        } else {
-            console.log('Modification réussie : ', data);
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log('Erreur modification : ' + data.message);
+            } else {
+                console.log('Modification réussie : ', data);
 
-            // On met à jour le localStorage avec le nouveau status
-            // On ne fait la modif que quand le retour du back est reçu (comme demandé)
-            let dataLocal = JSON.parse(localStorage.getItem('data'));
+                // On met à jour le localStorage avec le nouveau status
+                // On ne fait la modif que quand le retour du back est reçu (comme demandé)
+                let dataLocal = JSON.parse(localStorage.getItem('data'));
 
-            dataLocal.forEach(tp => {
-                if (tp.idTps == data.idTps) {
-                    tp.status = data.status; // On met à jour le status
-                }
-            });
+                dataLocal.forEach(tp => {
+                    if (tp.idTps == data.idTps) {
+                        tp.status = data.status; // On met à jour le status
+                    }
+                });
 
-            localStorage.setItem('data', JSON.stringify(dataLocal));
-            console.log('LocalStorage mis à jour');
-        }
-    });
+                localStorage.setItem('data', JSON.stringify(dataLocal));
+                console.log('LocalStorage mis à jour');
+            }
+        });
 }
 
 // pages -------------------------------------------------------------------------------------------
@@ -300,19 +301,21 @@ window.addEventListener('resize', () => {
 
 window.onload = () => {
     console.log('Samlut');
-    console.log(JSON.parse(localStorage.getItem('data')));
-    const datadata = JSON.parse(localStorage.getItem('data'));
-    datadata.forEach(item => {
-        if (item.matiere == 'C' && item.status == 'valide') {
-            console.log(item.tp);
-        }
-    })
+    if (localStorage.getItem('data') != null) {
+        console.log(JSON.parse(localStorage.getItem('data')));
+        const datadata = JSON.parse(localStorage.getItem('data'));
+        datadata.forEach(item => {
+            if (item.matiere == 'C' && item.status == 'valide') {
+                console.log(item.tp);
+            }
+        })
+        avancement();
+    }
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
     avcontaineur.style.display = 'none';
     localStorage.setItem('idUsers', 2);
-    avancement();
     switch (localStorage.getItem('page')) {
         case "avancement":
             avcontaineur.style.display = 'flex';
@@ -342,38 +345,38 @@ window.addEventListener('resize', () => {
 
 // CHARGEMENT DE LA PAGE
 
-window.onload = () => { // On cache toutes les pages au départ
-    loginContainer.style.display = 'none';
-    ticketContainer.style.display = 'none';
-    tpcontainer.style.display = 'none';
-    avcontaineur.style.display = 'none'; // Par défaut on affiche la page de connexion si pas de page sauvegardée
-    const pageSauvegardee = localStorage.getItem('page');
+// window.onload = () => { // On cache toutes les pages au départ
+//     loginContainer.style.display = 'none';
+//     ticketContainer.style.display = 'none';
+//     tpcontainer.style.display = 'none';
+//     avcontaineur.style.display = 'none'; // Par défaut on affiche la page de connexion si pas de page sauvegardée
+//     const pageSauvegardee = localStorage.getItem('page');
 
-    if (!pageSauvegardee) {
-        loginContainer.style.display = 'block';
-        return;
-    }
+//     if (!pageSauvegardee) {
+//         loginContainer.style.display = 'block';
+//         return;
+//     }
 
-    avancement(); // On charge le graphique en arrière plan
-    switch (pageSauvegardee) {
-        case "avancement":
-            avcontaineur.style.display = 'flex';
-            btnAvancement.classList.add('herder-select');
-            break;
-        case "tp":
-            tpcontainer.style.display = 'flex';
-            btnTp.classList.add('herder-select');
-            break;
-        case "ticket":
-            ticketContainer.style.display = 'flex';
-            btnTicket.classList.add('herder-select');
-            break;
-        case "login":
-        default:
-            loginContainer.style.display = 'block';
-            break;
-    }
-};
+//     avancement(); // On charge le graphique en arrière plan
+//     switch (pageSauvegardee) {
+//         case "avancement":
+//             avcontaineur.style.display = 'flex';
+//             btnAvancement.classList.add('herder-select');
+//             break;
+//         case "tp":
+//             tpcontainer.style.display = 'flex';
+//             btnTp.classList.add('herder-select');
+//             break;
+//         case "ticket":
+//             ticketContainer.style.display = 'flex';
+//             btnTicket.classList.add('herder-select');
+//             break;
+//         case "login":
+//         default:
+//             loginContainer.style.display = 'block';
+//             break;
+//     }
+// };
 
 
 // GESTION DES BOUTONS NAVIGATION ACTIVE
