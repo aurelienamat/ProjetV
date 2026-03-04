@@ -25,7 +25,7 @@ function avancement() {
             const dataRestant = pourcentages.map(p => p < 100 ? 100 - p : 0);
 
             //Prend le nombre de tp valide qui sont pasafaire et divise par le nombre de tp de la matièere pour avoir le surplus
-            const dataSurplus = data.map(item => item.nbValideHorsAvancement > 0 ? ((item.nbValideHorsAvancement / item.nbTp) * 100):0);
+            const dataSurplus = data.map(item => item.nbValideHorsAvancement > 0 ? ((item.nbValideHorsAvancement / item.nbTp) * 100) : 0);
             // console.log(data);
             //console.log(dataSurplus);
 
@@ -49,6 +49,7 @@ function avancement() {
                             label: 'Validés',
                             data: dataValide,
                             backgroundColor: couleursValide,
+                            legendColor : '#d1d5db',
                             borderColor: couleursValide,
                             borderWidth: 2,
                             //borderRadius: 8,
@@ -95,7 +96,7 @@ function avancement() {
                         y: {
                             stacked: true,
                             beginAtZero: true,
-                            max: Math.max(...pourcentages.map(p => Math.ceil(p / 10) * 10), 120),
+                            max: Math.max(...pourcentages.map(p => Math.ceil(p / 10) * 10), 120) +10,
                             grid: {
                                 color: 'rgba(144, 169, 85, 0.1)',
                                 lineWidth: 1
@@ -231,7 +232,7 @@ function avancement() {
                                     borderDash: [10, 5],
                                     label: {
                                         display: true,
-                                        content: 'Objectif 100%',
+                                        content: 'Avancement 100%',
                                         position: 'end',
                                         backgroundColor: '#132a13',
                                         color: '#ecf39e',

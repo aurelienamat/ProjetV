@@ -148,6 +148,7 @@ window.onload = () => {
             break;
         case "login":
             loginContainer.style.display = 'block';
+            btnConnexionInscription.classList.add('herder-select');
             break;
     }
 }
@@ -159,48 +160,3 @@ window.addEventListener('resize', () => {
         navComputer.style.display = 'flex';
     }
 })
-
-// CHARGEMENT DE LA PAGE
-
-// window.onload = () => { // On cache toutes les pages au départ
-//     loginContainer.style.display = 'none';
-//     ticketContainer.style.display = 'none';
-//     tpcontainer.style.display = 'none';
-//     avcontaineur.style.display = 'none'; // Par défaut on affiche la page de connexion si pas de page sauvegardée
-//     const pageSauvegardee = localStorage.getItem('page');
-
-//     if (!pageSauvegardee) {
-//         loginContainer.style.display = 'block';
-//         return;
-//     }
-
-//     avancement(); // On charge le graphique en arrière plan
-//     switch (pageSauvegardee) {
-//         case "avancement":
-//             avcontaineur.style.display = 'flex';
-//             btnAvancement.classList.add('herder-select');
-//             break;
-//         case "tp":
-//             tpcontainer.style.display = 'flex';
-//             btnTp.classList.add('herder-select');
-//             break;
-//         case "ticket":
-//             ticketContainer.style.display = 'flex';
-//             btnTicket.classList.add('herder-select');
-//             break;
-//         case "login":
-//         default:
-//             loginContainer.style.display = 'block';
-//             break;
-//     }
-// };
-
-
-// GESTION DES BOUTONS NAVIGATION ACTIVE
-
-navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        navButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    });
-});
