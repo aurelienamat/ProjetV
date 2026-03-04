@@ -28,6 +28,7 @@ const btnClose = document.getElementById('close-phone');
 const btnOpen = document.getElementById('open-phone');
 const navComputer = document.getElementById('nav-computer');
 
+const btnCreateTicket = document.getElementById('submit-btn-create-ticket');
 // ROUTES ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ROUTE INSCRIPTION ========================================================
@@ -101,7 +102,7 @@ connexion.addEventListener('click', () => {
 // ROUTE CRÉATION DE TICKET =============================================================
 // Bouton "Create" dans la page Ticket
 
-const btnCreateTicket = document.getElementById('submit-btn-create-ticket');
+
 
 btnCreateTicket.addEventListener('click', () => {
     const matiere = document.getElementById('choix-matiere').value;
