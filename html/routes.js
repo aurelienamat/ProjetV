@@ -68,6 +68,42 @@ connexion.addEventListener('click', () => {
         });
 });
 
+// ROUTE AFFICHAGE ===================================================================================
+// envoie id et status en POST sur /affichage
+// Si c'est un prof -> liste des élèves avec leurs TPs
+// Si c'est un élève -> liste de tous ses TPs avec status
+
+function affichage() {
+    fetch('/affichage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            status: 'encoursdevalidation', // On peut changer ce status selon le besoin
+            id: localStorage.getItem('idUsers')
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            console.log('Erreur affichage : ' + data.message);
+        } else {
+            // On sauvegarde les données dans le localStorage pour les réutiliser
+            localStorage.setItem('data', JSON.stringify(data));
+            console.log('Données affichage récupérées : ', data);
+
+            // On affiche la page avancement par défaut après connexion
+            avcontaineur.style.display = 'flex';
+            btnAvancement.classList.add('herder-select');
+            loginContainer.style.display = 'none';
+
+            avancement(); // On lance le graphique
+        }
+    });
+}
+
+
 // ROUTE CRÉATION DE TICKET =============================================================
 // Bouton "Create" dans la page Ticket
 
