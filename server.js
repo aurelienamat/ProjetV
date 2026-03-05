@@ -201,7 +201,7 @@ app.post('/affichage', (req, res) => {
       )
     } else if (classe == 'ciel1' || classe == 'ciel2') { //ELEVE
       connection.query(
-        "SELECT tps.nom as tp,matiere,status,avancement,status.idTps FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+        "SELECT tps.nom as tp,matiere,status,avancement,status.idTps,enseignant FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
         [req.body.id], (err, results) => {
           if (err) {
             console.log('Erreur ' + err);
