@@ -76,7 +76,7 @@ header>#nav-computer>ul>li {
     align-items: center;
     justify-content: center;
     list-style: none;
-    margin: 0 2rem;
+    margin: 0 1rem;
     color: var(--text-primary);
     transition: var(--transition);
     height: 100%;
@@ -129,6 +129,7 @@ header>#nav-computer>ul>li:hover {
     cursor: pointer;
     height: 75% !important;
     border-radius: 4px;
+    padding: 0 1rem;
 }
 .herder-select {
     color: var(--primary) !important;
