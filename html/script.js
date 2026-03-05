@@ -45,6 +45,8 @@ btnTicket.addEventListener('click', () => {
         if (window.innerWidth < 900) {
             navComputer.style.display = 'none';
         }
+
+        remplirMenuTicket(); // <-- AJOUT ICI
     }
 });
 
@@ -119,20 +121,15 @@ window.addEventListener('resize', () => {
 window.onload = () => {
     console.log('Samlut');
     if (localStorage.getItem('data') != null) {
-        //console.log(JSON.parse(localStorage.getItem('data')));
         const datadata = JSON.parse(localStorage.getItem('data'));
-        // datadata.forEach(item => {
-        //     if (item.matiere == 'C' && item.status == 'valide') {
-        //         console.log(item.tp);
-        //     }
-        // })
     }
+
     avancement();
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
     avcontaineur.style.display = 'none';
-    //localStorage.setItem('idUsers', 2);
+
     switch (localStorage.getItem('page')) {
         case "avancement":
             avcontaineur.style.display = 'flex';
@@ -145,6 +142,7 @@ window.onload = () => {
         case "ticket":
             ticketContainer.style.display = 'flex';
             btnTicket.classList.add('herder-select');
+            remplirMenuTicket(); // <-- AJOUT ICI aussi pour le reload
             break;
         case "login":
             loginContainer.style.display = 'block';
@@ -160,3 +158,47 @@ window.addEventListener('resize', () => {
         navComputer.style.display = 'flex';
     }
 })
+
+
+// REMPLIR MENUS DEROULANTS TICKET ---------------------------------------------------------------
+
+function remplirMenuTicket() {
+    let dataLocal = JSON.parse(localStorage.getItem('data'));
+
+    if (dataLocal == null) {
+        console.log('Pas de données dans le localStorage');
+        return;
+    }
+
+    // Vider les selects avant de les remplir
+    choix_matiere.innerHTML = '<option value="">Choisir une matiere</option>';
+    choix_tp.innerHTML = '<option value="">Choisir un TP</option>';
+
+    // Remplir les matieres (sans doublon)
+    let matieresDejaAjoutees = [];
+
+    dataLocal.forEach(item => {
+        if (!matieresDejaAjoutees.includes(item.matiere)) {
+            matieresDejaAjoutees.push(item.matiere);
+
+            let option = document.createElement('option');
+            option.value = item.matiere;
+            option.textContent = item.matiere;
+            choix_matiere.appendChild(option);
+        }
+    });
+
+    // Remplir les TPs selon la matiere choisie
+    choix_matiere.addEventListener('change', () => {
+        choix_tp.innerHTML = '<option value="">Choisir un TP</option>';
+
+        dataLocal.forEach(item => {
+            if (item.matiere == choix_matiere.value) {
+                let option = document.createElement('option');
+                option.value = item.idTps; // l'id du TP pour l'envoyer au serveur
+                option.textContent = item.tp;
+                choix_tp.appendChild(option);
+            }
+        });
+    });
+}
