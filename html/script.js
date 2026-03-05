@@ -143,6 +143,7 @@ window.onload = () => {
             ticketContainer.style.display = 'flex';
             btnTicket.classList.add('herder-select');
             remplirMenuTicket(); // <-- AJOUT ICI aussi pour le reload
+            remplirTicket();
             break;
         case "login":
             loginContainer.style.display = 'block';
@@ -201,4 +202,40 @@ function remplirMenuTicket() {
             }
         });
     });
+}
+
+function remplirTicket() {
+    let dataLocal = JSON.parse(localStorage.getItem('data'));
+    const containerList = document.getElementById('container-list');
+    if (dataLocal == null) {
+        console.log('Pas de données dans le localStorage');
+        return;
+    }else{
+
+        dataLocal.forEach(item => {
+            if(item.status == 'encoursdevalidation'){
+                console.log("Nouvel element crée " + item.tp);
+
+                let li = document.createElement('li');
+                containerList.appendChild(li);
+
+
+                let ul = document.createElement('ul');
+                ul.className = 'list-Ticket';
+                li.appendChild(ul);
+
+
+                let litp = document.createElement('li');
+                litp.textContent = item.tp;
+                ul.appendChild(litp);
+
+                let limatiere = document.createElement('li');
+                limatiere.textContent = item.matiere;
+                ul.appendChild(limatiere);
+            }
+        })
+    }
+
+
+
 }
