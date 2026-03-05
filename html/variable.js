@@ -5,6 +5,9 @@ const ticketContainer = document.getElementById('container-Ticket');
 const tpcontainer = document.getElementById('container-tp');
 const avcontaineur = document.getElementById('containeur-avancement');
 
+const ticketContainerEnseignant = document.getElementById('container-Ticket-enseignant');
+//const avContaineurEnseignant = document.getElementById('containeur-avancement-Enseignant');
+
 // Boutons de navigation
 const btnConnexionInscription = document.getElementById('connexion-inscription');
 const btnTicket = document.getElementById('btn-Ticket');

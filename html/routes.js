@@ -115,15 +115,53 @@ btnCreateTicket.addEventListener('click', () => {
         return;
     }
 
+    modifierTicket(tp.value,'encoursdevalidation',localStorage.getItem('idUsers'));
+
+    // fetch('/modifierStatus', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //         status: 'encoursdevalidation',
+    //         idUsers: localStorage.getItem('idUsers'),
+    //         idTps: tp.value // L'id du TP sélectionné
+    //     })
+    // })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.message) {
+    //             console.log('Erreur création ticket : ' + data.message);
+    //         } else {
+    //             console.log('Ticket créé avec succès : ', data);
+
+    //             // Mise à jour du localStorage après confirmation du serveur
+    //             dataLocal = JSON.parse(localStorage.getItem('data'));
+    //             dataLocal.forEach(tp => {
+    //                 if (tp.idTps == data.idTps) {
+    //                     tp.status = data.status;
+    //                 }
+    //             });
+    //             localStorage.setItem('data', JSON.stringify(dataLocal));
+    //             remplirTicket();
+    //         }
+    //     });
+});
+
+// ROUTE MODIFICATION DE TICKET ==========================================================
+// envoie status, idUsers et idTps en POST sur /modifierStatus
+// Le serveur renvoie le nouveau status et l'idTps pour mettre à jour le localStorage
+
+function modifierTicket(tp, nouveauStatus,userId) {
     fetch('/modifierStatus', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            status: 'encoursdevalidation',
-            idUsers: localStorage.getItem('idUsers'),
-            idTps: tp.value // L'id du TP sélectionné
+            status: nouveauStatus,
+            idUsers: userId,
+            idTps: tp // L'id du TP sélectionné
         })
     })
         .then(response => response.json())
@@ -142,45 +180,6 @@ btnCreateTicket.addEventListener('click', () => {
                 });
                 localStorage.setItem('data', JSON.stringify(dataLocal));
                 remplirTicket();
-            }
-        });
-});
-
-// ROUTE MODIFICATION DE TICKET ==========================================================
-// envoie status, idUsers et idTps en POST sur /modifierStatus
-// Le serveur renvoie le nouveau status et l'idTps pour mettre à jour le localStorage
-
-function modifierTicket(idTps, nouveauStatus) {
-    fetch('/modifierStatus', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            status: nouveauStatus,
-            idUsers: localStorage.getItem('idUsers'),
-            idTps: idTps
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                console.log('Erreur modification : ' + data.message);
-            } else {
-                console.log('Modification réussie : ', data);
-
-                // On met à jour le localStorage avec le nouveau status
-                // On ne fait la modif que quand le retour du back est reçu (comme demandé)
-                dataLocal = JSON.parse(localStorage.getItem('data'));
-
-                dataLocal.forEach(tp => {
-                    if (tp.idTps == data.idTps) {
-                        tp.status = data.status; // On met à jour le status
-                    }
-                });
-
-                localStorage.setItem('data', JSON.stringify(dataLocal));
-                console.log('LocalStorage mis à jour');
             }
         });
 

@@ -182,7 +182,7 @@ app.post('/affichage', (req, res) => {
     if (classe == 'enseignant') { //ENSEINGNANT
       console.log('enseignant');
       connection.query(
-        "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
+        "SELECT users.nom,prenom,classe,tps.nom as tp,matiere,idTps,idUsers FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
         [req.body.status], (err, results) => {
           if (err) {
             console.log('Erreur ' + err);

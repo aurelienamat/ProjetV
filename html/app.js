@@ -95,7 +95,7 @@ function avancement() {
                         y: {
                             stacked: true,
                             beginAtZero: true,
-                            max: Math.max(...pourcentages.map(p => Math.ceil(p / 10) * 10), 120) +10,
+                            max: (Math.max(pourcentages)),
                             grid: {
                                 color: 'rgba(144, 169, 85, 0.1)',
                                 lineWidth: 1
