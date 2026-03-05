@@ -191,7 +191,7 @@ function remplirMenuTicket() {
     // Remplir les TPs selon la matiere choisie
     choix_matiere.addEventListener('change', () => {
         choix_tp.innerHTML = '<option value="">Choisir un TP</option>';
-
+        //console.log(" data : ", dataLocal);
         dataLocal.forEach(item => {
             if (item.matiere == choix_matiere.value) {
                 let option = document.createElement('option');

@@ -114,7 +114,8 @@ function affichage() {
 
 btnCreateTicket.addEventListener('click', () => {
     const matiere = document.getElementById('choix-matiere').value;
-    const tp = document.getElementById('choix-tp').value;
+    const tp = document.getElementById('choix-tp');
+    console.log("Tp choisie : " + tp.value);
 
     if (matiere === '' || tp === '') {
         alert('Veuillez choisir une matière et un TP !');
@@ -127,9 +128,9 @@ btnCreateTicket.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            status: 'nonvalide',
+            status: 'encoursdevalidation',
             idUsers: localStorage.getItem('idUsers'),
-            idTps: tp // L'id du TP sélectionné
+            idTps: tp.value // L'id du TP sélectionné
         })
     })
         .then(response => response.json())
