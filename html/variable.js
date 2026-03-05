@@ -33,4 +33,4 @@ const btnCreateTicket = document.getElementById('submit-btn-create-ticket');
 const navButtons = document.querySelectorAll('#navigation li');
 
 const choix_matiere = document.getElementById('choix-matiere');
-const choix_tp = document.getElementByID('choix-tp');
+const choix_tp = document.getElementById('choix-tp');
