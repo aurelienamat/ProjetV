@@ -113,7 +113,7 @@ app.post('/connexion', (req, res) => {
           isEnseignant(resultat.id, function (classe) {
             if (classe == 'enseignant') {
               console.log('enseignant')
-              res.json({ classe: 'enseignant' });
+              res.json({ classe: 'enseignant' , idUsers : resultat.id});
             } else if (classe == 'ciel1' || classe == 'ciel2') {
               console.log('Eleve');
               res.json({ classe: 'Eleve' , idUsers : resultat.id});
