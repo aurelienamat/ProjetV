@@ -116,7 +116,7 @@ app.post('/connexion', (req, res) => {
               res.json({ classe: 'enseignant' });
             } else if (classe == 'ciel1' || classe == 'ciel2') {
               console.log('Eleve');
-              res.json({ classe: 'Eleve' });
+              res.json({ classe: 'Eleve' , idUsers : resultat.id});
             } else {
               console.log('err');
               res.json({ classe: 'Aucune classe' });
@@ -220,62 +220,6 @@ app.post('/affichage', (req, res) => {
       )
     }
   })
-
-  // connection.query(
-  //   "SELECT classe from status, users WHERE users.id = status.idUsers AND users.id = ?",
-  //   [req.body.id], (err, resultat) => {
-  //     if (err) {
-  //       console.log('Erreur récupération classe ' + err);
-  //       res.json(err);
-  //     }
-  //     if (resultat.length == 0) {
-  //       console.log("Existe pas ");
-  //       res.json({ message: "Existe pas" });
-  //     } else {
-  //       if (resultat[0].classe == 'enseignant') {  //Si c'est l'enseignant qui demande on affiche tout
-  //         connection.query(
-  //           "SELECT users.nom,prenom,classe,tps.nom as tp,matiere FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
-  //           [req.body.status], (err, results) => {
-  //             if (err) {
-  //               console.log('Erreur ' + err);
-  //               res.json({ message: 'Erreur affichage' });
-  //               return;
-  //             }
-  //             if (results.length == 0) {
-  //               console.log("Pas trouvé affichage " + results);
-  //               res.json({ message: 'Pas trouvé' });
-  //               return;
-  //             } else {
-  //               console.log('resultat enseingnant' + JSON.stringify(results));
-  //               res.json(results);
-  //             }
-  //           }
-  //         )
-  //       } else { //Si ce n'est pas l'enseignant alors on affiche que l'eleve
-  //         connection.query(
-  //           "SELECT tps.nom as tp,matiere,status,avancement FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
-  //           [req.body.id], (err, results) => {
-  //             if (err) {
-  //               console.log('Erreur ' + err);
-  //               res.json({ message: 'Erreur affichage' });
-  //               return;
-  //             }
-  //             if (results.length == 0) {
-  //               console.log("Pas trouvé affichage " + results);
-  //               res.json({ message: 'Pas trouvé' });
-  //               return;
-  //             } else {
-  //               console.log('résultat eleve '); //+ JSON.stringify(results)
-  //               res.json(results);
-  //             }
-  //           }
-  //         )
-  //       }
-  //     }
-  //   }
-  // )
-
-
 })
 
 //AVANCEMENT
@@ -285,7 +229,7 @@ app.post('/avancement', (req, res) => {
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = 2  GROUP BY matiere
     //ancienne requette
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' THEN 1 END) as nbValide,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ? AND tps.avancement = 'afaire' GROUP BY matiere
-    "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = 2  GROUP BY matiere",
+    "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ?  GROUP BY matiere",
     [req.body.idUsers], (err, results) => {
       if (err) {
         console.log('Erreur avancement');
@@ -299,7 +243,7 @@ app.post('/avancement', (req, res) => {
       }
       isEnseignant(req.body.idUsers, function (classe) {
         if (classe == 'enseignant') {
-          console.log('enseignant')
+          console.log('enseignant');
         } else if (classe == 'ciel1' || classe == 'ciel2') {
           console.log('Eleve');
         } else {

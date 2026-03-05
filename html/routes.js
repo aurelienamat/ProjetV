@@ -62,8 +62,10 @@ connexion.addEventListener('click', () => {
                 console.log(data.message);
             } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
                 console.log('Connexion réussie, classe : ' + data.classe);
-                localStorage.setItem('classe', data.classe);   // On appelle ensuite la route affichage pour récupérer les données
-                affichage();
+                localStorage.setItem('idUsers', data.idUsers);   // On appelle ensuite la route affichage pour récupérer les données
+                affichage(); //Appel de la fonction pour afficher les données dans dans l'avancement
+                localStorage.setItem('page', 'avancement'); //Choix sur quelle page on arrive
+                location.reload();
             }
         });
 });

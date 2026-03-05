@@ -119,20 +119,20 @@ window.addEventListener('resize', () => {
 window.onload = () => {
     console.log('Samlut');
     if (localStorage.getItem('data') != null) {
-        console.log(JSON.parse(localStorage.getItem('data')));
+        //console.log(JSON.parse(localStorage.getItem('data')));
         const datadata = JSON.parse(localStorage.getItem('data'));
-        datadata.forEach(item => {
-            if (item.matiere == 'C' && item.status == 'valide') {
-                console.log(item.tp);
-            }
-        })
-        avancement();
+        // datadata.forEach(item => {
+        //     if (item.matiere == 'C' && item.status == 'valide') {
+        //         console.log(item.tp);
+        //     }
+        // })
     }
+    avancement();
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
     avcontaineur.style.display = 'none';
-    localStorage.setItem('idUsers', 2);
+    //localStorage.setItem('idUsers', 2);
     switch (localStorage.getItem('page')) {
         case "avancement":
             avcontaineur.style.display = 'flex';
