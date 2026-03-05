@@ -62,14 +62,14 @@ connexion.addEventListener('click', () => {
                 console.log(data.message);
             } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
                 console.log('Connexion réussie, classe : ' + data.classe);
-                localStorage.setItem('idUsers', data.idUsers);   // On appelle ensuite la route affichage pour récupérer les données
-                affichage(); //Appel de la fonction pour afficher les données dans dans l'avancement
-                localStorage.setItem('page', 'avancement'); //Choix sur quelle page on arrive
-                location.reload();
+                //Remplissage du local storage
+                localStorage.setItem('idUsers', data.idUsers);
+                localStorage.setItem('page', 'avancement');
                 localStorage.setItem('classe', data.classe);
             }
-        });
-});
+            location.reload();
+        })
+})
 
 // ROUTE AFFICHAGE ===================================================================================
 // envoie id et status en POST sur /affichage
@@ -87,23 +87,16 @@ function affichage() {
             id: localStorage.getItem('idUsers')
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            console.log('Erreur affichage : ' + data.message);
-        } else {
-            // On sauvegarde les données dans le localStorage pour les réutiliser
-            localStorage.setItem('data', JSON.stringify(data));
-            console.log('Données affichage récupérées : ', data);
-
-            // On affiche la page avancement par défaut après connexion
-            avcontaineur.style.display = 'flex';
-            btnAvancement.classList.add('herder-select');
-            loginContainer.style.display = 'none';
-
-            avancement(); // On lance le graphique
-        }
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log('Erreur affichage : ' + data.message);
+            } else {
+                // On sauvegarde les données dans le localStorage pour les réutiliser
+                localStorage.setItem('data', JSON.stringify(data));
+                console.log('Données affichage récupérées : ', data);
+            }
+        });
 }
 
 
@@ -141,16 +134,15 @@ btnCreateTicket.addEventListener('click', () => {
                 console.log('Ticket créé avec succès : ', data);
 
                 // Mise à jour du localStorage après confirmation du serveur
-                let dataLocal = JSON.parse(localStorage.getItem('data'));
+                dataLocal = JSON.parse(localStorage.getItem('data'));
                 dataLocal.forEach(tp => {
                     if (tp.idTps == data.idTps) {
                         tp.status = data.status;
                     }
                 });
                 localStorage.setItem('data', JSON.stringify(dataLocal));
+                remplirTicket();
             }
-            
-            location.reload(); // On recharge la page pour voir les changements
         });
 });
 
@@ -179,7 +171,7 @@ function modifierTicket(idTps, nouveauStatus) {
 
                 // On met à jour le localStorage avec le nouveau status
                 // On ne fait la modif que quand le retour du back est reçu (comme demandé)
-                let dataLocal = JSON.parse(localStorage.getItem('data'));
+                dataLocal = JSON.parse(localStorage.getItem('data'));
 
                 dataLocal.forEach(tp => {
                     if (tp.idTps == data.idTps) {

@@ -34,3 +34,5 @@ const navButtons = document.querySelectorAll('#navigation li');
 
 const choix_matiere = document.getElementById('choix-matiere');
 const choix_tp = document.getElementById('choix-tp');
+
+var dataLocal = JSON.parse(localStorage.getItem('data'));

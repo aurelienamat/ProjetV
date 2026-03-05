@@ -18,14 +18,13 @@ btnConnexionInscription.addEventListener('click', () => {
         avcontaineur.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
 
-        if (window.innerWidth < 900) {
-            navComputer.style.display = 'none';
-        }
     }
 });
 
 // Page Ticket
 btnTicket.addEventListener('click', () => {
+    remplirMenuTicket();
+    remplirTicket();
     localStorage.setItem('page', 'ticket');
     if (ticketContainer.style.display == 'flex') {
         location.reload();
@@ -41,12 +40,6 @@ btnTicket.addEventListener('click', () => {
 
         avcontaineur.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
-
-        if (window.innerWidth < 900) {
-            navComputer.style.display = 'none';
-        }
-
-        remplirMenuTicket();
     }
 });
 
@@ -68,9 +61,6 @@ btnTp.addEventListener('click', () => {
         avcontaineur.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
 
-        if (window.innerWidth < 900) {
-            navComputer.style.display = 'none';
-        }
     }
 });
 
@@ -92,9 +82,6 @@ btnAvancement.addEventListener('click', () => {
         avcontaineur.style.display = 'flex';
         btnAvancement.classList.add('herder-select');
 
-        if (window.innerWidth < 900) {
-            navComputer.style.display = 'none';
-        }
     }
 });
 
@@ -120,65 +107,58 @@ window.addEventListener('resize', () => {
 
 window.onload = () => {
     console.log('Samlut');
-    if (localStorage.getItem('data') != null) {
-        const datadata = JSON.parse(localStorage.getItem('data'));
-    }
-    if(localStorage.getItem('idUsers') != null){
-        affichage();
-    }
 
-    avancement();
+    //Mettre toutes les pages none
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
     avcontaineur.style.display = 'none';
 
-    switch (localStorage.getItem('page')) {
-        case "avancement":
-            avcontaineur.style.display = 'flex';
-            btnAvancement.classList.add('herder-select');
-            break;
-        case "tp":
-            tpcontainer.style.display = 'flex';
-            btnTp.classList.add('herder-select');
-            break;
-        case "ticket":
-            ticketContainer.style.display = 'flex';
-            btnTicket.classList.add('herder-select');
-            remplirMenuTicket(); // <-- AJOUT ICI aussi pour le reload
-            remplirTicket();
-            break;
-            remplirMenuTicket(); // <-- AJOUT ICI aussi pour le reload            break;
-            //            a84c69d (affichage ticket1)
-        case "login":
-            loginContainer.style.display = 'block';
-            btnConnexionInscription.classList.add('herder-select');
-            break;
-    }
-}
-
-window.addEventListener('resize', () => {
-    if (window.innerWidth < 900) {
-        navComputer.style.display = 'none';
+    //Choisir la bonne page
+    if (localStorage.getItem('page') != null && localStorage.getItem('idUsers') != null) {
+        affichage();
+        avancement();
+        switch (localStorage.getItem('page')) {
+            case "avancement":
+                avcontaineur.style.display = 'flex';
+                btnAvancement.classList.add('herder-select');
+                break;
+            case "tp":
+                tpcontainer.style.display = 'flex';
+                btnTp.classList.add('herder-select');
+                break;
+            case "ticket":
+                ticketContainer.style.display = 'flex';
+                btnTicket.classList.add('herder-select');
+                remplirMenuTicket();
+                remplirTicket();
+                break;
+            case "login":
+                loginContainer.style.display = 'block';
+                btnConnexionInscription.classList.add('herder-select');
+                break;
+        }
     } else {
-        navComputer.style.display = 'flex';
+        localStorage.setItem('page', 'login');
+        loginContainer.style.display = 'block';
+        btnConnexionInscription.classList.add('herder-select');
     }
-})
+
+}
 
 
 // bouton deroulant choix matiere/tp---------------------------------------------------------------
 
 function remplirMenuTicket() {
-    let dataLocal = JSON.parse(localStorage.getItem('data'));
-
+    dataLocal = JSON.parse(localStorage.getItem('data'));
     if (dataLocal == null) {
         console.log('Pas de données dans le localStorage');
         return;
     }
 
     // Vider les selects avant de les remplir
-    choix_matiere.innerHTML = '<option value="">Choisir une matiere</option>';
-    choix_tp.innerHTML = '<option value="">Choisir un TP</option>';
+    // choix_matiere.innerHTML = '<option value="">Choisir une matiere</option>';
+    // choix_tp.innerHTML = '<option value="">Choisir un TP</option>';
 
     // Remplir les matieres (sans doublon)
     let matieresDejaAjoutees = [];
@@ -199,7 +179,7 @@ function remplirMenuTicket() {
         choix_tp.innerHTML = '<option value="">Choisir un TP</option>';
         //console.log(" data : ", dataLocal);
         dataLocal.forEach(item => {
-            if (item.matiere == choix_matiere.value) {
+            if (item.matiere == choix_matiere.value && item.status != 'encoursdevalidation') {
                 let option = document.createElement('option');
                 option.value = item.idTps; // l'id du TP pour l'envoyer au serveur
                 option.textContent = item.tp;
@@ -210,18 +190,27 @@ function remplirMenuTicket() {
 }
 
 function remplirTicket() {
-    let dataLocal = JSON.parse(localStorage.getItem('data'));
+    console.log("Remplit");
+    const ticket = document.querySelectorAll('.ticket');
+    if( ticket != null){
+        console.log('Pas nul');
+        ticket.forEach( ticketli => {
+            ticketli.remove();
+        })
+    }
+    dataLocal = JSON.parse(localStorage.getItem('data'));
     const containerList = document.getElementById('container-list');
     if (dataLocal == null) {
         console.log('Pas de données dans le localStorage');
         return;
-    }else{
+    } else {
 
         dataLocal.forEach(item => {
-            if(item.status == 'encoursdevalidation'){
-                console.log("Nouvel element crée " + item.tp);
+            if (item.status == 'encoursdevalidation') {
+                //console.log("Nouvel element crée " + item.tp);
 
                 let li = document.createElement('li');
+                li.className ='ticket';
                 containerList.appendChild(li);
 
 
@@ -230,23 +219,23 @@ function remplirTicket() {
                 li.appendChild(ul);
 
 
-                let litp = document.createElement('li');
-                litp.textContent = item.tp;
-                ul.appendChild(litp);
-
                 let limatiere = document.createElement('li');
                 limatiere.textContent = item.matiere;
                 ul.appendChild(limatiere);
 
+                let litp = document.createElement('li');
+                litp.textContent = item.tp;
+                ul.appendChild(litp);
+
                 let liprofesseur = document.createElement('li');
                 liprofesseur.textContent = item.enseignant;
                 ul.appendChild(liprofesseur);
-                
+
                 let listatus = document.createElement('li');
                 listatus.textContent = item.status;
                 ul.appendChild(listatus);
             }
         })
-        
+
     }
 }
