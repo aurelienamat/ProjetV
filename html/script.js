@@ -160,7 +160,7 @@ window.addEventListener('resize', () => {
 })
 
 
-// REMPLIR MENUS DEROULANTS TICKET ---------------------------------------------------------------
+// bouton deroulant choix matiere/tp---------------------------------------------------------------
 
 function remplirMenuTicket() {
     let dataLocal = JSON.parse(localStorage.getItem('data'));
