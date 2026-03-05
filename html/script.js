@@ -239,7 +239,7 @@ function remplirTicket() {
                 ul.appendChild(limatiere);
 
                 let liprofesseur = document.createElement('li');
-                liprofesseur.textContent = "En attente de validation";
+                liprofesseur.textContent = item.enseignant;
                 ul.appendChild(liprofesseur);
                 
                 let listatus = document.createElement('li');
