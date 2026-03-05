@@ -123,6 +123,9 @@ window.onload = () => {
     if (localStorage.getItem('data') != null) {
         const datadata = JSON.parse(localStorage.getItem('data'));
     }
+    if(localStorage.getItem('idUsers') != null){
+        affichage();
+    }
 
     avancement();
     loginContainer.style.display = 'none';
@@ -234,10 +237,16 @@ function remplirTicket() {
                 let limatiere = document.createElement('li');
                 limatiere.textContent = item.matiere;
                 ul.appendChild(limatiere);
+
+                let liprofesseur = document.createElement('li');
+                liprofesseur.textContent = "En attente de validation";
+                ul.appendChild(liprofesseur);
+                
+                let listatus = document.createElement('li');
+                listatus.textContent = item.status;
+                ul.appendChild(listatus);
             }
         })
+        
     }
-
-
-
 }

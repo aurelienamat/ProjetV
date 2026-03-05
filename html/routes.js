@@ -149,6 +149,8 @@ btnCreateTicket.addEventListener('click', () => {
                 });
                 localStorage.setItem('data', JSON.stringify(dataLocal));
             }
+            
+            location.reload(); // On recharge la page pour voir les changements
         });
 });
 
@@ -189,4 +191,5 @@ function modifierTicket(idTps, nouveauStatus) {
                 console.log('LocalStorage mis à jour');
             }
         });
+
 }
