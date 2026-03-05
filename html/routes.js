@@ -66,6 +66,7 @@ connexion.addEventListener('click', () => {
                 affichage(); //Appel de la fonction pour afficher les données dans dans l'avancement
                 localStorage.setItem('page', 'avancement'); //Choix sur quelle page on arrive
                 location.reload();
+                localStorage.setItem('classe', data.classe);
             }
         });
 });
