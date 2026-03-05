@@ -46,7 +46,7 @@ btnTicket.addEventListener('click', () => {
             navComputer.style.display = 'none';
         }
 
-        remplirMenuTicket(); // <-- AJOUT ICI
+        remplirMenuTicket();
     }
 });
 
@@ -142,9 +142,13 @@ window.onload = () => {
         case "ticket":
             ticketContainer.style.display = 'flex';
             btnTicket.classList.add('herder-select');
+<<<<<<< HEAD
             remplirMenuTicket(); // <-- AJOUT ICI aussi pour le reload
             remplirTicket();
             break;
+=======
+            remplirMenuTicket(); // <-- AJOUT ICI aussi pour le reload            break;
+>>>>>>> a84c69d (affichage ticket1)
         case "login":
             loginContainer.style.display = 'block';
             btnConnexionInscription.classList.add('herder-select');
