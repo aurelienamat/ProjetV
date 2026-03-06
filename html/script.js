@@ -375,6 +375,10 @@ function remplirTp(matieretp) {
                 liTp.innerHTML = data.tp;
                 if (data.avancement == 'pasafaire') {
                     liTp.style.backgroundColor = 'lightgrey';
+                }else if(data.status == 'valide'){
+                    liTp.style.backgroundColor = 'lightgreen';
+                }else if(data.status == 'nonvalide'){
+                    liTp.style.backgroundColor = '#FF7F7F';
                 }
                 ulMat.appendChild(liTp);
 
@@ -410,7 +414,7 @@ function remplirTp(matieretp) {
                     listV.textContent = 'X';
                     listV.className = 'ciao';
                     listV.style.color = 'red';
-                    listV.id = "tp" + data.idTps + data.matiere;
+                    listV.id = "tpnonvalide" + data.idTps + data.matiere;
                     ul.appendChild(listV);
                     document.getElementById(listV.id).addEventListener('click', () => {
                         console.log('Modification X');
@@ -421,7 +425,7 @@ function remplirTp(matieretp) {
                     listX.textContent = 'V';
                     listX.className = 'ciao';
                     listX.style.color = 'green';
-                    listX.id = "tp" + data.idTps + data.matiere;
+                    listX.id = "tpvalide" + data.idTps + data.matiere;
                     ul.appendChild(listX);
                     document.getElementById(listX.id).addEventListener('click', () => {
                         console.log('Modification V');
