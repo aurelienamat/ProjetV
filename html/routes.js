@@ -114,6 +114,23 @@ function affichage() {
         });
 }
 
+function avancement(av,id){
+    fetch('/avancement', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            avancement: av, // On peut changer ce status selon le besoin
+            idTps: id
+        })
+    }).then(response => response.json())
+    .then(data => {
+        console.log(data);
+        localStorage.setItem('avancement',JSON.stringify(data));
+        remplirAvancement(labelsArray);
+    })
+}
 
 // ROUTE CRÉATION DE TICKET =============================================================
 // Bouton "Create" dans la page Ticket
@@ -132,35 +149,6 @@ btnCreateTicket.addEventListener('click', () => {
 
     modifierTicket(tp.value, 'encoursdevalidation', localStorage.getItem('idUsers'));
 
-    // fetch('/modifierStatus', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         status: 'encoursdevalidation',
-    //         idUsers: localStorage.getItem('idUsers'),
-    //         idTps: tp.value // L'id du TP sélectionné
-    //     })
-    // })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if (data.message) {
-    //             console.log('Erreur création ticket : ' + data.message);
-    //         } else {
-    //             console.log('Ticket créé avec succès : ', data);
-
-    //             // Mise à jour du localStorage après confirmation du serveur
-    //             dataLocal = JSON.parse(localStorage.getItem('data'));
-    //             dataLocal.forEach(tp => {
-    //                 if (tp.idTps == data.idTps) {
-    //                     tp.status = data.status;
-    //                 }
-    //             });
-    //             localStorage.setItem('data', JSON.stringify(dataLocal));
-    //             remplirTicket();
-    //         }
-    //     });
 });
 
 // ROUTE MODIFICATION DE TICKET ==========================================================

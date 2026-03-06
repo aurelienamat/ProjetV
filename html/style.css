@@ -403,7 +403,7 @@ header>#nav-computer>ul>li:hover {
     margin: auto;
     background: var(--bg-container);
     padding: 3rem 2.5rem;
-    border-radius: var(--radius);
+    border-radius: 12px;
     box-shadow: var(--shadow);
     width: 100%;
     max-width: 420px;
@@ -440,14 +440,15 @@ header>#nav-computer>ul>li:hover {
 
 .form-group {
     margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 }
 
-/* Champs d'inscription cachés par défaut */
 .signupField {
     display: none;
 }
 
-/* Quand les champs deviennent visibles (géré par JS) */
 .signup-field.active {
     display: block;
 }
@@ -458,7 +459,7 @@ header>#nav-computer>ul>li:hover {
     border: 2px solid var(--gray-200);
     border-radius: 8px;
     font-size: 1rem;
-    transition: var(--transition);
+    transition: border-color 0.2s;
     background: var(--bg-container);
     color: var(--text-primary);
 }
@@ -466,8 +467,6 @@ header>#nav-computer>ul>li:hover {
 .form-group input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-lighter);
-    opacity: 0.2;
 }
 
 .form-group input::placeholder {
@@ -484,22 +483,19 @@ header>#nav-computer>ul>li:hover {
 .btn-primary {
     width: 100%;
     padding: 0.875rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    background: var(--primary);
     color: var(--text-inverse);
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 4px 12px var(--primary);
-    opacity: 0.3;
+    transition: background 0.2s, transform 0.15s;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--primary);
-    opacity: 0.4;
+    background: var(--primary-light);
+    transform: translateY(-1px);
 }
 
 .btn-primary:active {
@@ -507,6 +503,10 @@ header>#nav-computer>ul>li:hover {
 }
 
 .btnInscription {
+    width: 100%;
+}
+
+.btnInscription input {
     width: 100%;
     padding: 0.875rem;
     background: transparent;
@@ -516,17 +516,30 @@ header>#nav-computer>ul>li:hover {
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
+    transition: color 0.2s;
     text-align: center;
 }
 
-.btnInscription:hover {
+.btnInscription input:hover {
     color: var(--primary);
     text-decoration: underline;
 }
 
+/* @media (max-width: 480px) {
+    .loginContainer {
+        padding: 2rem 1.5rem;
+    }
+
+    #form-title {
+        font-size: 1.5rem;
+    }
+
+    .login-logo img {
+        width: 60px;
+    }
+} */
 /* ===== AVANCEMENT CONTAINER ===== */
-#containeur-avancement {
+#containeur-avancement-graph {
     width: 80%;
     height: 80vh;
 }
@@ -537,6 +550,119 @@ header>#nav-computer>ul>li:hover {
     border-radius: var(--radius);
     padding: 20px;
     box-shadow: var(--shadow);
+}
+
+/* ===== AVANCEMENT CONTAINER ===== */
+#container-avancement {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 2rem;
+}
+
+.div-av {
+    flex: 1 1 250px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    background: var(--bg-container);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.div-av > h2 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--gray-200);
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+}
+
+.div-av > ul {
+    list-style: none;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.div-av > ul > li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.div-av > ul > li:last-child {
+    border-bottom: none;
+}
+
+/* TP à faire : lightgreen → vert doux */
+.div-av > ul > li[style*="lightgreen"] {
+    background-color: #dcfce7 !important;
+    border-left: 3px solid var(--success);
+}
+
+/* TP pas à faire : lightgrey → gris neutre */
+.div-av > ul > li[style*="lightgrey"] {
+    background-color: var(--gray-200) !important;
+    border-left: 3px solid var(--gray-400);
+    opacity: 0.6;
+}
+
+.div-av > ul > li > ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.av {
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+/* Enlever */
+.av[id^="Enlever"] {
+    color: var(--danger) !important;
+    border: 1px solid var(--danger);
+}
+
+.av[id^="Enlever"]:hover {
+    background-color: var(--danger);
+    color: var(--text-inverse) !important;
+    transform: translateY(-1px);
+}
+
+/* Ajouter */
+.av[id^="ajouter"] {
+    color: var(--success) !important;
+    border: 1px solid var(--success);
+}
+
+.av[id^="ajouter"]:hover {
+    background-color: var(--success);
+    color: var(--text-inverse) !important;
+    transform: translateY(-1px);
 }
 
 /* ===== COMMUN ===== */

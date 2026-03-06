@@ -75,27 +75,24 @@ btnTp.addEventListener('click', () => {
 btnAvancement.addEventListener('click', () => {
     localStorage.setItem('page', 'avancement');
     location.reload();
-    if (avcontaineur.style.display == 'flex') {
-        location.reload();
+
+    ticketContainerEnseignant.style.display = 'none';
+    ticketContainer.style.display = 'none';
+    btnTicket.classList.remove('herder-select');
+
+    loginContainer.style.display = 'none';
+    btnConnexionInscription.classList.remove('herder-select');
+
+    tpcontainer.style.display = 'none';
+    btnTp.classList.remove('herder-select');
+
+    if (localStorage.getItem('classe') == 'enseignant') {
+        avContaineurEnseignant.style.display = 'flex';
     } else {
-        ticketContainerEnseignant.style.display = 'none';
-        ticketContainer.style.display = 'none';
-        btnTicket.classList.remove('herder-select');
-
-        loginContainer.style.display = 'none';
-        btnConnexionInscription.classList.remove('herder-select');
-
-        tpcontainer.style.display = 'none';
-        btnTp.classList.remove('herder-select');
-
-        if (localStorage.getItem('classe') == 'enseignant') {
-
-        } else {
-            avcontaineur.style.display = 'flex';
-        }
-        btnAvancement.classList.add('herder-select');
-
+        avcontaineur.style.display = 'flex';
     }
+    btnAvancement.classList.add('herder-select');
+
 });
 
 
@@ -132,11 +129,11 @@ window.onload = () => {
     //Choisir la bonne page
     if (localStorage.getItem('page') != null && localStorage.getItem('idUsers') != null) {
         affichage();
-        avancement();
+        graphAvancement();
         switch (localStorage.getItem('page')) {
             case "avancement":
                 if (localStorage.getItem('classe') == 'enseignant') {
-
+                    avancement('', '');
                 } else {
                     avcontaineur.style.display = 'flex';
                 }
@@ -375,9 +372,9 @@ function remplirTp(matieretp) {
                 liTp.innerHTML = data.tp;
                 if (data.avancement == 'pasafaire') {
                     liTp.style.backgroundColor = 'lightgrey';
-                }else if(data.status == 'valide'){
+                } else if (data.status == 'valide') {
                     liTp.style.backgroundColor = 'lightgreen';
-                }else if(data.status == 'nonvalide'){
+                } else if (data.status == 'nonvalide') {
                     liTp.style.backgroundColor = '#FF7F7F';
                 }
                 ulMat.appendChild(liTp);
@@ -437,5 +434,79 @@ function remplirTp(matieretp) {
             }
         })
         localStorage.setItem('data', JSON.stringify(dataLocal));
+    })
+}
+
+function remplirAvancement(matieretp) {
+    dataLocalAv = JSON.parse(localStorage.getItem('avancement'));
+
+    console.log(dataLocalAv);
+
+    const divTp = document.querySelectorAll('.div-av');
+    if (divTp != null) {
+        //console.log('Pas nul');
+        divTp.forEach(div => {
+            div.remove();
+        })
+    }
+
+    matieretp.forEach(mat => {
+        let divMat = document.createElement('div');
+        divMat.className = 'div-av';
+        avContaineurEnseignant.appendChild(divMat);
+
+        let h1Mat = document.createElement('h2');
+        h1Mat.innerHTML = mat;
+        divMat.appendChild(h1Mat);
+
+        let ulMat = document.createElement('ul');
+        divMat.appendChild(ulMat);
+
+        dataLocalAv.forEach(data => {
+            if (data.matiere == mat) {
+                let liTp = document.createElement('li');
+                liTp.innerHTML = data.nom;
+                if (data.avancement == 'pasafaire') {
+                    liTp.style.backgroundColor = 'lightgrey';
+                } else if (data.avancement == 'afaire') {
+                    liTp.style.backgroundColor = 'lightgreen';
+                }
+                ulMat.appendChild(liTp);
+
+                let ul = document.createElement('ul');
+                liTp.appendChild(ul);
+
+                if (data.avancement == 'afaire') {
+                    let listV = document.createElement('li');
+                    listV.textContent = "Enlever de l'avancement";
+                    listV.className = 'av';
+                    listV.style.color = 'red';
+                    listV.id = "Enlever" + data.id + data.matiere;
+                    ul.appendChild(listV);
+                    document.getElementById(listV.id).addEventListener('click', () => {
+                        console.log('Enlever de l avancement');
+                        avancement('pasafaire', data.id)
+                        dataLocalAv.avancement = 'pasafaire';
+                    })
+                } else {
+                    let listX = document.createElement('li');
+                    listX.textContent = "Ajouter à l'avancement";
+                    listX.className = 'av';
+                    listX.style.color = 'green';
+                    listX.id = "ajouter" + data.id + data.matiere;
+                    ul.appendChild(listX);
+                    document.getElementById(listX.id).addEventListener('click', () => {
+                        console.log('Ajouter à l avancement');
+                        avancement('afaire', data.id)
+                        dataLocalAv.avancement = 'afaire';
+                    })
+                }
+
+
+            }
+
+        }
+        )
+        localStorage.setItem('avancement', JSON.stringify(dataLocalAv));
     })
 }

@@ -3,10 +3,10 @@
 const loginContainer = document.querySelector('.loginContainer');
 const ticketContainer = document.getElementById('container-Ticket');
 const tpcontainer = document.getElementById('container-tp');
-const avcontaineur = document.getElementById('containeur-avancement');
+const avcontaineur = document.getElementById('containeur-avancement-graph');
 
 const ticketContainerEnseignant = document.getElementById('container-Ticket-enseignant');
-//const avContaineurEnseignant = document.getElementById('containeur-avancement-Enseignant');
+const avContaineurEnseignant = document.getElementById('container-avancement');
 
 // Boutons de navigation
 const btnConnexionInscription = document.getElementById('connexion-inscription');

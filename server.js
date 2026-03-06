@@ -113,10 +113,10 @@ app.post('/connexion', (req, res) => {
           isEnseignant(resultat.id, function (classe) {
             if (classe == 'enseignant') {
               console.log('enseignant')
-              res.json({ classe: 'enseignant' , idUsers : resultat.id});
+              res.json({ classe: 'enseignant', idUsers: resultat.id });
             } else if (classe == 'ciel1' || classe == 'ciel2') {
               console.log('Eleve');
-              res.json({ classe: 'Eleve' , idUsers : resultat.id});
+              res.json({ classe: 'Eleve', idUsers: resultat.id });
             } else {
               console.log('err');
               res.json({ classe: 'Aucune classe' });
@@ -223,7 +223,7 @@ app.post('/affichage', (req, res) => {
 })
 
 //AVANCEMENT
-app.post('/avancement', (req, res) => {
+app.post('/graphAvancement', (req, res) => {
   connection.query(
     //New requette avec ajout du nombre de tp valide hors avancement
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = 2  GROUP BY matiere
@@ -232,8 +232,8 @@ app.post('/avancement', (req, res) => {
     "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ?  GROUP BY matiere",
     [req.body.idUsers], (err, results) => {
       if (err) {
-        console.log('Erreur avancement');
-        res.json({ message: 'Erreur avancement' });
+        console.log('Erreur graphAvancement');
+        res.json({ message: 'Erreur graphAvancement' });
         return;
       }
       if (results.length == 0) {
@@ -277,3 +277,36 @@ function isEnseignant(idUsers, callback) {
     }
   )
 }
+
+// AVANCEMENT GERER PAR LE PROF
+app.post('/avancement', (req, res) => {
+
+  if (req.body.avancement != '') {
+    connection.query(
+      "UPDATE tps SET avancement = ? WHERE id = ?",
+      [req.body.avancement, req.body.idTps], (err) => {
+        if (err) {
+          res.json({ message: 'Erreur update avancement ' + err });
+          return;
+        }
+        console.log('Update');
+      }
+    )
+  }
+
+  connection.query(
+    "SELECT id,nom,matiere,avancement FROM tps",
+    (err, results) => {
+      if (err) {
+        res.json({ message: 'Erreur select avancement ' + err });
+        return;
+      }
+      if(results.length == 0){
+        res.json({ message: 'Not find ' + err });
+        return;
+      }
+      res.json(results);
+    }
+  )
+
+})
