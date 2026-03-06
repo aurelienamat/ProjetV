@@ -74,6 +74,7 @@ btnTp.addEventListener('click', () => {
 // Page Avancement
 btnAvancement.addEventListener('click', () => {
     localStorage.setItem('page', 'avancement');
+        location.reload();
     if (avcontaineur.style.display == 'flex') {
         location.reload();
     } else {
@@ -272,6 +273,7 @@ function remplirTicket() {
                 document.getElementById(listX.id).addEventListener('click', () => {
                     console.log("Non Valide ");
                     modifierTicket(item.idTps, 'nonvalide', localStorage.getItem('idUsers'));
+                    dataLocal.status = 'nonvalide';
                 })
                 let listV = document.createElement('li');
                 listV.textContent = 'V';
@@ -282,6 +284,7 @@ function remplirTicket() {
                 document.getElementById(listV.id).addEventListener('click', () => {
                     console.log("valide ");
                     modifierTicket(item.idTps, 'valide', localStorage.getItem('idUsers'));
+                    dataLocal.status = 'valide';
                 })
 
             } else if (localStorage.getItem('classe') == 'enseignant') {
@@ -315,27 +318,94 @@ function remplirTicket() {
                 ul.appendChild(validation);
 
                 let listX = document.createElement('li');
-                listX.textContent = 'X';
-                listX.className = 'ciao';
+                listX.textContent = 'V';
+                listX.className = 'green';
                 listX.style.color = 'red';
                 listX.id = "valide" + item.idTps;
                 validation.appendChild(listX);
                 document.getElementById(listX.id).addEventListener('click', () => {
-                    console.log('Modification X');
+                    console.log('Modification V');
                     modifierTicket(item.idTps, 'valide', item.idUsers);
+                    dataLocal.status = 'valide';
                 })
                 let listV = document.createElement('li');
-                listV.textContent = 'V';
+                listV.textContent = 'X';
                 listV.className = 'ciao';
-                listV.style.color = 'green';
+                listV.style.color = 'red';
                 listV.id = "nonvalide" + item.idTps;
                 validation.appendChild(listV);
                 document.getElementById(listV.id).addEventListener('click', () => {
-                    console.log('Modification V');
+                    console.log('Modification X');
                     modifierTicket(item.idTps, 'nonvalide', item.idUsers);
+                    dataLocal.status = 'nonvalide';
                 })
             }
         })
+        localStorage.setItem('data', JSON.stringify(dataLocal));
 
     }
+}
+
+function remplirTp(matieretp) {
+    dataLocal = JSON.parse(localStorage.getItem('data'));
+
+    const divTp = document.querySelectorAll('.div-tp');
+    if (divTp != null) {
+        //console.log('Pas nul');
+        divTp.forEach(div => {
+            div.remove();
+        })
+    }
+
+    matieretp.forEach(mat => {
+        let divMat = document.createElement('div');
+        divMat.className = 'div-tp';
+        tpcontainer.appendChild(divMat);
+
+        let h1Mat = document.createElement('h2');
+        h1Mat.innerHTML = mat;
+        divMat.appendChild(h1Mat);
+
+        let ulMat = document.createElement('ul');
+        divMat.appendChild(ulMat);
+
+        dataLocal.forEach(data => {
+            if (data.matiere == mat) {
+                let liTp = document.createElement('li');
+                liTp.innerHTML = data.tp;
+                ulMat.appendChild(liTp);
+
+                let ul = document.createElement('ul');
+                liTp.appendChild(ul);
+
+                if (data.status == 'nonvalide') {
+                    let listX = document.createElement('li');
+                    listX.textContent = 'V';
+                    listX.className = 'ciao';
+                    listX.style.color = 'green';
+                    listX.id = "tp" + data.idTps + data.matiere;
+                    ul.appendChild(listX);
+                    document.getElementById(listX.id).addEventListener('click', () => {
+                        console.log('Modification V');
+                        modifierTicket(data.idTps, 'valide', localStorage.getItem('idUsers'));
+                        dataLocal.status = 'valide';
+                    })
+                } else if (data.status == 'valide') {
+                    let listV = document.createElement('li');
+                    listV.textContent = 'X';
+                    listV.className = 'ciao';
+                    listV.style.color = 'red';
+                    listV.id = "tp" + data.idTps + data.matiere;
+                    ul.appendChild(listV);
+                    document.getElementById(listV.id).addEventListener('click', () => {
+                        console.log('Modification X');
+                        modifierTicket(data.idTps, 'nonvalide', localStorage.getItem('idUsers'));
+                        dataLocal.status = 'nonvalide';
+                    })
+                }
+
+            }
+        })
+        localStorage.setItem('data', JSON.stringify(dataLocal));
+    })
 }

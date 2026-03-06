@@ -180,6 +180,7 @@ function modifierTicket(tp, nouveauStatus,userId) {
                 });
                 localStorage.setItem('data', JSON.stringify(dataLocal));
                 remplirTicket();
+                remplirTp(labelsArray);
             }
         });
 

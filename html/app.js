@@ -1,4 +1,3 @@
-
 //TEST CANVAS GRAPHIQUE
 const barCanvas = document.getElementById('convasAvancement');
 function avancement() {
@@ -11,7 +10,8 @@ function avancement() {
     }).then(response => response.json())
         .then(data => {
             // Préparer les données
-            const labelsArray = data.map(item => item.matiere);
+            labelsArray = data.map(item => item.matiere);
+            remplirTp(labelsArray);
             //console.log(labelsArray);
             const pourcentages = data.map(item => (item.nbValide / item.nbTp) * 100);
             //console.log(pourcentages);
