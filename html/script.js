@@ -440,7 +440,7 @@ function remplirTp(matieretp) {
 function remplirAvancement(matieretp) {
     dataLocalAv = JSON.parse(localStorage.getItem('avancement'));
 
-    console.log(dataLocalAv);
+    //console.log(dataLocalAv);
 
     const divTp = document.querySelectorAll('.div-av');
     if (divTp != null) {
@@ -485,8 +485,16 @@ function remplirAvancement(matieretp) {
                     ul.appendChild(listV);
                     document.getElementById(listV.id).addEventListener('click', () => {
                         console.log('Enlever de l avancement');
-                        avancement('pasafaire', data.id)
-                        dataLocalAv.avancement = 'pasafaire';
+                        avancement('pasafaire', data.id);
+                        dataLocalAv.forEach(datadata => {
+                            if(data.matiere == datadata.matiere){
+                                if(datadata.id > data.id){
+                                    //console.log(datadata.id);
+                                    //console.log(datadata.nom);
+                                    avancement('pasafaire', datadata.id);
+                                }
+                            }
+                        })
                     })
                 } else {
                     let listX = document.createElement('li');
@@ -497,8 +505,16 @@ function remplirAvancement(matieretp) {
                     ul.appendChild(listX);
                     document.getElementById(listX.id).addEventListener('click', () => {
                         console.log('Ajouter à l avancement');
-                        avancement('afaire', data.id)
-                        dataLocalAv.avancement = 'afaire';
+                        avancement('afaire', data.id);
+                        dataLocalAv.forEach(datadata => {
+                            if(data.matiere == datadata.matiere){
+                                if(datadata.id < data.id){
+                                    //console.log(datadata.id);
+                                    //console.log(datadata.nom);
+                                    avancement('afaire', datadata.id);
+                                }
+                            }
+                        })
                     })
                 }
 
@@ -507,6 +523,5 @@ function remplirAvancement(matieretp) {
 
         }
         )
-        localStorage.setItem('avancement', JSON.stringify(dataLocalAv));
     })
 }

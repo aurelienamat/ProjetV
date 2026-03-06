@@ -126,7 +126,7 @@ function avancement(av,id){
         })
     }).then(response => response.json())
     .then(data => {
-        console.log(data);
+        //console.log(data);
         localStorage.setItem('avancement',JSON.stringify(data));
         remplirAvancement(labelsArray);
     })
