@@ -74,7 +74,7 @@ btnTp.addEventListener('click', () => {
 // Page Avancement
 btnAvancement.addEventListener('click', () => {
     localStorage.setItem('page', 'avancement');
-        location.reload();
+    location.reload();
     if (avcontaineur.style.display == 'flex') {
         location.reload();
     } else {
@@ -238,7 +238,7 @@ function remplirTicket() {
     } else {
 
         dataLocal.forEach(item => {
-            if (item.status == 'encoursdevalidation') {
+            if (item.status == 'encoursdevalidation' && localStorage.getItem('classe') == 'Eleve') {
                 //Création des éléements de base
                 let li = document.createElement('li');
                 li.className = 'ticket';
@@ -287,7 +287,7 @@ function remplirTicket() {
                     dataLocal.status = 'valide';
                 })
 
-            } else if (localStorage.getItem('classe') == 'enseignant') {
+            } else if (localStorage.getItem('classe') == 'enseignant' && item.status == 'encoursdevalidation') {
                 //Création des éléements de base
                 let li = document.createElement('li');
                 li.className = 'ticket';
@@ -319,8 +319,8 @@ function remplirTicket() {
 
                 let listX = document.createElement('li');
                 listX.textContent = 'V';
-                listX.className = 'green';
-                listX.style.color = 'red';
+                listX.className = 'ciao';
+                listX.style.color = 'green';
                 listX.id = "valide" + item.idTps;
                 validation.appendChild(listX);
                 document.getElementById(listX.id).addEventListener('click', () => {
@@ -373,6 +373,9 @@ function remplirTp(matieretp) {
             if (data.matiere == mat) {
                 let liTp = document.createElement('li');
                 liTp.innerHTML = data.tp;
+                if (data.avancement == 'pasafaire') {
+                    liTp.style.backgroundColor = 'lightgrey';
+                }
                 ulMat.appendChild(liTp);
 
                 let ul = document.createElement('ul');
@@ -401,6 +404,29 @@ function remplirTp(matieretp) {
                         console.log('Modification X');
                         modifierTicket(data.idTps, 'nonvalide', localStorage.getItem('idUsers'));
                         dataLocal.status = 'nonvalide';
+                    })
+                } else {
+                    let listV = document.createElement('li');
+                    listV.textContent = 'X';
+                    listV.className = 'ciao';
+                    listV.style.color = 'red';
+                    listV.id = "tp" + data.idTps + data.matiere;
+                    ul.appendChild(listV);
+                    document.getElementById(listV.id).addEventListener('click', () => {
+                        console.log('Modification X');
+                        modifierTicket(data.idTps, 'nonvalide', localStorage.getItem('idUsers'));
+                        dataLocal.status = 'nonvalide';
+                    })
+                    let listX = document.createElement('li');
+                    listX.textContent = 'V';
+                    listX.className = 'ciao';
+                    listX.style.color = 'green';
+                    listX.id = "tp" + data.idTps + data.matiere;
+                    ul.appendChild(listX);
+                    document.getElementById(listX.id).addEventListener('click', () => {
+                        console.log('Modification V');
+                        modifierTicket(data.idTps, 'valide', localStorage.getItem('idUsers'));
+                        dataLocal.status = 'valide';
                     })
                 }
 

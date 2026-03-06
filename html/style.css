@@ -189,7 +189,7 @@ header>#nav-computer>ul>li:hover {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: 0.9rem;
     color: var(--text-primary);
     padding: 0.4rem 0;
@@ -202,11 +202,14 @@ header>#nav-computer>ul>li:hover {
 
 .div-tp > ul > li > ul {
     list-style: none;
+    display: flex;
+    flex-direction: row;
 }
 
 .div-tp > ul > li > ul > li {
     font-size: 0.85rem;
     font-weight: 700;
+    margin: 0 0.5rem;
 }
 /* ===== TICKER CONTAINER ===== */
 #container-Ticket {

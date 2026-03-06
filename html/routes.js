@@ -64,10 +64,23 @@ connexion.addEventListener('click', () => {
                 console.log('Connexion réussie, classe : ' + data.classe);
                 //Remplissage du local storage
                 localStorage.setItem('idUsers', data.idUsers);
-                localStorage.setItem('page', 'avancement');
+                localStorage.setItem('page', 'ticket');
                 localStorage.setItem('classe', data.classe);
+                affichage();
+
+                loginContainer.style.display = 'none';
+                btnConnexionInscription.classList.remove('herder-select');
+
+                if (localStorage.getItem('classe') == 'enseignant') {
+                    remplirTicket();
+                    ticketContainerEnseignant.style.display = 'flex';
+                } else {
+                    remplirMenuTicket();
+                    remplirTicket();
+                    ticketContainer.style.display = 'flex';
+                }
+                btnTicket.classList.add('herder-select');
             }
-            location.reload();
         })
 })
 
@@ -95,6 +108,8 @@ function affichage() {
                 // On sauvegarde les données dans le localStorage pour les réutiliser
                 localStorage.setItem('data', JSON.stringify(data));
                 console.log('Données affichage récupérées : ', data);
+                remplirMenuTicket();
+                remplirTicket();
             }
         });
 }
@@ -115,7 +130,7 @@ btnCreateTicket.addEventListener('click', () => {
         return;
     }
 
-    modifierTicket(tp.value,'encoursdevalidation',localStorage.getItem('idUsers'));
+    modifierTicket(tp.value, 'encoursdevalidation', localStorage.getItem('idUsers'));
 
     // fetch('/modifierStatus', {
     //     method: 'POST',
@@ -152,7 +167,7 @@ btnCreateTicket.addEventListener('click', () => {
 // envoie status, idUsers et idTps en POST sur /modifierStatus
 // Le serveur renvoie le nouveau status et l'idTps pour mettre à jour le localStorage
 
-function modifierTicket(tp, nouveauStatus,userId) {
+function modifierTicket(tp, nouveauStatus, userId) {
     fetch('/modifierStatus', {
         method: 'POST',
         headers: {
