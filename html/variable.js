@@ -10,6 +10,7 @@ const avContaineurEnseignant = document.getElementById('container-avancement');
 
 // Boutons de navigation
 const btnConnexionInscription = document.getElementById('connexion-inscription');
+var btnDeco = document.getElementById('deconnexion');
 const btnTicket = document.getElementById('btn-Ticket');
 const btnTp = document.getElementById('btn-Tp');
 const btnAvancement = document.getElementById('btn-Avancement');

@@ -12,7 +12,9 @@ function graphAvancement() {
             // Préparer les données
             labelsArray = data.map(item => item.matiere);
             if (localStorage.getItem('classe') == 'Eleve') {
-                remplirTp(labelsArray);
+                if (localStorage.getItem('data') != null) {
+                    remplirTp(labelsArray);
+                }
 
                 //console.log(labelsArray);
                 const pourcentages = data.map(item => (item.nbValide / item.nbTp) * 100);
@@ -257,7 +259,10 @@ function graphAvancement() {
                     }
                 });
             } else {
-                remplirAvancement(labelsArray);
+                if (localStorage.getItem('avancement') != null) {
+                    remplirAvancement(labelsArray);
+                }
             }
+
         });
 }

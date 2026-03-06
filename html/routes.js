@@ -66,17 +66,20 @@ connexion.addEventListener('click', () => {
                 localStorage.setItem('idUsers', data.idUsers);
                 localStorage.setItem('page', 'ticket');
                 localStorage.setItem('classe', data.classe);
+                graphAvancement();
                 affichage();
 
                 loginContainer.style.display = 'none';
                 btnConnexionInscription.classList.remove('herder-select');
 
+                btnConnexionInscription.innerHTML = 'Deconnexion';
+                btnConnexionInscription.id = 'deconnexion';
+
+
                 if (localStorage.getItem('classe') == 'enseignant') {
-                    remplirTicket();
+                    avancement('', '');
                     ticketContainerEnseignant.style.display = 'flex';
                 } else {
-                    remplirMenuTicket();
-                    remplirTicket();
                     ticketContainer.style.display = 'flex';
                 }
                 btnTicket.classList.add('herder-select');
@@ -108,13 +111,18 @@ function affichage() {
                 // On sauvegarde les données dans le localStorage pour les réutiliser
                 localStorage.setItem('data', JSON.stringify(data));
                 console.log('Données affichage récupérées : ', data);
-                remplirMenuTicket();
-                remplirTicket();
+                if (localStorage.getItem('classe') == 'Eleve') {
+                    remplirMenuTicket();
+                    remplirTp(labelsArray);
+                    remplirTicket();
+                } else if (localStorage.getItem('classe') == 'enseignant') {
+                    remplirTicket();
+                }
             }
         });
 }
 
-function avancement(av,id){
+function avancement(av, id) {
     fetch('/avancement', {
         method: 'POST',
         headers: {
@@ -125,11 +133,12 @@ function avancement(av,id){
             idTps: id
         })
     }).then(response => response.json())
-    .then(data => {
-        //console.log(data);
-        localStorage.setItem('avancement',JSON.stringify(data));
-        remplirAvancement(labelsArray);
-    })
+        .then(data => {
+            //console.log(data);
+            localStorage.setItem('avancement', JSON.stringify(data));
+            graphAvancement();
+            remplirAvancement(labelsArray);
+        })
 }
 
 // ROUTE CRÉATION DE TICKET =============================================================

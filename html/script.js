@@ -3,23 +3,33 @@
 // Page Connexion
 btnConnexionInscription.addEventListener('click', () => {
     localStorage.setItem('page', 'login');
-    if (loginContainer.style.display == 'block') {
-        location.reload();
+    //Séparation déconnexion, connexion
+    btnDeco = document.getElementById('deconnexion');
+
+    if (btnDeco == null) {
+        if (loginContainer.style.display == 'block') {
+            location.reload();
+        } else {
+            ticketContainerEnseignant.style.display = 'none';
+            ticketContainer.style.display = 'none';
+            btnTicket.classList.remove('herder-select');
+
+            loginContainer.style.display = 'block';
+            btnConnexionInscription.classList.add('herder-select');
+
+            tpcontainer.style.display = 'none';
+            btnTp.classList.remove('herder-select');
+
+            avcontaineur.style.display = 'none';
+            avContaineurEnseignant.style.display = 'none';
+            btnAvancement.classList.remove('herder-select');
+
+        }
     } else {
-        ticketContainerEnseignant.style.display = 'none';
-        ticketContainer.style.display = 'none';
-        btnTicket.classList.remove('herder-select');
-
-        loginContainer.style.display = 'block';
-        btnConnexionInscription.classList.add('herder-select');
-
-        tpcontainer.style.display = 'none';
-        btnTp.classList.remove('herder-select');
-
-        avcontaineur.style.display = 'none';
-        btnAvancement.classList.remove('herder-select');
-
+        deco();
+        location.reload();
     }
+
 });
 
 // Page Ticket
@@ -45,6 +55,7 @@ btnTicket.addEventListener('click', () => {
         btnTp.classList.remove('herder-select');
 
         avcontaineur.style.display = 'none';
+        avContaineurEnseignant.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
     }
 });
@@ -66,6 +77,7 @@ btnTp.addEventListener('click', () => {
         btnTicket.classList.remove('herder-select');
 
         avcontaineur.style.display = 'none';
+        avContaineurEnseignant.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
 
     }
@@ -74,7 +86,13 @@ btnTp.addEventListener('click', () => {
 // Page Avancement
 btnAvancement.addEventListener('click', () => {
     localStorage.setItem('page', 'avancement');
-    location.reload();
+
+    if (localStorage.getItem('classe') == 'enseignant') {
+        avContaineurEnseignant.style.display = 'flex';
+    } else {
+        avcontaineur.style.display = 'flex';
+        location.reload();
+    }
 
     ticketContainerEnseignant.style.display = 'none';
     ticketContainer.style.display = 'none';
@@ -86,11 +104,7 @@ btnAvancement.addEventListener('click', () => {
     tpcontainer.style.display = 'none';
     btnTp.classList.remove('herder-select');
 
-    if (localStorage.getItem('classe') == 'enseignant') {
-        avContaineurEnseignant.style.display = 'flex';
-    } else {
-        avcontaineur.style.display = 'flex';
-    }
+
     btnAvancement.classList.add('herder-select');
 
 });
@@ -125,15 +139,34 @@ window.onload = () => {
     avcontaineur.style.display = 'none';
 
     ticketContainerEnseignant.style.display = 'none';
+    avContaineurEnseignant.style.display = 'none';
+
+    if (localStorage.getItem('idUsers') == null) {
+        localStorage.setItem('page', 'login');
+        loginContainer.style.display = 'block';
+        btnConnexionInscription.classList.add('herder-select');
+    } else {
+        btnConnexionInscription.innerHTML = 'Deconnexion';
+        btnConnexionInscription.id = 'deconnexion';
+        if (localStorage.getItem('classe') == 'enseignant') {
+            affichage();
+            avancement('', '');
+            console.log(labelsArray);
+            remplirAvancement(labelsArray);
+            console.log("ENSEINEINENI");
+        } else if (localStorage.getItem('classe') == 'Eleve') {
+            affichage();
+            graphAvancement();
+        }
+    }
 
     //Choisir la bonne page
     if (localStorage.getItem('page') != null && localStorage.getItem('idUsers') != null) {
-        affichage();
-        graphAvancement();
         switch (localStorage.getItem('page')) {
             case "avancement":
                 if (localStorage.getItem('classe') == 'enseignant') {
                     avancement('', '');
+                    avContaineurEnseignant.style.display = 'flex';
                 } else {
                     avcontaineur.style.display = 'flex';
                 }
@@ -169,7 +202,7 @@ window.onload = () => {
 
 // bouton deroulant choix matiere/tp---------------------------------------------------------------
 
-function remplirMenuTicket() {
+function remplirMenuTicket() { //remplir option coté eleve
     dataLocal = JSON.parse(localStorage.getItem('data'));
     if (dataLocal == null) {
         console.log('Pas de données dans le localStorage');
@@ -217,7 +250,7 @@ function remplirMenuTicket() {
     });
 }
 
-function remplirTicket() {
+function remplirTicket() { //Remplir ticket coté prof ET eleve
     console.log("Remplit");
     const ticket = document.querySelectorAll('.ticket');
     if (ticket != null) {
@@ -487,8 +520,8 @@ function remplirAvancement(matieretp) {
                         console.log('Enlever de l avancement');
                         avancement('pasafaire', data.id);
                         dataLocalAv.forEach(datadata => {
-                            if(data.matiere == datadata.matiere){
-                                if(datadata.id > data.id){
+                            if (data.matiere == datadata.matiere) {
+                                if (datadata.id > data.id) {
                                     //console.log(datadata.id);
                                     //console.log(datadata.nom);
                                     avancement('pasafaire', datadata.id);
@@ -507,8 +540,8 @@ function remplirAvancement(matieretp) {
                         console.log('Ajouter à l avancement');
                         avancement('afaire', data.id);
                         dataLocalAv.forEach(datadata => {
-                            if(data.matiere == datadata.matiere){
-                                if(datadata.id < data.id){
+                            if (data.matiere == datadata.matiere) {
+                                if (datadata.id < data.id) {
                                     //console.log(datadata.id);
                                     //console.log(datadata.nom);
                                     avancement('afaire', datadata.id);
@@ -524,4 +557,8 @@ function remplirAvancement(matieretp) {
         }
         )
     })
+}
+
+function deco() {
+    localStorage.clear();
 }

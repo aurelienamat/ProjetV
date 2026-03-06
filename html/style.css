@@ -133,7 +133,12 @@ header>#nav-computer>ul>li:hover {
     border-radius: 4px;
     padding: 0 1rem;
 }
-
+#deconnexion{
+    cursor: pointer;
+    height: 75% !important;
+    border-radius: 4px;
+    padding: 0 1rem;
+}
 .herder-select {
     color: var(--primary) !important;
     /* font-weight: 600 !important; */
@@ -165,7 +170,7 @@ header>#nav-computer>ul>li:hover {
     overflow: hidden;
 }
 
-.div-tp > h2 {
+.div-tp>h2 {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -177,7 +182,7 @@ header>#nav-computer>ul>li:hover {
     padding: 1rem;
 }
 
-.div-tp > ul {
+.div-tp>ul {
     list-style: none;
     padding: 0.75rem 1.25rem;
     display: flex;
@@ -185,7 +190,7 @@ header>#nav-computer>ul>li:hover {
     gap: 0.25rem;
 }
 
-.div-tp > ul > li {
+.div-tp>ul>li {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -196,21 +201,22 @@ header>#nav-computer>ul>li:hover {
     border-bottom: 1px solid var(--gray-200);
 }
 
-.div-tp > ul > li:last-child {
+.div-tp>ul>li:last-child {
     border-bottom: none;
 }
 
-.div-tp > ul > li > ul {
+.div-tp>ul>li>ul {
     list-style: none;
     display: flex;
     flex-direction: row;
 }
 
-.div-tp > ul > li > ul > li {
+.div-tp>ul>li>ul>li {
     font-size: 0.85rem;
     font-weight: 700;
     margin: 0 0.5rem;
 }
+
 /* ===== TICKER CONTAINER ===== */
 #container-Ticket {
     width: 100%;
@@ -220,7 +226,8 @@ header>#nav-computer>ul>li:hover {
     flex-wrap: wrap;
     gap: 20px;
 }
-#container-Ticket-enseignant{
+
+#container-Ticket-enseignant {
     width: 100%;
     height: 100%;
     display: flex;
@@ -246,7 +253,7 @@ header>#nav-computer>ul>li:hover {
     box-shadow: var(--shadow-sm);
 }
 
-#container-create-ticket > h1 {
+#container-create-ticket>h1 {
     font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -266,7 +273,7 @@ header>#nav-computer>ul>li:hover {
     gap: 1.25rem;
 }
 
-#container-create > li {
+#container-create>li {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -345,6 +352,7 @@ header>#nav-computer>ul>li:hover {
     list-style: none;
     gap: 0.5rem;
 }
+
 #container-list-enseignant {
     width: 90%;
     height: 100%;
@@ -354,7 +362,7 @@ header>#nav-computer>ul>li:hover {
     gap: 0.5rem;
 }
 
-#container-list > li {
+#container-list>li {
     width: 100%;
 }
 
@@ -386,7 +394,7 @@ header>#nav-computer>ul>li:hover {
     background: #f5f5f5;
 }
 
-.list-Ticket > li {
+.list-Ticket>li {
     width: 100%;
     font-size: 0.9rem;
     color: var(--text-primary);
@@ -395,9 +403,11 @@ header>#nav-computer>ul>li:hover {
     justify-content: space-around;
     flex-direction: row;
 }
-.ciao{
+
+.ciao {
     cursor: pointer;
 }
+
 /* ===== LOGIN CONTAINER ===== */
 .loginContainer {
     margin: auto;
@@ -575,7 +585,7 @@ header>#nav-computer>ul>li:hover {
     overflow: hidden;
 }
 
-.div-av > h2 {
+.div-av>h2 {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -587,7 +597,7 @@ header>#nav-computer>ul>li:hover {
     padding: 1rem;
 }
 
-.div-av > ul {
+.div-av>ul {
     list-style: none;
     padding: 0.75rem 1.25rem;
     display: flex;
@@ -595,7 +605,7 @@ header>#nav-computer>ul>li:hover {
     gap: 0.4rem;
 }
 
-.div-av > ul > li {
+.div-av>ul>li {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -608,24 +618,24 @@ header>#nav-computer>ul>li:hover {
     border-bottom: 1px solid var(--gray-200);
 }
 
-.div-av > ul > li:last-child {
+.div-av>ul>li:last-child {
     border-bottom: none;
 }
 
 /* TP à faire : lightgreen → vert doux */
-.div-av > ul > li[style*="lightgreen"] {
+.div-av>ul>li[style*="lightgreen"] {
     background-color: #dcfce7 !important;
     border-left: 3px solid var(--success);
 }
 
 /* TP pas à faire : lightgrey → gris neutre */
-.div-av > ul > li[style*="lightgrey"] {
+.div-av>ul>li[style*="lightgrey"] {
     background-color: var(--gray-200) !important;
     border-left: 3px solid var(--gray-400);
     opacity: 0.6;
 }
 
-.div-av > ul > li > ul {
+.div-av>ul>li>ul {
     list-style: none;
     display: flex;
     flex-direction: row;
@@ -744,6 +754,7 @@ header>#nav-computer>ul>li:hover {
     #connexion-inscription {
         cursor: pointer;
     }
+
 
     #navigation>li {
         cursor: pointer;
