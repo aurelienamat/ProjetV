@@ -386,7 +386,7 @@ function remplirTp(matieretp) {
                     listX.textContent = 'V';
                     listX.className = 'ciao';
                     listX.style.color = 'green';
-                    listX.id = "tp" + data.idTps + data.matiere;
+                    listX.id = "tpvalide" + data.idTps + data.matiere;
                     ul.appendChild(listX);
                     document.getElementById(listX.id).addEventListener('click', () => {
                         console.log('Modification V');
@@ -398,7 +398,7 @@ function remplirTp(matieretp) {
                     listV.textContent = 'X';
                     listV.className = 'ciao';
                     listV.style.color = 'red';
-                    listV.id = "tp" + data.idTps + data.matiere;
+                    listV.id = "tpnonvalide" + data.idTps + data.matiere;
                     ul.appendChild(listV);
                     document.getElementById(listV.id).addEventListener('click', () => {
                         console.log('Modification X');
