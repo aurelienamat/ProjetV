@@ -441,8 +441,9 @@ function remplirTp(matieretp) {
                 liTp.appendChild(ul);
 
                 if (data.status == 'nonvalide') {
-                    let listX = document.createElement('li');
-                    listX.textContent = 'V';
+                    let listX = document.createElement('input');
+                    listX.type = 'button';
+                    listX.value = 'V';
                     listX.className = 'ciao';
                     listX.style.color = 'green';
                     listX.id = "tpvalide" + data.idTps + data.matiere;
@@ -453,8 +454,9 @@ function remplirTp(matieretp) {
                         dataLocal.status = 'valide';
                     })
                 } else if (data.status == 'valide') {
-                    let listV = document.createElement('li');
-                    listV.textContent = 'X';
+                    let listV = document.createElement('input');
+                    listV.type = 'button';
+                    listV.value = 'X';
                     listV.className = 'ciao';
                     listV.style.color = 'red';
                     listV.id = "tpnonvalide" + data.idTps + data.matiere;
@@ -465,8 +467,9 @@ function remplirTp(matieretp) {
                         dataLocal.status = 'nonvalide';
                     })
                 } else {
-                    let listV = document.createElement('li');
-                    listV.textContent = 'X';
+                    let listV = document.createElement('input');
+                    listV.type = 'button';
+                    listV.value = 'X';
                     listV.className = 'ciao';
                     listV.style.color = 'red';
                     listV.id = "tpnonvalide" + data.idTps + data.matiere;
@@ -476,8 +479,9 @@ function remplirTp(matieretp) {
                         modifierTicket(data.idTps, 'nonvalide', localStorage.getItem('idUsers'));
                         dataLocal.status = 'nonvalide';
                     })
-                    let listX = document.createElement('li');
-                    listX.textContent = 'V';
+                    let listX = document.createElement('input');
+                    listX.type = 'button';
+                    listX.value = 'V';
                     listX.className = 'ciao';
                     listX.style.color = 'green';
                     listX.id = "tpvalide" + data.idTps + data.matiere;

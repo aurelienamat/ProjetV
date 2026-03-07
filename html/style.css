@@ -30,6 +30,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
 }
 
 /* ===== BASE ===== */
@@ -147,7 +148,6 @@ header>#nav-computer>ul>li:hover {
 }
 
 /* ===== TP CONTAINER ===== */
-/* ===== TP CONTAINER ===== */
 #container-tp {
     width: 100%;
     height: 100%;
@@ -170,7 +170,7 @@ header>#nav-computer>ul>li:hover {
     overflow: hidden;
 }
 
-.div-tp>h2 {
+.div-tp > h2 {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -182,7 +182,7 @@ header>#nav-computer>ul>li:hover {
     padding: 1rem;
 }
 
-.div-tp>ul {
+.div-tp > ul {
     list-style: none;
     padding: 0.75rem 1.25rem;
     display: flex;
@@ -190,7 +190,7 @@ header>#nav-computer>ul>li:hover {
     gap: 0.25rem;
 }
 
-.div-tp>ul>li {
+.div-tp > ul > li {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -201,21 +201,49 @@ header>#nav-computer>ul>li:hover {
     border-bottom: 1px solid var(--gray-200);
 }
 
-.div-tp>ul>li:last-child {
+.div-tp > ul > li:last-child {
     border-bottom: none;
 }
 
-.div-tp>ul>li>ul {
+.div-tp > ul > li > ul {
     list-style: none;
     display: flex;
     flex-direction: row;
+    gap: 0.25rem;
 }
 
-.div-tp>ul>li>ul>li {
+.ciao {
+    cursor: pointer;
     font-size: 0.85rem;
     font-weight: 700;
-    margin: 0 0.5rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background: transparent;
+    transition: background 0.2s, transform 0.15s;
 }
+
+.ciao[id^="tpnonvalide"] {
+    color: var(--danger);
+    /* border-color: var(--danger); */
+}
+
+/* .ciao[id^="tpnonvalide"]:hover {
+    background: var(--danger);
+    color: var(--text-inverse);
+    transform: translateY(-1px);
+} */
+
+.ciao[id^="tpvalide"] {
+    color: var(--success);
+    /* border-color: var(--success); */
+}
+
+/* .ciao[id^="tpvalide"]:hover {
+    background: var(--success);
+    color: var(--text-inverse);
+    transform: translateY(-1px);
+} */
 
 /* ===== TICKER CONTAINER ===== */
 #container-Ticket {
@@ -406,6 +434,7 @@ header>#nav-computer>ul>li:hover {
 
 .ciao {
     cursor: pointer;
+    height: 100%;
 }
 
 /* ===== LOGIN CONTAINER ===== */
