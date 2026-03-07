@@ -11,7 +11,7 @@ function graphAvancement() {
         .then(data => {
             // Préparer les données
             labelsArray = data.map(item => item.matiere);
-            if (localStorage.getItem('classe') == 'Eleve') {
+            if (localStorage.getItem('classe') == 'ciel1' || localStorage.getItem('classe') == 'ciel2') {
                 if (localStorage.getItem('data') != null) {
                     remplirTp(labelsArray);
                 }

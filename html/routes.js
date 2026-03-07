@@ -57,11 +57,11 @@ connexion.addEventListener('click', () => {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.message) { // Connexion échouée
+            if (data.message == 'connexion echoué') { // Connexion échouée
                 alert(data.message);
                 console.log(data.message);
             } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
-                console.log('Connexion réussie, classe : ' + data.classe);
+                //console.log('Connexion réussie, classe : ' + data.classe);
                 //Remplissage du local storage
                 localStorage.setItem('idUsers', data.idUsers);
                 localStorage.setItem('page', 'ticket');
@@ -76,7 +76,7 @@ connexion.addEventListener('click', () => {
                 btnConnexionInscription.id = 'deconnexion';
 
 
-                if (localStorage.getItem('classe') == 'enseignant') {
+                if (data.classe == 'enseignant') {
                     avancement('', '');
                     ticketContainerEnseignant.style.display = 'flex';
                 } else {
@@ -111,7 +111,7 @@ function affichage() {
                 // On sauvegarde les données dans le localStorage pour les réutiliser
                 localStorage.setItem('data', JSON.stringify(data));
                 console.log('Données affichage récupérées : ', data);
-                if (localStorage.getItem('classe') == 'Eleve') {
+                if (localStorage.getItem('classe') == 'ciel1' || localStorage.getItem('classe') == 'ciel2') {
                     remplirMenuTicket();
                     remplirTp(labelsArray);
                     remplirTicket();

@@ -26,8 +26,13 @@ btnConnexionInscription.addEventListener('click', () => {
 
         }
     } else {
-        deco();
-        location.reload();
+        //envoie vers la route pour se deco
+        //JavaScript n'a pas accès au cookie et ne peut pas le supprimer lui même a cause de httpOnly
+        fetch('/deconnexion', { method: 'POST' })
+            .then(() => {
+                deco();
+                location.reload();
+            })
     }
 
 });
@@ -57,6 +62,13 @@ btnTicket.addEventListener('click', () => {
         avcontaineur.style.display = 'none';
         avContaineurEnseignant.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
+
+        if (window.innerWidth < 900) {
+            navComputer.style.display = 'none';
+        } else {
+            navComputer.style.display = 'flex';
+        }
+
     }
 });
 
@@ -79,6 +91,12 @@ btnTp.addEventListener('click', () => {
         avcontaineur.style.display = 'none';
         avContaineurEnseignant.style.display = 'none';
         btnAvancement.classList.remove('herder-select');
+
+        if (window.innerWidth < 900) {
+            navComputer.style.display = 'none';
+        } else {
+            navComputer.style.display = 'flex';
+        }
 
     }
 });
@@ -106,6 +124,12 @@ btnAvancement.addEventListener('click', () => {
 
 
     btnAvancement.classList.add('herder-select');
+
+    if (window.innerWidth < 900) {
+        navComputer.style.display = 'none';
+    } else {
+        navComputer.style.display = 'flex';
+    }
 
 });
 
@@ -151,10 +175,10 @@ window.onload = () => {
         if (localStorage.getItem('classe') == 'enseignant') {
             affichage();
             avancement('', '');
-            console.log(labelsArray);
+            //console.log(labelsArray);
             remplirAvancement(labelsArray);
             console.log("ENSEINEINENI");
-        } else if (localStorage.getItem('classe') == 'Eleve') {
+        } else if (localStorage.getItem('classe') == 'ciel1' || localStorage.getItem('classe') == 'ciel2') {
             affichage();
             graphAvancement();
         }
@@ -203,6 +227,7 @@ window.onload = () => {
 // bouton deroulant choix matiere/tp---------------------------------------------------------------
 
 function remplirMenuTicket() { //remplir option coté eleve
+    console.log("Remplir menu ticket");
     dataLocal = JSON.parse(localStorage.getItem('data'));
     if (dataLocal == null) {
         console.log('Pas de données dans le localStorage');
@@ -268,7 +293,7 @@ function remplirTicket() { //Remplir ticket coté prof ET eleve
     } else {
 
         dataLocal.forEach(item => {
-            if (item.status == 'encoursdevalidation' && localStorage.getItem('classe') == 'Eleve') {
+            if (item.status == 'encoursdevalidation' && (localStorage.getItem('classe') == 'ciel1' || localStorage.getItem('classe') == 'ciel2')) {
                 //Création des éléements de base
                 let li = document.createElement('li');
                 li.className = 'ticket';

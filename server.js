@@ -1,8 +1,17 @@
+//.env
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt'); //POUR HASH
 const mysql = require('mysql2'); //Mysql
-require('dotenv').config();
+//Token
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+app.use(express.static('html')); //Selection du dossier html
+app.use(express.json()); //Sert a utiliser json
 
 //Connexion a la base de donner
 const connection = mysql.createConnection({
@@ -19,9 +28,6 @@ connection.connect((err) => {
   }
   console.log('Connecté à la base de données MySQL.');
 });
-
-app.use(express.static('html')); //Selection du dossier html
-app.use(express.json()); //Sert a utiliser json
 
 
 //Lire sur le port 3000
@@ -86,7 +92,7 @@ app.post('/connexion', (req, res) => {
 
   //Récupération password dans la base pour la comparaison
   connection.query(
-    'SELECT password,id FROM users WHERE email = ?',
+    'SELECT password,id,classe FROM users WHERE email = ?',
     [req.body.email], (err, results) => {
       if (err) {
         console.log("Erreur récupération email " + err);
@@ -97,7 +103,7 @@ app.post('/connexion', (req, res) => {
         res.json({ message: 'Identifiant ou mot de passe invalides' });
         return;
       }
-      console.log(results[0]);
+      //console.log(results[0]);
       //res.json({ message: 'Email trouvé' });
       let resultat = results[0];
       bcrypt.compare(req.body.password, resultat.password, (err, results) => {
@@ -107,21 +113,38 @@ app.post('/connexion', (req, res) => {
           return;
         }
         if (results) {
-          console.log('Connexion réussi');
+          console.log('Connexion réussi id : ' + resultat.id);
+
+          //Creation du token
+          const token = jwt.sign(
+            { id: resultat.id, classe: resultat.classe },
+            process.env.JWT_SECRET,
+            { expiresIn: '30d' }
+          );
+
+          res.cookie('token', token, {
+            httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
+            secure: false, // force le cookie à passer uniquement en HTTPS si true
+            sameSite: 'strict', //protège contre les attaques CSRF.
+            maxAge: 30 * 60 * 60 * 1000
+          })
+
+          res.json({ message: "connexion reussi", classe: resultat.classe, idUsers: resultat.id });
+
           // res.json({ id: resultat.id });
 
-          isEnseignant(resultat.id, function (classe) {
-            if (classe == 'enseignant') {
-              console.log('enseignant')
-              res.json({ classe: 'enseignant', idUsers: resultat.id });
-            } else if (classe == 'ciel1' || classe == 'ciel2') {
-              console.log('Eleve');
-              res.json({ classe: 'Eleve', idUsers: resultat.id });
-            } else {
-              console.log('err');
-              res.json({ classe: 'Aucune classe' });
-            }
-          })
+          // isEnseignant(resultat.id, function (classe) {
+          //   if (classe == 'enseignant') {
+          //     console.log('enseignant')
+          //     res.json({ classe: 'enseignant', idUsers: resultat.id });
+          //   } else if (classe == 'ciel1' || classe == 'ciel2') {
+          //     console.log('Eleve');
+          //     res.json({ classe: 'Eleve', idUsers: resultat.id });
+          //   } else {
+          //     console.log('err');
+          //     res.json({ classe: 'Aucune classe' });
+          //   }
+          // })
 
         } else {
           res.json({ message: 'connexion echoué' });
@@ -132,98 +155,145 @@ app.post('/connexion', (req, res) => {
   )
 })
 
+app.post('/deconnexion', verifToken,(req, res) => {
+  console.log("l'id " + req.user.id + " se déco");
+  res.clearCookie('token');
+  res.json({ message: 'Déconnecté' });
+});
 
 //Modifier TP
-app.post('/modifierStatus', (req, res) => {
-  console.log(req.body);
-  connection.query(
-    "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ?;",
-    [req.body.status, req.body.idTps, req.body.idUsers], (err, results) => {
-      if (err) {
-        console.log("Erreur " + err);
-        return;
-      }
-      if (results) {
-        console.log("Changement effectué ");
-        //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
-        //Juste pour vérifier si le changement a bien été effectué
-        connection.query(
-          "SELECT status,idTps FROM status WHERE idTps = ? AND idUsers = ?;",
-          [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {
-            if (err) {
-              console.log("Erreur select" + err);
-              res.json({ message: "Erreur" });
-              return;
+app.post('/modifierStatus', verifToken, (req, res) => {
+  //console.log(req.body);
+
+  //Protection pour que seul l'enseignant peut modifier les tps des autres
+  if (req.user.classe != 'enseignant') {
+    connection.query(
+      "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ?;",
+      [req.body.status, req.body.idTps, req.user.id], (err, results) => {//L'eleve ne peut modifier que ses tps
+        if (err) {
+          console.log("Erreur " + err);
+          return;
+        }
+        if (results) {
+          console.log("Changement effectué ");
+          //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
+          //Juste pour vérifier si le changement a bien été effectué
+          connection.query(
+            "SELECT status,idTps FROM status WHERE idTps = ? AND idUsers = ?;",
+            [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {
+              if (err) {
+                console.log("Erreur select" + err);
+                res.json({ message: "Erreur" });
+                return;
+              }
+              if (resultsSelect.length == null) {
+                console.log("Not found");
+                res.json({ message: "Pas trouvé" });
+                return;
+              } else {
+                console.log(resultsSelect[0]);
+                res.json(resultsSelect[0]);
+              }
             }
-            if (resultsSelect.length == null) {
-              console.log("Not found");
-              res.json({ message: "Pas trouvé" });
-              return;
-            } else {
-              console.log(resultsSelect[0]);
-              res.json(resultsSelect[0]);
-            }
-          }
-        )
-      } else {
-        console.log('Erreur changement' + results);
-        res.json({ message: 'Erreur changement' });
+          )
+        } else {
+          console.log('Erreur changement' + results);
+          res.json({ message: 'Erreur changement' });
+        }
       }
-    }
-  )
+    )
+  } else { //Si c'est un enseingnant alors il peut modifier les tps de tout le monde
+    connection.query(
+      "UPDATE status SET status = ? WHERE idTps = ? AND idUsers = ?;",
+      [req.body.status, req.body.idTps, req.body.idUsers], (err, results) => {//On en peut pas remplacer idUsers par req.user.id car l'enseingnant peut vvalier les tps des autres
+        if (err) {
+          console.log("Erreur " + err);
+          return;
+        }
+        if (results) {
+          console.log("Changement effectué ");
+          //SELECT status FROM status WHERE idTps = ? AND idUsers = ?;
+          //Juste pour vérifier si le changement a bien été effectué
+          connection.query(
+            "SELECT status,idTps FROM status WHERE idTps = ? AND idUsers = ?;",
+            [req.body.idTps, req.body.idUsers], (err, resultsSelect) => {
+              if (err) {
+                console.log("Erreur select" + err);
+                res.json({ message: "Erreur" });
+                return;
+              }
+              if (resultsSelect.length == null) {
+                console.log("Not found");
+                res.json({ message: "Pas trouvé" });
+                return;
+              } else {
+                console.log(resultsSelect[0]);
+                res.json(resultsSelect[0]);
+              }
+            }
+          )
+        } else {
+          console.log('Erreur changement' + results);
+          res.json({ message: 'Erreur changement' });
+        }
+      }
+    )
+  }
+
+
+
 })
 
 //AFFICHAGE
-app.post('/affichage', (req, res) => {
+app.post('/affichage', verifToken, (req, res) => {
   //Voir si enseignant qui demande
   //Récupere la classe de l'id qui demande
 
-  isEnseignant(req.body.id, function (classe) {
-    if (classe == 'enseignant') { //ENSEINGNANT
-      console.log('enseignant');
-      connection.query(
-        "SELECT users.nom,prenom,classe,tps.nom as tp,matiere,idTps,idUsers,status FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
-        [req.body.status], (err, results) => {
-          if (err) {
-            console.log('Erreur ' + err);
-            res.json({ message: 'Erreur affichage' });
-            return;
-          }
-          if (results.length == 0) {
-            console.log("Pas trouvé affichage " + results);
-            res.json({ message: 'Pas trouvé' });
-            return;
-          } else {
-            console.log('resultat enseingnant');
-            res.json(results);
-          }
+  if (req.user.classe == 'enseignant') { //ENSEINGNANT
+    //console.log('enseignant');
+    connection.query(
+      "SELECT users.nom,prenom,classe,tps.nom as tp,matiere,idTps,idUsers,status FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
+      [req.body.status], (err, results) => {
+        if (err) {
+          console.log('Erreur ' + err);
+          res.json({ message: 'Erreur affichage' });
+          return;
         }
-      )
-    } else if (classe == 'ciel1' || classe == 'ciel2') { //ELEVE
-      connection.query(
-        "SELECT tps.nom as tp,matiere,status,avancement,status.idTps,enseignant FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
-        [req.body.id], (err, results) => {
-          if (err) {
-            console.log('Erreur ' + err);
-            res.json({ message: 'Erreur affichage' });
-            return;
-          }
-          if (results.length == 0) {
-            console.log("Pas trouvé affichage " + results);
-            res.json({ message: 'Pas trouvé' });
-            return;
-          } else {
-            console.log('résultat eleve '); //+ JSON.stringify(results)
-            res.json(results);
-          }
+        if (results.length == 0) {
+          console.log("Pas trouvé affichage " + results);
+          res.json({ message: 'Pas trouvé' });
+          return;
+        } else {
+          console.log('resultat enseingnant');
+          res.json(results);
         }
-      )
-    }
-  })
+      }
+    )
+  } else if (req.user.classe == 'ciel1' || req.user.classe == 'ciel2') { //ELEVE
+    connection.query(
+      "SELECT tps.nom as tp,matiere,status,avancement,status.idTps,enseignant FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+      [req.body.id], (err, results) => {
+        if (err) {
+          console.log('Erreur ' + err);
+          res.json({ message: 'Erreur affichage' });
+          return;
+        }
+        if (results.length == 0) {
+          console.log("Pas trouvé affichage " + results);
+          res.json({ message: 'Pas trouvé' });
+          return;
+        } else {
+          console.log('résultat eleve '); //+ JSON.stringify(results)
+          res.json(results);
+        }
+      }
+    )
+  }
+
 })
 
 //AVANCEMENT
-app.post('/graphAvancement', (req, res) => {
+app.post('/graphAvancement', verifToken,(req, res) => {
   connection.query(
     //New requette avec ajout du nombre de tp valide hors avancement
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = 2  GROUP BY matiere
@@ -241,45 +311,14 @@ app.post('/graphAvancement', (req, res) => {
         res.json({ message: 'Resultat requette vide' });
         return;
       }
-      isEnseignant(req.body.idUsers, function (classe) {
-        if (classe == 'enseignant') {
-          console.log('enseignant');
-        } else if (classe == 'ciel1' || classe == 'ciel2') {
-          console.log('Eleve');
-        } else {
-          console.log('err');
-        }
-      })
       res.json(results);
     }
   )
 })
 
-function isEnseignant(idUsers, callback) {
-  console.log(idUsers);
-  connection.query(
-    "SELECT classe from status, users WHERE users.id = status.idUsers AND users.id = ?",
-    [idUsers], (err, resultat) => {
-      if (err) {
-        console.log('Erreur récupération classe ' + err);
-        callback('err');
-        return;
-      }
-      if (resultat.length == 0) {
-        console.log("Existe pas ");
-        callback(0);
-        return;
-      } else {
-        console.log(resultat[0].classe);
-        callback(resultat[0].classe);
-        return;
-      }
-    }
-  )
-}
 
 // AVANCEMENT GERER PAR LE PROF
-app.post('/avancement', (req, res) => {
+app.post('/avancement', verifToken, (req, res) => {
 
   if (req.body.avancement != '') {
     connection.query(
@@ -301,7 +340,7 @@ app.post('/avancement', (req, res) => {
         res.json({ message: 'Erreur select avancement ' + err });
         return;
       }
-      if(results.length == 0){
+      if (results.length == 0) {
         res.json({ message: 'Not find ' + err });
         return;
       }
@@ -310,3 +349,22 @@ app.post('/avancement', (req, res) => {
   )
 
 })
+
+//Verification token
+function verifToken(req, res, next) {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Non connecté' });
+  }
+
+  //test si le token est valide
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Token invalide ou expiré' });
+  }
+
+}
