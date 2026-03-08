@@ -436,7 +436,6 @@ header>#nav-computer>ul>li:hover {
     cursor: pointer;
     height: 100%;
 }
-
 /* ===== LOGIN CONTAINER ===== */
 .loginContainer {
     margin: auto;
@@ -512,6 +511,25 @@ header>#nav-computer>ul>li:hover {
     color: var(--gray-400);
 }
 
+.signupField select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+    margin-top: 0.4rem;
+}
+
+.signupField select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
 .login-actions {
     display: flex;
     flex-direction: column;
@@ -526,8 +544,8 @@ header>#nav-computer>ul>li:hover {
     color: var(--text-inverse) !important;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
     cursor: pointer;
     transition: background 0.2s, transform 0.15s;
 }
@@ -560,14 +578,34 @@ header>#nav-computer>ul>li:hover {
 }
 
 .btnInscription input:hover {
-    color: var(--primary);
+    color: var(--text-primary);
     text-decoration: underline;
 }
 
-.btnRetour{
-    display: none;
+.btnRetour {
+    width: 100%;
+    padding: 0.875rem;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
 }
-/* @media (max-width: 480px) {
+
+.btnRetour:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.btnRetour:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
     .loginContainer {
         padding: 2rem 1.5rem;
     }
@@ -579,7 +617,7 @@ header>#nav-computer>ul>li:hover {
     .login-logo img {
         width: 60px;
     }
-} */
+}
 /* ===== AVANCEMENT CONTAINER ===== */
 #containeur-avancement-graph {
     width: 80%;
