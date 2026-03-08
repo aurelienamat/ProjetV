@@ -77,6 +77,9 @@ connexion.addEventListener('click', () => {
                 console.log(data.message);
             } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
                 //console.log('Connexion réussie, classe : ' + data.classe);
+                btnAvancement.style.display = 'flex';
+                btnTicket.style.display = 'flex';
+                btnTp.style.display = 'flex';
                 //Remplissage du local storage
                 localStorage.setItem('idUsers', data.idUsers);
                 localStorage.setItem('page', 'ticket');

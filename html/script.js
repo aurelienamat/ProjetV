@@ -161,6 +161,9 @@ window.onload = () => {
         .then(data => {
             console.log('isConnect data : ' + data.message);
             if (data.message == 'Connecté') {
+                btnAvancement.style.display = 'flex';
+                btnTicket.style.display = 'flex';
+                btnTp.style.display = 'flex';
                 btnConnexionInscription.innerHTML = 'Deconnexion';
                 btnConnexionInscription.id = 'deconnexion';
                 if (data.classe == 'enseignant') {
@@ -177,6 +180,9 @@ window.onload = () => {
                 localStorage.setItem('page', 'login');
                 loginContainer.style.display = 'block';
                 btnConnexionInscription.classList.add('herder-select');
+                btnAvancement.style.display = 'none';
+                btnTicket.style.display = 'none';
+                btnTp.style.display = 'none';
             }
         })
 
