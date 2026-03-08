@@ -7,8 +7,12 @@
 btnInscription.addEventListener('click', () => {
 
     // Si les champs d'inscription sont cachés on les affiche d'abord
-    if (signupField.style.display !== 'block') {
+    if (signupField.style.display != 'block') {
         signupField.style.display = 'block';
+        btnInscription.classList.remove('btnInscription');
+        btnInscription.classList.add('btn-primary');
+        connexion.style.display = 'none';
+        btnRetour.style.display = 'block';
         return; // On arrête ici pour que l'utilisateur remplisse les champs
     }
 
@@ -33,12 +37,23 @@ btnInscription.addEventListener('click', () => {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.message) {
-                alert(data.message); // Ex: "Mot de passe invalide" ou "Inscription reussie !"
+            if (data.erreur) {
+                alert(data.erreur.sqlMessage); // Ex: "Mot de passe invalide" ou "Inscription reussie !"
+            } else {
+                alert(data.message);
             }
             console.log(data);
         });
 });
+
+//Retour
+btnRetour.addEventListener('click', () => {
+    signupField.style.display = 'none';
+    btnInscription.classList.add('btnInscription');
+    btnInscription.classList.remove('btn-primary');
+    connexion.style.display = 'block';
+    btnRetour.style.display = 'none';
+})
 
 // ROUTE CONNEXION ====================================================================
 // envoie email/password en POST sur /connexion

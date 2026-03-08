@@ -522,8 +522,8 @@ header>#nav-computer>ul>li:hover {
 .btn-primary {
     width: 100%;
     padding: 0.875rem;
-    background: var(--primary);
-    color: var(--text-inverse);
+    background: var(--primary) !important;
+    color: var(--text-inverse) !important;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -564,6 +564,9 @@ header>#nav-computer>ul>li:hover {
     text-decoration: underline;
 }
 
+.btnRetour{
+    display: none;
+}
 /* @media (max-width: 480px) {
     .loginContainer {
         padding: 2rem 1.5rem;

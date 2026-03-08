@@ -80,7 +80,12 @@ PAGE CONNEXION INSCRIPTION
             <div class="form-group signupField">
                 <input type="text" id="prenom" name="prenom" placeholder="Prénom" autocomplete="given-name">
                 <input type="text" id="nom" name="nom" placeholder="Nom" autocomplete="family-name">
-                <input type="text" id="classe" name="classe" placeholder="Classe">
+                <!-- <input type="text" id="classe" name="classe" placeholder="Classe"> -->
+                <select name="classe" id="classe">
+                    <option value="Classe">Choisir une classe</option>
+                    <option value="ciel1">ciel1</option>
+                    <option value="ciel2">ciel2</option>
+                </select>
             </div>
 
             <div class="login-actions">
@@ -90,6 +95,7 @@ PAGE CONNEXION INSCRIPTION
                 </div>
                 <!-- <button type="button" id="submit-btn" class="btnPrimary">Connexion</button> -->
                 <input type="button" value="Connexion" id="submit-btn" class="btn-primary">
+                <input type="button" value="Retour" id="retour" class="btnRetour">
             </div>
         </div>
     </main>

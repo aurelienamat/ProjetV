@@ -1,5 +1,4 @@
 // pages -------------------------------------------------------------------------------------------
-
 // Page Connexion
 btnConnexionInscription.addEventListener('click', () => {
     localStorage.setItem('page', 'login');
@@ -156,6 +155,31 @@ window.addEventListener('resize', () => {
 window.onload = () => {
     console.log('Samlut');
 
+    //Vérification pour savoir si l'utilisateur est connecté
+    fetch('/isConnect', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            console.log('isConnect data : ' + data.message);
+            if (data.message == 'Connecté') {
+                btnConnexionInscription.innerHTML = 'Deconnexion';
+                btnConnexionInscription.id = 'deconnexion';
+                if (data.classe == 'enseignant') {
+                    affichage();
+                    avancement('', '');
+                    //console.log(labelsArray);
+                    remplirAvancement(labelsArray);
+                    //console.log("ENSEINEINENI");
+                } else if (data.classe == 'ciel1' || data.classe == 'ciel2') {
+                    affichage();
+                    graphAvancement();
+                }
+            } else {
+                localStorage.setItem('page', 'login');
+                loginContainer.style.display = 'block';
+                btnConnexionInscription.classList.add('herder-select');
+            }
+        })
+
     //Mettre toutes les pages none
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
@@ -165,24 +189,7 @@ window.onload = () => {
     ticketContainerEnseignant.style.display = 'none';
     avContaineurEnseignant.style.display = 'none';
 
-    if (localStorage.getItem('idUsers') == null) {
-        localStorage.setItem('page', 'login');
-        loginContainer.style.display = 'block';
-        btnConnexionInscription.classList.add('herder-select');
-    } else {
-        btnConnexionInscription.innerHTML = 'Deconnexion';
-        btnConnexionInscription.id = 'deconnexion';
-        if (localStorage.getItem('classe') == 'enseignant') {
-            affichage();
-            avancement('', '');
-            //console.log(labelsArray);
-            remplirAvancement(labelsArray);
-            console.log("ENSEINEINENI");
-        } else if (localStorage.getItem('classe') == 'ciel1' || localStorage.getItem('classe') == 'ciel2') {
-            affichage();
-            graphAvancement();
-        }
-    }
+
 
     //Choisir la bonne page
     if (localStorage.getItem('page') != null && localStorage.getItem('idUsers') != null) {

@@ -25,6 +25,7 @@ const classe = document.getElementById('classe');
 // Boutons du formulaire
 const connexion = document.getElementById('submit-btn');
 const btnInscription = document.getElementById('btnInscription');
+const btnRetour = document.getElementById('retour');
 const signupField = document.querySelector('.signupField');
 
 

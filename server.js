@@ -68,14 +68,18 @@ app.post('/inscription', (req, res) => {
   //Hachage mot de passe 
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
+      if(req.body.classe != 'ciel1' && req.body.classe != 'ciel2' ){
+        res.json({message : 'err classe inconnu'});
+        return;
+      }
       //Insertion dans la base
       connection.query(
         'INSERT INTO users(nom,prenom,email,password,classe) VALUES(?,?,?,?,?)',
         [req.body.nom, req.body.prenom, req.body.email, hash, req.body.classe],
         (err, results) => {
           if (err) {
-            console.log('Erreur Insertion dans la base' + err);
-            res.status(500).json({ mesage: 'Erreur serveur' });
+            console.log('Erreur Insertion dans la base ' + err);
+            res.status(500).json({ message: 'Erreur bdd insertion' , erreur : err});
             return;
           }
           console.log('Insertion réussi');
@@ -85,6 +89,8 @@ app.post('/inscription', (req, res) => {
     })
 
 })
+
+
 
 //CONNEXION
 app.post('/connexion', (req, res) => {
@@ -153,6 +159,11 @@ app.post('/connexion', (req, res) => {
       })
     }
   )
+})
+
+app.post('/isConnect', verifToken,(req,res) => {
+  console.log('Déjà connecté id : ' + req.user.id + ' classe : ' + req.user.classe);
+  res.json({message : 'Connecté', classe : req.user.classe});
 })
 
 app.post('/deconnexion', verifToken,(req, res) => {
