@@ -25,7 +25,6 @@
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -116,14 +115,6 @@ header>#nav-computer>ul>li:hover {
     transition: background-color 0.3s;
 }
 
-/* #navigation li {
-    background-color: #d3d3d3; 
-    cursor: pointer;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-} */
-
 #navigation>li:hover {
     color: var(--primary);
 }
@@ -134,15 +125,16 @@ header>#nav-computer>ul>li:hover {
     border-radius: 4px;
     padding: 0 1rem;
 }
-#deconnexion{
+
+#deconnexion {
     cursor: pointer;
     height: 75% !important;
     border-radius: 4px;
     padding: 0 1rem;
 }
+
 .herder-select {
     color: var(--primary) !important;
-    /* font-weight: 600 !important; */
     background-color: #4CAF50 !important;
     color: white !important;
 }
@@ -170,7 +162,7 @@ header>#nav-computer>ul>li:hover {
     overflow: hidden;
 }
 
-.div-tp > h2 {
+.div-tp>h2 {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -182,7 +174,7 @@ header>#nav-computer>ul>li:hover {
     padding: 1rem;
 }
 
-.div-tp > ul {
+.div-tp>ul {
     list-style: none;
     padding: 0.75rem 1.25rem;
     display: flex;
@@ -190,7 +182,7 @@ header>#nav-computer>ul>li:hover {
     gap: 0.25rem;
 }
 
-.div-tp > ul > li {
+.div-tp>ul>li {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -201,11 +193,11 @@ header>#nav-computer>ul>li:hover {
     border-bottom: 1px solid var(--gray-200);
 }
 
-.div-tp > ul > li:last-child {
+.div-tp>ul>li:last-child {
     border-bottom: none;
 }
 
-.div-tp > ul > li > ul {
+.div-tp>ul>li>ul {
     list-style: none;
     display: flex;
     flex-direction: row;
@@ -225,25 +217,11 @@ header>#nav-computer>ul>li:hover {
 
 .ciao[id^="tpnonvalide"] {
     color: var(--danger);
-    /* border-color: var(--danger); */
 }
-
-/* .ciao[id^="tpnonvalide"]:hover {
-    background: var(--danger);
-    color: var(--text-inverse);
-    transform: translateY(-1px);
-} */
 
 .ciao[id^="tpvalide"] {
     color: var(--success);
-    /* border-color: var(--success); */
 }
-
-/* .ciao[id^="tpvalide"]:hover {
-    background: var(--success);
-    color: var(--text-inverse);
-    transform: translateY(-1px);
-} */
 
 /* ===== TICKER CONTAINER ===== */
 #container-Ticket {
@@ -253,6 +231,7 @@ header>#nav-computer>ul>li:hover {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
+    margin-top: 2rem;
 }
 
 #container-Ticket-enseignant {
@@ -265,7 +244,6 @@ header>#nav-computer>ul>li:hover {
 }
 
 /* create */
-/* ===== CREATE TICKET ===== */
 #container-create-ticket {
     flex: 1 1 300px;
     height: auto;
@@ -357,7 +335,6 @@ header>#nav-computer>ul>li:hover {
 }
 
 /* View */
-/* ===== VIEW TICKET ===== */
 #container-view-ticket {
     flex: 1 1 300px;
     height: auto;
@@ -373,6 +350,7 @@ header>#nav-computer>ul>li:hover {
 }
 
 #container-list {
+    margin: 2rem 0;
     width: 90%;
     height: 100%;
     display: flex;
@@ -436,6 +414,7 @@ header>#nav-computer>ul>li:hover {
     cursor: pointer;
     height: 100%;
 }
+
 /* ===== LOGIN CONTAINER ===== */
 .loginContainer {
     margin: auto;
@@ -583,6 +562,7 @@ header>#nav-computer>ul>li:hover {
 }
 
 .btnRetour {
+    display: none;
     width: 100%;
     padding: 0.875rem;
     background: transparent;
@@ -605,23 +585,11 @@ header>#nav-computer>ul>li:hover {
     transform: translateY(0);
 }
 
-@media (max-width: 480px) {
-    .loginContainer {
-        padding: 2rem 1.5rem;
-    }
-
-    #form-title {
-        font-size: 1.5rem;
-    }
-
-    .login-logo img {
-        width: 60px;
-    }
-}
 /* ===== AVANCEMENT CONTAINER ===== */
 #containeur-avancement-graph {
     width: 80%;
     height: 80vh;
+    margin-top: 2rem;
 }
 
 #barCanvas {
@@ -692,13 +660,11 @@ header>#nav-computer>ul>li:hover {
     border-bottom: none;
 }
 
-/* TP à faire : lightgreen → vert doux */
 .div-av>ul>li[style*="lightgreen"] {
     background-color: #dcfce7 !important;
     border-left: 3px solid var(--success);
 }
 
-/* TP pas à faire : lightgrey → gris neutre */
 .div-av>ul>li[style*="lightgrey"] {
     background-color: var(--gray-200) !important;
     border-left: 3px solid var(--gray-400);
@@ -721,7 +687,6 @@ header>#nav-computer>ul>li:hover {
     transition: opacity 0.2s, transform 0.15s;
 }
 
-/* Enlever */
 .av[id^="Enlever"] {
     color: var(--danger) !important;
     border: 1px solid var(--danger);
@@ -733,7 +698,6 @@ header>#nav-computer>ul>li:hover {
     transform: translateY(-1px);
 }
 
-/* Ajouter */
 .av[id^="ajouter"] {
     color: var(--success) !important;
     border: 1px solid var(--success);
@@ -751,16 +715,16 @@ header>#nav-computer>ul>li:hover {
 }
 
 .btn-ticket {
-    color: #3b82f6
+    color: #3b82f6;
 }
 
+/* ===== MEDIA QUERIES ===== */
 @media (min-width: 900px) {
     .phone-screen {
         display: none !important;
     }
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .phone-screen {
         display: flex !important;
@@ -825,7 +789,6 @@ header>#nav-computer>ul>li:hover {
         cursor: pointer;
     }
 
-
     #navigation>li {
         cursor: pointer;
         width: 100%;
@@ -835,7 +798,11 @@ header>#nav-computer>ul>li:hover {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+    #container-view-ticket{
+        padding: 0 ;
+        margin-top: 1.5rem;
+    }
     .login-container {
         padding: 2rem 1.5rem;
     }

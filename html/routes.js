@@ -101,6 +101,10 @@ connexion.addEventListener('click', () => {
                     ticketContainer.style.display = 'flex';
                 }
                 btnTicket.classList.add('herder-select');
+
+                btnOpen.addEventListener('click', () => {
+                    navComputer.style.display = 'flex';
+                });
             }
         })
 })

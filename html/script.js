@@ -139,9 +139,9 @@ btnClose.addEventListener('click', () => {
     navComputer.style.display = 'none';
 });
 
-btnOpen.addEventListener('click', () => {
-    navComputer.style.display = 'flex';
-});
+// btnOpen.addEventListener('click', () => {
+//     navComputer.style.display = 'flex';
+// });
 
 window.addEventListener('resize', () => {
     if (window.innerWidth < 900) {
@@ -161,6 +161,9 @@ window.onload = () => {
         .then(data => {
             console.log('isConnect data : ' + data.message);
             if (data.message == 'Connecté') {
+                btnOpen.addEventListener('click', () => {
+                    navComputer.style.display = 'flex';
+                });
                 btnAvancement.style.display = 'flex';
                 btnTicket.style.display = 'flex';
                 btnTp.style.display = 'flex';
