@@ -205,6 +205,7 @@ header>#nav-computer>ul>li:hover {
 }
 
 .ciao {
+    height: 100%;
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 700;
@@ -408,11 +409,6 @@ header>#nav-computer>ul>li:hover {
     align-items: center;
     justify-content: space-around;
     flex-direction: row;
-}
-
-.ciao {
-    cursor: pointer;
-    height: 100%;
 }
 
 /* ===== LOGIN CONTAINER ===== */

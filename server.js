@@ -38,7 +38,7 @@ app.listen(3000, () => {
 
 //Gestion Inscription Utilisateur
 app.post('/inscription', (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   //Verification insertion
   if (req.body.password.length < 8) {
     res.json({ message: 'Mot de passe invalide', error: "length" });
@@ -94,7 +94,7 @@ app.post('/inscription', (req, res) => {
 
 //CONNEXION
 app.post('/connexion', (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
 
   //Récupération password dans la base pour la comparaison
   connection.query(
@@ -130,9 +130,9 @@ app.post('/connexion', (req, res) => {
 
           res.cookie('token', token, {
             httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
-            secure: false, // force le cookie à passer uniquement en HTTPS si true
+            secure: true, // force le cookie à passer uniquement en HTTPS si true
             sameSite: 'strict', //protège contre les attaques CSRF.
-            maxAge: 30 * 60 * 60 * 1000
+            maxAge: 30 * 24 * 60 * 60 * 1000
           })
 
           res.json({ message: "connexion reussi", classe: resultat.classe, idUsers: resultat.id });
@@ -197,7 +197,7 @@ app.post('/modifierStatus', verifToken, (req, res) => {
                 res.json({ message: "Erreur" });
                 return;
               }
-              if (resultsSelect.length == null) {
+              if (resultsSelect.length == 0) {
                 console.log("Not found");
                 res.json({ message: "Pas trouvé" });
                 return;
@@ -283,7 +283,7 @@ app.post('/affichage', verifToken, (req, res) => {
   } else if (req.user.classe == 'ciel1' || req.user.classe == 'ciel2') { //ELEVE
     connection.query(
       "SELECT tps.nom as tp,matiere,status,avancement,status.idTps,enseignant FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
-      [req.body.id], (err, results) => {
+      [req.user.id], (err, results) => {
         if (err) {
           console.log('Erreur ' + err);
           res.json({ message: 'Erreur affichage' });
@@ -311,7 +311,7 @@ app.post('/graphAvancement', verifToken,(req, res) => {
     //ancienne requette
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' THEN 1 END) as nbValide,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ? AND tps.avancement = 'afaire' GROUP BY matiere
     "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ?  GROUP BY matiere",
-    [req.body.idUsers], (err, results) => {
+    [req.user.id], (err, results) => {
       if (err) {
         console.log('Erreur graphAvancement');
         res.json({ message: 'Erreur graphAvancement' });
@@ -330,6 +330,11 @@ app.post('/graphAvancement', verifToken,(req, res) => {
 
 // AVANCEMENT GERER PAR LE PROF
 app.post('/avancement', verifToken, (req, res) => {
+
+  if(req.user.classe != 'enseignant'){
+    res.json({message : 'vous n etes pas enseignant'});
+    return;
+  }
 
   if (req.body.avancement != '') {
     connection.query(

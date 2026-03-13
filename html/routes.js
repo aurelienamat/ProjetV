@@ -173,7 +173,7 @@ btnCreateTicket.addEventListener('click', () => {
     const tp = document.getElementById('choix-tp');
     console.log("Tp choisie : " + tp.value);
 
-    if (matiere === '' || tp === '') {
+    if (matiere == '' || tp == '') {
         alert('Veuillez choisir une matière et un TP !');
         return;
     }
