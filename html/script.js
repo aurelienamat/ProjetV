@@ -152,15 +152,29 @@ window.addEventListener('resize', () => {
 });
 
 
-window.onload = () => {
-    console.log('Samlut');
+window.addEventListener('DOMContentLoaded', () => {
 
-    //Vérification pour savoir si l'utilisateur est connecté
+    // Masquer toutes les pages immédiatement
+    loginContainer.style.display = 'none';
+    ticketContainer.style.display = 'none';
+    tpcontainer.style.display = 'none';
+    avcontaineur.style.display = 'none';
+    ticketContainerEnseignant.style.display = 'none';
+    avContaineurEnseignant.style.display = 'none';
+
+    // Vérification connexion → tout l'affichage dépend de cette réponse
     fetch('/isConnect', { method: 'POST' })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur serveur : ' + response.status);
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log('isConnect data : ' + data.message);
-            if (data.message == 'Connecté') {
+            if (data.message === 'Connecté') {
+                // Rafraîchir la classe depuis le serveur (plus fiable que le localStorage seul)
+                localStorage.setItem('classe', data.classe);
+
                 btnOpen.addEventListener('click', () => {
                     navComputer.style.display = 'flex';
                 });
@@ -169,74 +183,75 @@ window.onload = () => {
                 btnTp.style.display = 'flex';
                 btnConnexionInscription.innerHTML = 'Deconnexion';
                 btnConnexionInscription.id = 'deconnexion';
-                if (data.classe == 'enseignant') {
+
+                if (data.classe === 'enseignant') {
                     affichage();
                     avancement('', '');
-                    //console.log(labelsArray);
-                    remplirAvancement(labelsArray);
-                    //console.log("ENSEINEINENI");
-                } else if (data.classe == 'ciel1' || data.classe == 'ciel2') {
+                } else if (data.classe === 'ciel1' || data.classe === 'ciel2') {
                     affichage();
                     graphAvancement();
                 }
+
+                // Afficher la bonne page maintenant qu'on sait que l'utilisateur est connecté
+                afficherBonnePage();
+
             } else {
-                localStorage.setItem('page', 'login');
-                loginContainer.style.display = 'block';
-                btnConnexionInscription.classList.add('herder-select');
-                btnAvancement.style.display = 'none';
-                btnTicket.style.display = 'none';
-                btnTp.style.display = 'none';
+                afficherPageLogin();
             }
         })
+        .catch(erreur => {
+            console.error('Impossible de vérifier la connexion :', erreur);
+            afficherPageLogin();
+        });
 
-    //Mettre toutes les pages none
-    loginContainer.style.display = 'none';
-    ticketContainer.style.display = 'none';
-    tpcontainer.style.display = 'none';
-    avcontaineur.style.display = 'none';
+});
 
-    ticketContainerEnseignant.style.display = 'none';
-    avContaineurEnseignant.style.display = 'none';
+function afficherBonnePage() {
+    const page = localStorage.getItem('page');
 
-
-
-    //Choisir la bonne page
-    if (localStorage.getItem('page') != null && localStorage.getItem('idUsers') != null) {
-        switch (localStorage.getItem('page')) {
-            case "avancement":
-                if (localStorage.getItem('classe') == 'enseignant') {
-                    avancement('', '');
-                    avContaineurEnseignant.style.display = 'flex';
-                } else {
-                    avcontaineur.style.display = 'flex';
-                }
-                btnAvancement.classList.add('herder-select');
-                break;
-            case "tp":
-                tpcontainer.style.display = 'flex';
-                btnTp.classList.add('herder-select');
-                break;
-            case "ticket":
-                if (localStorage.getItem('classe') == 'enseignant') {
-                    ticketContainerEnseignant.style.display = 'flex';
-                } else {
-                    ticketContainer.style.display = 'flex';
-                }
-                btnTicket.classList.add('herder-select');
-                remplirMenuTicket();
-                remplirTicket();
-                break;
-            case "login":
-                loginContainer.style.display = 'block';
-                btnConnexionInscription.classList.add('herder-select');
-                break;
-        }
-    } else {
-        localStorage.setItem('page', 'login');
-        loginContainer.style.display = 'block';
-        btnConnexionInscription.classList.add('herder-select');
+    if (page === null) {
+        afficherPageLogin();
+        return;
     }
 
+    switch (page) {
+        case 'avancement':
+            if (localStorage.getItem('classe') === 'enseignant') {
+                avContaineurEnseignant.style.display = 'flex';
+            } else {
+                avcontaineur.style.display = 'flex';
+            }
+            btnAvancement.classList.add('herder-select');
+            break;
+        case 'tp':
+            tpcontainer.style.display = 'flex';
+            btnTp.classList.add('herder-select');
+            break;
+        case 'ticket':
+            if (localStorage.getItem('classe') === 'enseignant') {
+                ticketContainerEnseignant.style.display = 'flex';
+            } else {
+                ticketContainer.style.display = 'flex';
+            }
+            btnTicket.classList.add('herder-select');
+            remplirMenuTicket();
+            remplirTicket();
+            break;
+        case 'login':
+        default:
+            afficherPageLogin();
+            break;
+    }
+}
+
+function afficherPageLogin() {
+    localStorage.clear();
+    localStorage.setItem('page', 'login');
+    loginContainer.style.display = 'block';
+    btnConnexionInscription.classList.add('herder-select');
+    btnAvancement.style.display = 'none';
+    btnTicket.style.display = 'none';
+    btnTp.style.display = 'none';
 }
 
 

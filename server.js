@@ -132,7 +132,8 @@ app.post('/connexion', (req, res) => {
             httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
             secure: true, // force le cookie à passer uniquement en HTTPS si true
             sameSite: 'strict', //protège contre les attaques CSRF.
-            maxAge: 30 * 24 * 60 * 60 * 1000
+            // maxAge: 30 * 24 * 60 * 60 * 1000
+            maxAge : 10 * 1000
           })
 
           res.json({ message: "connexion reussi", classe: resultat.classe, idUsers: resultat.id });
@@ -368,7 +369,7 @@ app.post('/avancement', verifToken, (req, res) => {
 
 //Verification token
 function verifToken(req, res, next) {
-  const token = req.cookies.token;
+  const token = req.cookies.authtoken;
 
   if (!token) {
     return res.status(401).json({ message: 'Non connecté' });
