@@ -132,8 +132,8 @@ app.post('/connexion', (req, res) => {
             httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
             secure: true, // force le cookie à passer uniquement en HTTPS si true
             sameSite: 'strict', //protège contre les attaques CSRF.
-            // maxAge: 30 * 24 * 60 * 60 * 1000
-            maxAge : 10 * 1000
+            maxAge: 30 * 24 * 60 * 60 * 1000
+            //maxAge : 10 * 1000
           })
 
           res.json({ message: "connexion reussi", classe: resultat.classe, idUsers: resultat.id });
@@ -389,7 +389,7 @@ function verifToken(req, res, next) {
 
 app.post('/createTp', verifToken, (req, res) => {
   connection.query(
-    "INSERT INTO tps(nom,matiere,enseignant,avancement) VALUES(?,?,LANGLACE Julien,pasafaire) ",
+    "INSERT INTO tps(nom,matiere,enseignant,avancement) VALUES(?,?,'LANGLACE Julien','pasafaire') ",
     [req.body.nom, req.body.matiere],
     (err, results) => {
       if (err) {

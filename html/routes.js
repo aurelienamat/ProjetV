@@ -163,6 +163,57 @@ function avancement(av, id) {
         })
 }
 
+// ROUTE CRÉATION DE TP (enseignant) =====================================================
+
+function remplirMenuMatiereTp() {
+    const dataAvancement = JSON.parse(localStorage.getItem('avancement'));
+    if (dataAvancement == null) return;
+
+    const optionsExistantes = document.querySelectorAll('.option-matiere-tp');
+    optionsExistantes.forEach(opt => opt.remove());
+
+    let matieresDejaAjoutees = [];
+    dataAvancement.forEach(item => {
+        if (!matieresDejaAjoutees.includes(item.matiere)) {
+            matieresDejaAjoutees.push(item.matiere);
+            let option = document.createElement('option');
+            option.value = item.matiere;
+            option.textContent = item.matiere;
+            option.className = 'option-matiere-tp';
+            choixMatiereTp.appendChild(option);
+        }
+    });
+}
+
+btnCreateTp.addEventListener('click', () => {
+    const matiere = choixMatiereTp.value;
+    const nom = nomTp.value.trim();
+
+    if (matiere === '' || nom === '') {
+        alert('Veuillez choisir une matière et entrer un nom de TP !');
+        return;
+    }
+
+    fetch('/createTp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom: nom, matiere: matiere })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Erreur : ' + data.message);
+            } else {
+                alert('TP créé avec succès !');
+                nomTp.value = '';
+                choixMatiereTp.value = '';
+            }
+        })
+        .catch(err => {
+            console.error('Erreur création TP :', err);
+        });
+});
+
 // ROUTE CRÉATION DE TICKET =============================================================
 // Bouton "Create" dans la page Ticket
 

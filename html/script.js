@@ -56,6 +56,7 @@ btnTicket.addEventListener('click', () => {
         btnTicket.classList.add('herder-select');
 
         tpcontainer.style.display = 'none';
+        tpContainerEnseignant.style.display = 'none';
         btnTp.classList.remove('herder-select');
 
         avcontaineur.style.display = 'none';
@@ -74,10 +75,15 @@ btnTicket.addEventListener('click', () => {
 // Page TP
 btnTp.addEventListener('click', () => {
     localStorage.setItem('page', 'tp');
-    if (tpcontainer.style.display == 'flex') {
+    if (tpcontainer.style.display == 'flex' || tpContainerEnseignant.style.display == 'flex') {
         location.reload();
     } else {
-        tpcontainer.style.display = 'flex';
+        if (localStorage.getItem('classe') === 'enseignant') {
+            remplirMenuMatiereTp();
+            tpContainerEnseignant.style.display = 'flex';
+        } else {
+            tpcontainer.style.display = 'flex';
+        }
         btnTp.classList.add('herder-select');
 
         loginContainer.style.display = 'none';
@@ -96,7 +102,6 @@ btnTp.addEventListener('click', () => {
         } else {
             navComputer.style.display = 'flex';
         }
-
     }
 });
 
@@ -119,8 +124,8 @@ btnAvancement.addEventListener('click', () => {
     btnConnexionInscription.classList.remove('herder-select');
 
     tpcontainer.style.display = 'none';
+    tpContainerEnseignant.style.display = 'none';
     btnTp.classList.remove('herder-select');
-
 
     btnAvancement.classList.add('herder-select');
 
@@ -158,6 +163,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loginContainer.style.display = 'none';
     ticketContainer.style.display = 'none';
     tpcontainer.style.display = 'none';
+    tpContainerEnseignant.style.display = 'none';
     avcontaineur.style.display = 'none';
     ticketContainerEnseignant.style.display = 'none';
     avContaineurEnseignant.style.display = 'none';
@@ -224,7 +230,12 @@ function afficherBonnePage() {
             btnAvancement.classList.add('herder-select');
             break;
         case 'tp':
-            tpcontainer.style.display = 'flex';
+            if (localStorage.getItem('classe') === 'enseignant') {
+                remplirMenuMatiereTp();
+                tpContainerEnseignant.style.display = 'flex';
+            } else {
+                tpcontainer.style.display = 'flex';
+            }
             btnTp.classList.add('herder-select');
             break;
         case 'ticket':

@@ -581,6 +581,112 @@ header>#nav-computer>ul>li:hover {
     transform: translateY(0);
 }
 
+/* ===== TP ENSEIGNANT CONTAINER ===== */
+#container-tp-enseignant {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 2rem;
+}
+
+#container-create-tp {
+    flex: 1 1 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 2rem;
+    padding: 2.5rem 2rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    background: var(--bg-container);
+    box-shadow: var(--shadow-sm);
+}
+
+#container-create-tp > h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--gray-200);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+#container-create-tp-list {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+#container-create-tp-list > li {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#container-create-tp-list label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+}
+
+#container-create-tp-list select,
+#container-create-tp-list input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+#container-create-tp-list select {
+    cursor: pointer;
+}
+
+#container-create-tp-list select:focus,
+#container-create-tp-list input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+#submit-btn-create-tp {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+}
+
+#submit-btn-create-tp:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+#submit-btn-create-tp:active {
+    transform: translateY(0);
+}
+
 /* ===== AVANCEMENT CONTAINER ===== */
 #containeur-avancement-graph {
     width: 80%;

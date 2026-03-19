@@ -7,6 +7,7 @@ const avcontaineur = document.getElementById('containeur-avancement-graph');
 
 const ticketContainerEnseignant = document.getElementById('container-Ticket-enseignant');
 const avContaineurEnseignant = document.getElementById('container-avancement');
+const tpContainerEnseignant = document.getElementById('container-tp-enseignant');
 
 // Boutons de navigation
 const btnConnexionInscription = document.getElementById('connexion-inscription');
@@ -34,6 +35,9 @@ const btnOpen = document.getElementById('open-phone');
 const navComputer = document.getElementById('nav-computer');
 
 const btnCreateTicket = document.getElementById('submit-btn-create-ticket');
+const btnCreateTp = document.getElementById('submit-btn-create-tp');
+const choixMatiereTp = document.getElementById('choix-matiere-tp');
+const nomTp = document.getElementById('nom-tp');
 
 const navButtons = document.querySelectorAll('#navigation li');
 
