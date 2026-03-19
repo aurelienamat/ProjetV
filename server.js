@@ -68,8 +68,8 @@ app.post('/inscription', (req, res) => {
   //Hachage mot de passe 
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
-      if(req.body.classe != 'ciel1' && req.body.classe != 'ciel2' ){
-        res.json({message : 'err classe inconnu'});
+      if (req.body.classe != 'ciel1' && req.body.classe != 'ciel2') {
+        res.json({ message: 'err classe inconnu' });
         return;
       }
       //Insertion dans la base
@@ -79,7 +79,7 @@ app.post('/inscription', (req, res) => {
         (err, results) => {
           if (err) {
             console.log('Erreur Insertion dans la base ' + err);
-            res.status(500).json({ message: 'Erreur bdd insertion' , erreur : err});
+            res.status(500).json({ message: 'Erreur bdd insertion', erreur: err });
             return;
           }
           console.log('Insertion réussi');
@@ -128,7 +128,7 @@ app.post('/connexion', (req, res) => {
             { expiresIn: '30d' }
           );
 
-          res.cookie('token', token, {
+          res.cookie('authtoken', token, {
             httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
             secure: true, // force le cookie à passer uniquement en HTTPS si true
             sameSite: 'strict', //protège contre les attaques CSRF.
@@ -161,14 +161,14 @@ app.post('/connexion', (req, res) => {
   )
 })
 
-app.post('/isConnect', verifToken,(req,res) => {
+app.post('/isConnect', verifToken, (req, res) => {
   console.log('Déjà connecté id : ' + req.user.id + ' classe : ' + req.user.classe);
-  res.json({message : 'Connecté', classe : req.user.classe});
+  res.json({ message: 'Connecté', classe: req.user.classe });
 })
 
-app.post('/deconnexion', verifToken,(req, res) => {
+app.post('/deconnexion', verifToken, (req, res) => {
+  res.clearCookie('authtoken');
   console.log("l'id " + req.user.id + " se déco");
-  res.clearCookie('token');
   res.json({ message: 'Déconnecté' });
 });
 
@@ -304,7 +304,7 @@ app.post('/affichage', verifToken, (req, res) => {
 })
 
 //AVANCEMENT
-app.post('/graphAvancement', verifToken,(req, res) => {
+app.post('/graphAvancement', verifToken, (req, res) => {
   connection.query(
     //New requette avec ajout du nombre de tp valide hors avancement
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = 2  GROUP BY matiere
@@ -331,8 +331,8 @@ app.post('/graphAvancement', verifToken,(req, res) => {
 // AVANCEMENT GERER PAR LE PROF
 app.post('/avancement', verifToken, (req, res) => {
 
-  if(req.user.classe != 'enseignant'){
-    res.json({message : 'vous n etes pas enseignant'});
+  if (req.user.classe != 'enseignant') {
+    res.json({ message: 'vous n etes pas enseignant' });
     return;
   }
 
@@ -380,7 +380,26 @@ function verifToken(req, res, next) {
     req.user = decoded;
     next();
   } catch (err) {
+    res.clearCookie('authtoken');
     return res.status(401).json({ message: 'Token invalide ou expiré' });
   }
 
 }
+
+app.post('/createTp', verifToken, (req, res) => {
+  connection.query(
+    "INSERT INTO tps(nom,matiere,enseignant,avancement) VALUES(?,?,LANGLACE Julien,pasafaire) ",
+    [req.body.nom, req.body.matiere],
+    (err, results) => {
+      if (err) {
+        res.json({ message: 'Erreur select avancement ' + err });
+        return;
+      }
+      if (results.length == 0) {
+        res.json({ message: 'Not find ' + err });
+        return;
+      }
+      res.json(results);
+    }
+  )
+})
