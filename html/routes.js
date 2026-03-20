@@ -23,6 +23,7 @@ btnInscription.addEventListener('click', () => {
     }
 
     fetch('/inscription', {
+        credentials: 'include',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -61,6 +62,7 @@ btnRetour.addEventListener('click', () => {
 
 connexion.addEventListener('click', () => {
     fetch('/connexion', {
+        credentials: 'include',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -116,6 +118,7 @@ connexion.addEventListener('click', () => {
 
 function affichage() {
     fetch('/affichage', {
+        credentials: 'include',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -146,6 +149,7 @@ function affichage() {
 
 function avancement(av, id) {
     fetch('/avancement', {
+        credentials: 'include',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -239,6 +243,7 @@ btnCreateTicket.addEventListener('click', () => {
 
 function modifierTicket(tp, nouveauStatus, userId) {
     fetch('/modifierStatus', {
+        credentials: 'include',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
