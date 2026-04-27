@@ -130,7 +130,7 @@ app.post('/connexion', (req, res) => {
 
           res.cookie('authtoken', token, {
             httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
-            secure: false, // force le cookie à passer uniquement en HTTPS si true                         !!! attention à mettre true en production !!!
+            secure: true, // force le cookie à passer uniquement en HTTPS si true                         !!! attention à mettre true en production !!!
             sameSite: 'strict', //protège contre les attaques CSRF.
             maxAge: 30 * 24 * 60 * 60 * 1000
             //maxAge : 10 * 1000
