@@ -79,7 +79,7 @@ btnTp.addEventListener('click', () => {
         location.reload();
     } else {
         if (localStorage.getItem('classe') === 'enseignant') {
-            remplirMenuMatiereTp();
+            getMatieres();
             tpContainerEnseignant.style.display = 'flex';
         } else {
             tpcontainer.style.display = 'flex';
@@ -231,7 +231,7 @@ function afficherBonnePage() {
             break;
         case 'tp':
             if (localStorage.getItem('classe') === 'enseignant') {
-                remplirMenuMatiereTp();
+                getMatieres();
                 tpContainerEnseignant.style.display = 'flex';
             } else {
                 tpcontainer.style.display = 'flex';
@@ -555,6 +555,8 @@ function remplirAvancement(matieretp) {
     }
 
     matieretp.forEach(mat => {
+        if (!dataLocalAv.some(data => data.matiere == mat)) return;
+
         let divMat = document.createElement('div');
         divMat.className = 'div-av';
         avContaineurEnseignant.appendChild(divMat);

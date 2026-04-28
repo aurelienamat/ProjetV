@@ -38,6 +38,13 @@ const btnCreateTicket = document.getElementById('submit-btn-create-ticket');
 const btnCreateTp = document.getElementById('submit-btn-create-tp');
 const choixMatiereTp = document.getElementById('choix-matiere-tp');
 const nomTp = document.getElementById('nom-tp');
+const btnCreateMatiere = document.getElementById('submit-btn-create-matiere');
+const nomMatiere = document.getElementById('nom-matiere');
+const btnDeleteTp = document.getElementById('submit-btn-delete-tp');
+const choixMatiereDeleteTp = document.getElementById('choix-matiere-delete-tp');
+const choixTpDelete = document.getElementById('choix-tp-delete');
+const btnDeleteMatiere = document.getElementById('submit-btn-delete-matiere');
+const choixMatiereDelete = document.getElementById('choix-matiere-delete');
 
 const navButtons = document.querySelectorAll('#navigation li');
 

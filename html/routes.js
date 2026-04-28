@@ -98,6 +98,7 @@ connexion.addEventListener('click', () => {
 
                 if (data.classe == 'enseignant') {
                     avancement('', '');
+                    getMatieres();
                     ticketContainerEnseignant.style.display = 'flex';
                 } else {
                     ticketContainer.style.display = 'flex';
@@ -167,25 +168,154 @@ function avancement(av, id) {
         })
 }
 
+// ROUTE SUPPRESSION DE MATIÈRE (enseignant) =====================================================
+
+function remplirMenuDeleteMatiere() {
+    if (labelsArray.length === 0) return;
+
+    document.querySelectorAll('.option-matiere-delete').forEach(opt => opt.remove());
+
+    labelsArray.forEach(nom => {
+        let option = document.createElement('option');
+        option.value = nom;
+        option.textContent = nom;
+        option.className = 'option-matiere-delete';
+        choixMatiereDelete.appendChild(option);
+    });
+}
+
+btnDeleteMatiere.addEventListener('click', () => {
+    const nom = choixMatiereDelete.value;
+
+    if (nom === '') {
+        alert('Veuillez choisir une matière à supprimer !');
+        return;
+    }
+
+    const dataAvancement = JSON.parse(localStorage.getItem('avancement'));
+    const tpsLies = dataAvancement ? dataAvancement.filter(item => item.matiere === nom) : [];
+    if (tpsLies.length > 0) {
+        alert(`Impossible de supprimer "${nom}" : ${tpsLies.length} TP(s) lui sont encore liés.\nSupprimez d'abord tous ses TPs.`);
+        return;
+    }
+
+    if (!confirm(`Supprimer la matière "${nom}" ? Cette action est irréversible.`)) return;
+
+    fetch('/deleteMatiere', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom: nom })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'ok') {
+                alert('Matière supprimée avec succès !');
+                labelsArray = labelsArray.filter(m => m !== nom);
+                document.querySelectorAll(`option[value="${nom}"]`).forEach(opt => opt.remove());
+                choixMatiereDelete.value = '';
+                avancement('', '');
+            } else {
+                alert('Erreur : ' + data.message);
+            }
+        })
+        .catch(err => console.error('Erreur suppression matière :', err));
+});
+
+// ROUTE SUPPRESSION DE TP (enseignant) =====================================================
+
+function remplirMenuDeleteTp() {
+    if (labelsArray.length === 0) return;
+
+    document.querySelectorAll('.option-matiere-delete-tp').forEach(opt => opt.remove());
+
+    labelsArray.forEach(nom => {
+        let option = document.createElement('option');
+        option.value = nom;
+        option.textContent = nom;
+        option.className = 'option-matiere-delete-tp';
+        choixMatiereDeleteTp.appendChild(option);
+    });
+
+    choixMatiereDeleteTp.addEventListener('change', () => {
+        choixTpDelete.innerHTML = '<option value="">Choisir un TP</option>';
+        const dataAvancement = JSON.parse(localStorage.getItem('avancement'));
+        if (dataAvancement == null) return;
+        dataAvancement.forEach(item => {
+            if (item.matiere == choixMatiereDeleteTp.value) {
+                let option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.nom;
+                choixTpDelete.appendChild(option);
+            }
+        });
+    });
+}
+
+btnDeleteTp.addEventListener('click', () => {
+    const idTp = choixTpDelete.value;
+
+    if (idTp === '') {
+        alert('Veuillez choisir un TP à supprimer !');
+        return;
+    }
+
+    if (!confirm('Supprimer ce TP ? Cette action est irréversible.')) return;
+
+    fetch('/deleteTp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: idTp })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'ok') {
+                alert('TP supprimé avec succès !');
+                choixTpDelete.querySelector(`option[value="${idTp}"]`).remove();
+                choixTpDelete.value = '';
+                avancement('', '');
+            } else {
+                alert('Erreur : ' + data.message);
+            }
+        })
+        .catch(err => console.error('Erreur suppression TP :', err));
+});
+
 // ROUTE CRÉATION DE TP (enseignant) =====================================================
 
+function getMatieres() {
+    fetch('/getMatieres', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log('Erreur getMatieres : ' + data.message);
+                return;
+            }
+            labelsArray = data.map(item => item.nom);
+            remplirMenuMatiereTp();
+            remplirMenuDeleteMatiere();
+            remplirMenuDeleteTp();
+            if (localStorage.getItem('avancement') != null) {
+                remplirAvancement(labelsArray);
+            }
+        })
+        .catch(err => console.error('Erreur getMatieres :', err));
+}
+
 function remplirMenuMatiereTp() {
-    const dataAvancement = JSON.parse(localStorage.getItem('avancement'));
-    if (dataAvancement == null) return;
+    if (labelsArray.length === 0) return;
 
     const optionsExistantes = document.querySelectorAll('.option-matiere-tp');
     optionsExistantes.forEach(opt => opt.remove());
 
-    let matieresDejaAjoutees = [];
-    dataAvancement.forEach(item => {
-        if (!matieresDejaAjoutees.includes(item.matiere)) {
-            matieresDejaAjoutees.push(item.matiere);
-            let option = document.createElement('option');
-            option.value = item.matiere;
-            option.textContent = item.matiere;
-            option.className = 'option-matiere-tp';
-            choixMatiereTp.appendChild(option);
-        }
+    labelsArray.forEach(nom => {
+        let option = document.createElement('option');
+        option.value = nom;
+        option.textContent = nom;
+        option.className = 'option-matiere-tp';
+        choixMatiereTp.appendChild(option);
     });
 }
 
@@ -211,10 +341,41 @@ btnCreateTp.addEventListener('click', () => {
                 alert('TP créé avec succès !');
                 nomTp.value = '';
                 choixMatiereTp.value = '';
+                avancement('', '');
             }
         })
         .catch(err => {
             console.error('Erreur création TP :', err);
+        });
+});
+
+// ROUTE CRÉATION DE MATIÈRE (enseignant) =====================================================
+
+btnCreateMatiere.addEventListener('click', () => {
+    const nom = nomMatiere.value.trim();
+
+    if (nom === '') {
+        alert('Veuillez entrer un nom de matière !');
+        return;
+    }
+
+    fetch('/createMatiere', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom: nom })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'ok') {
+                alert('Matière créée avec succès !');
+                getMatieres();
+                nomMatiere.value = '';
+            } else {
+                alert('Erreur : ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error('Erreur création matière :', err);
         });
 });
 

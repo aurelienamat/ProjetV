@@ -687,6 +687,275 @@ header>#nav-computer>ul>li:hover {
     transform: translateY(0);
 }
 
+#container-delete-matiere {
+    flex: 1 1 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 2rem;
+    padding: 2.5rem 2rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    background: var(--bg-container);
+    box-shadow: var(--shadow-sm);
+}
+
+#container-delete-matiere > h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--gray-200);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+#container-delete-matiere-list {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+#container-delete-matiere-list > li {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#container-delete-matiere-list label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+}
+
+#container-delete-matiere-list select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+#container-delete-matiere-list select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+#submit-btn-delete-matiere {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--danger);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+}
+
+#submit-btn-delete-matiere:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+#submit-btn-delete-matiere:active {
+    transform: translateY(0);
+}
+
+#container-delete-tp {
+    flex: 1 1 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 2rem;
+    padding: 2.5rem 2rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    background: var(--bg-container);
+    box-shadow: var(--shadow-sm);
+}
+
+#container-delete-tp > h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--gray-200);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+#container-delete-tp-list {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+#container-delete-tp-list > li {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#container-delete-tp-list label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+}
+
+#container-delete-tp-list select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+#container-delete-tp-list select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+#submit-btn-delete-tp {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--danger);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+}
+
+#submit-btn-delete-tp:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+#submit-btn-delete-tp:active {
+    transform: translateY(0);
+}
+
+#container-create-matiere {
+    flex: 1 1 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 2rem;
+    padding: 2.5rem 2rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    background: var(--bg-container);
+    box-shadow: var(--shadow-sm);
+}
+
+#container-create-matiere > h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--gray-200);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+#container-create-matiere-list {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+#container-create-matiere-list > li {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#container-create-matiere-list label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+}
+
+#container-create-matiere-list input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+#container-create-matiere-list input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+#submit-btn-create-matiere {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--primary);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+}
+
+#submit-btn-create-matiere:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+#submit-btn-create-matiere:active {
+    transform: translateY(0);
+}
+
 /* ===== AVANCEMENT CONTAINER ===== */
 #containeur-avancement-graph {
     width: 80%;

@@ -351,7 +351,7 @@ app.post('/avancement', verifToken, (req, res) => {
   }
 
   connection.query(
-    "SELECT id,nom,matiere,avancement FROM tps",
+    "SELECT tps.id,tps.nom,matieres.nom AS 'matiere',avancement FROM tps, matieres WHERE matieres.id = tps.idMatieres",
     (err, results) => {
       if (err) {
         res.json({ message: 'Erreur select avancement ' + err });
@@ -386,6 +386,64 @@ function verifToken(req, res, next) {
   }
 
 }
+
+app.post('/deleteMatiere', verifToken, (req, res) => {
+  if (req.user.classe != 'enseignant') {
+    res.json({ message: 'Non autorisé' });
+    return;
+  }
+  
+  connection.query(
+    "DELETE FROM matieres WHERE nom = ?",
+    [req.body.nom],
+    (err) => {
+      if (err) { res.json({ message: 'Erreur SQL ' + err }); return; }
+      res.json({ message: 'ok' });
+    }
+  )
+})
+
+app.post('/deleteTp', verifToken, (req, res) => {
+  if (req.user.classe != 'enseignant') {
+    res.json({ message: 'Non autorisé' });
+    return;
+  }
+  console.log("Id du tp supp : " + req.body.id);
+  connection.query(
+    "DELETE FROM tps WHERE id = ?",
+    [req.body.id],
+    (err) => {
+      if (err) { res.json({ message: 'Erreur SQL ' + err }); return; }
+      res.json({ message: 'ok' });
+    }
+  )
+})
+
+app.post('/getMatieres', verifToken, (req, res) => {
+  
+  connection.query(
+    "SELECT id, nom FROM matieres",
+    (err, results) => {
+      if (err) { res.json({ message: 'Erreur SQL ' + err }); return; }
+      res.json(results);
+    }
+  )
+})
+
+app.post('/createMatiere', verifToken, (req, res) => {
+  if (req.user.classe != 'enseignant') {
+    res.json({ message: 'Non autorisé' });
+    return;
+  }
+  connection.query(
+    'INSERT INTO matieres(nom) VALUES(?)',
+    [req.body.nom],
+    (err, results) => {
+      if (err) { res.json({ message: 'Erreur SQL ' + err }); return; }
+      res.json({ message: 'ok' });
+    }
+  )
+})
 
 app.post('/createTp', verifToken, (req, res) => {
   connection.query(
