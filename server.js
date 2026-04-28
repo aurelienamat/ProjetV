@@ -264,7 +264,7 @@ app.post('/affichage', verifToken, (req, res) => {
   if (req.user.classe == 'enseignant') { //ENSEINGNANT
     //console.log('enseignant');
     connection.query(
-      "SELECT users.nom,prenom,classe,tps.nom as tp,matiere,idTps,idUsers,status FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND status.status = ?",
+      "SELECT users.nom,prenom,classe,tps.nom as tp,matieres.nom AS 'matiere',idTps,idUsers,status FROM status, tps, users, matieres WHERE tps.id = status.idTps AND users.id = status.idUsers AND matieres.id = tps.idMatieres AND status.status = ?",
       [req.body.status], (err, results) => {
         if (err) {
           console.log('Erreur ' + err);
@@ -283,7 +283,7 @@ app.post('/affichage', verifToken, (req, res) => {
     )
   } else if (req.user.classe == 'ciel1' || req.user.classe == 'ciel2') { //ELEVE
     connection.query(
-      "SELECT tps.nom as tp,matiere,status,avancement,status.idTps,enseignant FROM status, tps, users WHERE tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
+      "SELECT tps.nom as tp,matieres.nom AS 'matiere',status,avancement,status.idTps,enseignant FROM status, tps, users,matieres WHERE matieres.id = tps.idMatieres AND tps.id = status.idTps AND users.id = status.idUsers AND users.id = ?",
       [req.user.id], (err, results) => {
         if (err) {
           console.log('Erreur ' + err);
@@ -311,7 +311,7 @@ app.post('/graphAvancement', verifToken, (req, res) => {
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = 2  GROUP BY matiere
     //ancienne requette
     //SELECT matiere,COUNT(CASE WHEN status.status = 'valide' THEN 1 END) as nbValide,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ? AND tps.avancement = 'afaire' GROUP BY matiere
-    "SELECT matiere,COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status WHERE tps.id = status.idTps AND status.idUsers = ?  GROUP BY matiere",
+    "SELECT matieres.nom AS 'matiere',COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'pasafaire' THEN 1 END) as nbValideHorsAvancement,COUNT(CASE WHEN tps.avancement ='afaire' THEN 1 END) as nbTp, COUNT(CASE WHEN status.status = 'valide' AND tps.avancement = 'afaire' THEN 1 END) as nbValide FROM tps,status,matieres WHERE matieres.id = tps.idMatieres AND tps.id = status.idTps AND status.idUsers = ?  GROUP BY matiere",
     [req.user.id], (err, results) => {
       if (err) {
         console.log('Erreur graphAvancement');
@@ -389,7 +389,7 @@ function verifToken(req, res, next) {
 
 app.post('/createTp', verifToken, (req, res) => {
   connection.query(
-    "INSERT INTO tps(nom,matiere,enseignant,avancement) VALUES(?,?,'LANGLACE Julien','pasafaire') ",
+    "INSERT INTO tps(nom,idMatieres,enseignant,avancement) VALUES(?,(SELECT matieres.id FROM matieres WHERE nom = ?),'LANGLACE Julien','pasafaire') ",
     [req.body.nom, req.body.matiere],
     (err, results) => {
       if (err) {
