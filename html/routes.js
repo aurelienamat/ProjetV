@@ -74,7 +74,7 @@ connexion.addEventListener('click', () => {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.message == 'connexion echoué') { // Connexion échouée
+            if (data.message != 'connexion reussi') { // Connexion échouée
                 alert(data.message);
                 console.log(data.message);
             } else { // Connexion réussie, on sauvegarde la classe dans le localStorage
